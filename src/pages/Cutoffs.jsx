@@ -149,7 +149,7 @@ export function Cutoffs() {
   return (
     <div className="cutoffs-container">
       <div className="cutoffs-header">
-        <h1 className="cutoffs-title">Cutoffs & Seats</h1>
+        <h1 className="cutoffs-title">Seats & Cutoffs</h1>
         <p className="cutoffs-critical-rule">
           Official reference data for seat matrix and previous cutoffs.
         </p>

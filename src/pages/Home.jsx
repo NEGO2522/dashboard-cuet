@@ -81,33 +81,10 @@ export function Home() {
 
       {/* Quick Access Grid */}
       <section className="quick-access-grid">
-        <Link to="/colleges" className="grid-tile">Explore colleges</Link>
-        <Link to="/eligibility" className="grid-tile">Browse courses</Link>
-        <Link to="/cutoffs" className="grid-tile">Cutoffs & seats</Link>
-        <Link to="/predictor" className="grid-tile">College predictor</Link>
-        <Link to="/preference-sheet" className="grid-tile">Preference sheet maker</Link>
-        <Link to="/map" className="grid-tile">Map & community</Link>
+        <a href="https://course-cuetpro.vercel.app/" target="_blank" rel="noopener noreferrer" className="grid-tile">Seats & Cutoffs</a>
+        <a href="https://cuetpro.com/preference-sheet/" target="_blank" rel="noopener noreferrer" className="grid-tile">Preference sheet maker</a>
       </section>
 
-      {/* Stats Strip */}
-      <section className="stats-strip">
-        <div className="stat-item">
-          <span className="stat-value">{formatNumber(totalColleges)}</span>
-          <span className="stat-label">Colleges</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">{formatNumber(totalCourses)}</span>
-          <span className="stat-label">Courses</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">{formatNumber(totalSeats)}</span>
-          <span className="stat-label">Total Seats</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">{dataYear}</span>
-          <span className="stat-label">Data Year</span>
-        </div>
-      </section>
     </div>
   );
 }
