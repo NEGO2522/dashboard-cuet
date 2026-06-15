@@ -1,0 +1,124 @@
+.map-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.map-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.map-note {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.map-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.map-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.map-filter-group input {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-left: auto;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #4b5563;
+}
+
+.legend-color {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.map-wrapper {
+  height: 60vh;
+  min-height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #d1d5db;
+  z-index: 1; /* Keep map below fixed navs if any */
+}
+
+/* React-Leaflet requires the map container to have a defined height */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-popup-content {
+  font-family: inherit;
+}
+
+.map-popup-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+}
+
+.map-popup-meta {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0 0 0.5rem 0;
+}
+
+.map-popup-link {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.map-popup-link:hover {
+  background-color: var(--accent-hover);
+  color: white;
+}
+
+/* Custom Div Icon Styles */
+.custom-div-icon {
+  background: transparent;
+  border: none;
+}
