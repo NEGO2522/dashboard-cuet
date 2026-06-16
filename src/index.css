@@ -76,35 +76,14 @@ button:active {
   padding: 1.5rem;
 }
 
-/* Layout adjustments for Sidebar */
+/* Layout adjustments */
 #root {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
 main {
   flex-grow: 1;
-  margin-left: 280px; /* Adjusted margin to fit sidebar properly */
-  width: calc(100% - 280px);
-  padding: 1rem 2rem; /* Add padding to main content area */
-}
-
-/* Smooth custom scrollbar for main area */
-main::-webkit-scrollbar {
-  width: 8px;
-}
-main::-webkit-scrollbar-track {
-  background: transparent;
-}
-main::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 20px;
-}
-
-@media (max-width: 768px) {
-  main {
-    margin-left: 0;
-    width: 100%;
-    padding: 4rem 1rem 2rem 1rem; /* Space for mobile menu toggle */
-  }
+  width: 100%;
 }
