@@ -318,7 +318,7 @@ export const colleges = [
       "lng": 77.2091
     },
     "intro": "The Department of Germanic and Romance Studies is a postgraduate department of the University of Delhi, North Campus. It offers specialised programs in French, German, Italian, and Spanish language and literature.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/1080px-Front_Lawn_and_College..JPG",
+    "imageUrl": "https://davr2qgdgobkftj7.public.blob.vercel-storage.com/domestic/dgrs-new-delhi/media/banner/dgrs-LBGuSlZnyqAzKp98WWQJSJfRBWzCxE.webp",
     "notableAlumni": [],
     "societies": [],
     "fests": [],
@@ -600,7 +600,7 @@ export const colleges = [
       "lng": 77.2198
     },
     "intro": "Founded in 1924, Indraprastha College is one of DU's oldest women's colleges, located at North Campus. It offers strong programs in Humanities and Social Sciences and has a rich legacy of empowering women through education.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Jama_Masjid_2011.jpg/1080px-Jama_Masjid_2011.jpg",
+    "imageUrl": "https://media.licdn.com/dms/image/v2/C561BAQFaSYHGIOnhrg/company-background_10000/company-background_10000/0/1620322203811/indraprastha_college_for_women_universityofdelhi_cover?e=2147483647&v=beta&t=XCg7BvswAnB3unhjKCszh-KpvR7Zafv2sTXCn0_iEtY",
     "notableAlumni": [],
     "societies": [],
     "fests": [],
@@ -1000,7 +1000,7 @@ export const colleges = [
       "lng": 77.2153
     },
     "intro": "Founded in 1948, Miranda House is consistently ranked as India's top women's college. Located at North Campus, it is celebrated for its academic excellence across Sciences and Humanities and its distinguished global alumni network.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/1080px-Front_Lawn_and_College..JPG",
+    "imageUrl": "https://www.mirandahouse.ac.in/assets/images/mirandaslider7.jpg",
     "notableAlumni": [
       {
         "name": "Indira Gandhi",

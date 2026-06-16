@@ -66,7 +66,8 @@
 }
 
 .form-group input[type="text"],
-.form-group input[type="url"] {
+.form-group input[type="url"],
+.admin-textarea {
   padding: 1.15rem 1.25rem;
   border-radius: 12px;
   border: 2px solid #e2e8f0;
@@ -77,11 +78,25 @@
   color: #0f172a;
 }
 
-.form-group input:focus {
+.admin-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group input:focus,
+.admin-textarea:focus {
   outline: none;
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
   background-color: white;
+}
+
+.word-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 0.25rem;
+  font-weight: 500;
 }
 
 /* Custom Dropdown Styles */

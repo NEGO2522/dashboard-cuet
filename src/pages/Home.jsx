@@ -38,7 +38,7 @@ export function Home() {
         source: n.source,
         isImportant: n.is_important,
         category: n.category,
-        imageUrl: n.image_url
+        description: n.description
       }));
       
       setNewsList(formatted);
@@ -134,12 +134,11 @@ export function Home() {
         </div>
 
         <div className="quick-searches">
-          <span className="quick-search-label">Popular:</span>
-          <button className="quick-search-pill" onClick={() => setSearchQuery('SRCC')}>SRCC</button>
-          <button className="quick-search-pill" onClick={() => setSearchQuery('St. Stephen\'s')}>St. Stephen's</button>
-          <button className="quick-search-pill" onClick={() => setSearchQuery('B.A. Program')}>B.A. Program</button>
-          <button className="quick-search-pill" onClick={() => setSearchQuery('Psychology')}>Psychology</button>
-          <button className="quick-search-pill" onClick={() => setSearchQuery('North Campus')}>North Campus</button>
+          <span className="quick-search-label">Important Links:</span>
+          <a href="https://admission.uod.ac.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU CSAS Portal</a>
+          <a href="https://cuetug.ntaonline.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">NTA CUET Portal</a>
+          <a href="https://du.ac.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU Official Site</a>
+          <a href="https://admission.uod.ac.in/?PG-Admissions" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU PG Portal</a>
         </div>
       </section>
 
@@ -267,16 +266,15 @@ export function Home() {
                   </div>
                 )}
                 
-                {news.imageUrl && (
-                  <img src={news.imageUrl} alt="" className="news-image" />
-                )}
-                
                 <div className="news-content">
                   <div className="news-meta">
                     <span className="news-source-badge">{news.source}</span>
                     <span className="news-date">{new Date(news.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                   </div>
                   <h4 className="news-card-title">{news.title}</h4>
+                  {news.description && (
+                    <p className="news-card-desc">{news.description}</p>
+                  )}
                 </div>
               </a>
             );

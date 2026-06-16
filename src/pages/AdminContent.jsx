@@ -48,7 +48,7 @@ export function AdminContent() {
   const [link, setLink] = useState('');
   const [source, setSource] = useState('DU Official');
   const [category, setCategory] = useState('Admission');
-  const [imageUrl, setImageUrl] = useState('');
+  const [description, setDescription] = useState('');
   const [isImportant, setIsImportant] = useState(false);
   
   const [status, setStatus] = useState({ type: '', message: '' });
@@ -97,6 +97,17 @@ export function AdminContent() {
     }
   };
 
+  const handleDescriptionChange = (e) => {
+    const text = e.target.value;
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+    if (words.length <= 50) {
+      setDescription(text);
+    } else {
+      // Truncate to 50 words if pasted
+      setDescription(words.slice(0, 50).join(" "));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -111,7 +122,7 @@ export function AdminContent() {
             link,
             source,
             category,
-            image_url: imageUrl || null,
+            description: description || null,
             is_important: isImportant
           }
         ]);
@@ -123,7 +134,7 @@ export function AdminContent() {
       // Reset form
       setTitle('');
       setLink('');
-      setImageUrl('');
+      setDescription('');
       setIsImportant(false);
       
       // Refresh list
@@ -177,14 +188,18 @@ export function AdminContent() {
           </div>
 
           <div className="form-group full-width">
-            <label htmlFor="imageUrl">Image URL (Optional)</label>
-            <input
-              type="url"
-              id="imageUrl"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
+            <label htmlFor="description">Short Description (Max 50 Words)</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder="Provide a brief summary..."
+              rows="3"
+              className="admin-textarea"
             />
+            <div className="word-count">
+              {description.trim() === '' ? 0 : description.trim().split(/\s+/).length}/50 words
+            </div>
           </div>
 
           <CustomDropdown
