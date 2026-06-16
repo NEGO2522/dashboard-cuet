@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { colleges } from '../data/colleges';
 import { programs } from '../data/programs';
 import { offerings } from '../data/offerings';
-import { initialNews } from '../data/news';
+import { supabase } from '../lib/supabaseClient';
 import './Home.css';
 
 export function Home() {
@@ -11,21 +11,41 @@ export function Home() {
   const navigate = useNavigate();
 
   // News logic
-  const [newsList, setNewsList] = useState(initialNews);
+  const [newsList, setNewsList] = useState([]);
   const [activeNewsTab, setActiveNewsTab] = useState("All");
-  
-  const [adminTitle, setAdminTitle] = useState("");
-  const [adminLink, setAdminLink] = useState("");
-  const [adminSource, setAdminSource] = useState("DU Official");
-  const [adminCategory, setAdminCategory] = useState("Admission");
-  const [adminImportant, setAdminImportant] = useState(false);
   const [currentTimeStr, setCurrentTimeStr] = useState('');
 
   useEffect(() => {
     setCurrentTimeStr(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }));
+    fetchNews();
   }, []);
 
-  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+  const fetchNews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('news_updates')
+        .select('*')
+        .order('created_at', { ascending: false });
+        
+      if (error) throw error;
+      
+      // Transform keys to match existing UI
+      const formatted = data.map(n => ({
+        id: n.id,
+        title: n.title,
+        date: n.created_at,
+        link: n.link,
+        source: n.source,
+        isImportant: n.is_important,
+        category: n.category,
+        imageUrl: n.image_url
+      }));
+      
+      setNewsList(formatted);
+    } catch (err) {
+      console.error('Error fetching news:', err);
+    }
+  };
 
   const filteredNews = useMemo(() => {
     if (activeNewsTab === "All") return newsList;
@@ -37,29 +57,6 @@ export function Home() {
   }, [newsList, activeNewsTab]);
 
   const hasDUOfficial = newsList.some(n => n.source === "DU Official");
-
-  const handleAdminSubmit = (e) => {
-    e.preventDefault();
-    if (!adminTitle || !adminLink) return;
-    
-    const newItem = {
-      id: Date.now(),
-      title: adminTitle,
-      link: adminLink,
-      source: adminSource,
-      category: adminCategory,
-      isImportant: adminImportant,
-      date: new Date().toISOString(),
-      imageUrl: adminSource === "DU Official" 
-        ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/1080px-Front_Lawn_and_College..JPG"
-        : "https://www.dusquad.com/wp-content/uploads/2023/02/Lady-Shri-Ram-College-for-Women.jpg"
-    };
-    
-    setNewsList([newItem, ...newsList]);
-    setAdminTitle("");
-    setAdminLink("");
-    setAdminImportant(false);
-  };
 
   // Search logic
   const suggestions = useMemo(() => {
@@ -289,52 +286,6 @@ export function Home() {
           )}
         </div>
 
-        {/* Admin Panel */}
-        {isAdmin && (
-          <div className="admin-panel">
-            <h3>Add New Update (Admin)</h3>
-            <form className="admin-form" onSubmit={handleAdminSubmit}>
-              <input 
-                type="text" 
-                className="admin-input admin-input-full" 
-                placeholder="News Title" 
-                value={adminTitle}
-                onChange={e => setAdminTitle(e.target.value)}
-                required
-              />
-              <input 
-                type="text" 
-                className="admin-input admin-input-full" 
-                placeholder="Link URL" 
-                value={adminLink}
-                onChange={e => setAdminLink(e.target.value)}
-                required
-              />
-              <select className="admin-input" value={adminSource} onChange={e => setAdminSource(e.target.value)}>
-                <option value="DU Official">DU Official</option>
-                <option value="Admin">Admin</option>
-              </select>
-              <select className="admin-input" value={adminCategory} onChange={e => setAdminCategory(e.target.value)}>
-                <option value="Admission">Admission</option>
-                <option value="Cutoffs">Cutoffs</option>
-                <option value="Notice">Notice</option>
-                <option value="Feature">Feature</option>
-              </select>
-              <label className="admin-checkbox-label admin-input-full">
-                <input 
-                  type="checkbox" 
-                  checked={adminImportant}
-                  onChange={e => setAdminImportant(e.target.checked)}
-                />
-                Mark as Important / Priority
-              </label>
-              <div className="admin-input-full">
-                <button type="submit" className="admin-submit-btn">Post Update</button>
-              </div>
-              <p className="admin-note">⚠️ Posts save to this session only. Connect a backend to persist.</p>
-            </form>
-          </div>
-        )}
       </section>
 
     </div>

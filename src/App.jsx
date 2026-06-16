@@ -10,7 +10,8 @@ import {
   PreferenceSheet, 
   Map,
   Rankings,
-  Documents
+  Documents,
+  AdminContent
 } from './pages';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/rankings" element={<Rankings />} />
           <Route path="/documents" element={<Documents />} />
+          <Route path="/admincontent" element={<AdminContent />} />
         </Routes>
         </main>
       </div>

@@ -7,3 +7,4 @@ export { PreferenceSheet } from './PreferenceSheet';
 export { Map } from './Map';
 export { Rankings } from './Rankings';
 export { Documents } from './Documents';
+export { AdminContent } from './AdminContent';
