@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { TopNav } from './components/TopNav';
+import { Sidebar } from './components/Sidebar';
 import { 
   Home, 
   CollegeExplorer, 
@@ -14,7 +14,7 @@ import {
 function App() {
   return (
     <Router>
-      <TopNav />
+      <Sidebar />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

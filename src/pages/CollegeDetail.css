@@ -206,3 +206,5 @@
   color: #4b5563;
 }
 .cd-not-found { padding: 4rem 1rem; text-align: center; } .cd-back-link { margin-top: 1rem; display: inline-block; }
+
+@media (max-width: 768px) { .college-detail-container { padding: 1rem; } .cd-header h1 { font-size: 1.5rem; } .cd-facts-row { flex-direction: column; } .cd-notice-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }

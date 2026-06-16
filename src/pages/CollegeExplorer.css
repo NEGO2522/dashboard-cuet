@@ -184,3 +184,5 @@
 .ce-clear-btn:hover {
   background-color: var(--accent-hover);
 }
+
+@media (max-width: 768px) { .ce-container { padding: 1rem; } .ce-filters-row { flex-direction: column; align-items: stretch; } .ce-grid { grid-template-columns: 1fr; } }

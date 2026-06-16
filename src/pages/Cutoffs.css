@@ -172,3 +172,5 @@
   padding-top: 1rem;
   margin-top: 1rem;
 }
+
+@media (max-width: 768px) { .cutoffs-container { padding: 1rem; } .cutoffs-top-controls { flex-direction: column; align-items: stretch; } .filter-row { grid-template-columns: 1fr 1fr; display: grid; } }
