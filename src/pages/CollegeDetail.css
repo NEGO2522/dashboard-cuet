@@ -405,6 +405,168 @@
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
 }
 
+.cd-alumni-section,
+.cd-societies-section,
+.cd-fests-section,
+.cd-metro-section {
+  margin-top: 2.5rem;
+}
+
+.cd-alumni-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cd-alumni-scroll::-webkit-scrollbar { height: 4px; }
+.cd-alumni-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+.cd-alumni-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+.cd-alumni-card {
+  min-width: 180px;
+  max-width: 180px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  scroll-snap-align: start;
+}
+
+.cd-alumni-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.cd-alumni-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.cd-alumni-field {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.cd-alumni-year {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.cd-alumni-placeholder {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 0.875rem;
+  padding: 1rem 0;
+}
+
+.cd-society-pill {
+  background: var(--accent-blue-light);
+  color: var(--accent-blue);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(37,99,235,0.15);
+  white-space: nowrap;
+}
+
+.cd-fests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.cd-fest-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cd-fest-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.cd-fest-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cd-fest-type-badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.cd-fest-month {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.cd-metro-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  display: inline-block;
+  min-width: 280px;
+}
+
+.cd-metro-station {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.cd-metro-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cd-metro-line-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.cd-metro-walk {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .cd-hero-title {

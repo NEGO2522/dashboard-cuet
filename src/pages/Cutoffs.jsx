@@ -149,10 +149,25 @@ export function Cutoffs() {
   return (
     <div className="cutoffs-container">
       <div className="cutoffs-header">
-        <h1 className="cutoffs-title">Seats & Cutoffs</h1>
+        <h1 className="cutoffs-title">Cutoffs & Seats</h1>
         <p className="cutoffs-critical-rule">
-          Official reference data for seat matrix and previous cutoffs.
+          Official seat matrix and previous year cutoff scores — CSAS 2023 data
         </p>
+      </div>
+
+      <div className="quick-stats-bar" style={{ display: 'flex', gap: '1.5rem', marginBottom: '2rem' }}>
+        <div className="stat-card" style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.5rem', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+          <div style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>{programs.length}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Total Programs</div>
+        </div>
+        <div className="stat-card" style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.5rem', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+          <div style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>{colleges.length}</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Total Colleges</div>
+        </div>
+        <div className="stat-card" style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.5rem', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+          <div style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>2023</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Data Year</div>
+        </div>
       </div>
 
       <div className="cutoffs-top-controls">

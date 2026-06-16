@@ -1,17 +1,37 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { colleges } from '../data/colleges';
+import { programs } from '../data/programs';
+import { offerings } from '../data/offerings';
 import './CollegeExplorer.css';
 
 export function CollegeExplorer() {
   const [searchQuery, setSearchQuery] = useState('');
   const [campusFilter, setCampusFilter] = useState('All');
   const [typeFilter, setTypeFilter] = useState('All');
-  const [hostelOnly, setHostelOnly] = useState(false);
+  const [streamFilter, setStreamFilter] = useState('All');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   
   const [visibleCount, setVisibleCount] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const collegeStreams = useMemo(() => {
+    const map = {};
+    offerings.forEach(o => {
+      const prog = programs.find(p => p.id === o.programId);
+      if (prog && prog.subjectGroup) {
+        if (!map[o.collegeId]) map[o.collegeId] = new Set();
+        map[o.collegeId].add(prog.subjectGroup);
+      }
+    });
+    return map;
+  }, []);
+
+  const topPicks = {
+    Science: ["miranda-house-w", "hindu-college", "hansraj-college", "sri-venketeswara-college"],
+    Commerce: ["shri-ram-college-of-commerce", "sri-guru-gobind-singh-college-of-commerce", "shaheed-sukhdev-college-business-studies", "hansraj-college"],
+    Humanities: ["lady-shri-ram-college-for-women-w", "miranda-house-w", "indraprastha-college-for-women-w", "ramjas-college"]
+  };
 
   const filteredColleges = useMemo(() => {
     return colleges.filter(college => {
@@ -24,16 +44,17 @@ export function CollegeExplorer() {
       if (typeFilter !== 'All' && college.type !== typeFilter) {
         return false;
       }
-      if (hostelOnly && (!college.facilities || !college.facilities.includes('Hostel'))) {
-        return false;
+      if (streamFilter !== 'All') {
+        const streams = collegeStreams[college.id];
+        if (!streams || !streams.has(streamFilter)) return false;
       }
       return true;
     });
-  }, [searchQuery, campusFilter, typeFilter, hostelOnly]);
+  }, [searchQuery, campusFilter, typeFilter, streamFilter, collegeStreams]);
 
   useEffect(() => {
     setVisibleCount(12);
-  }, [searchQuery, campusFilter, typeFilter, hostelOnly]);
+  }, [searchQuery, campusFilter, typeFilter, streamFilter]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,7 +76,7 @@ export function CollegeExplorer() {
     setSearchQuery('');
     setCampusFilter('All');
     setTypeFilter('All');
-    setHostelOnly(false);
+    setStreamFilter('All');
   };
 
   return (
@@ -124,10 +145,13 @@ export function CollegeExplorer() {
             </div>
 
             <div className="ce-filter-group">
+              <span className="ce-filter-label">Stream</span>
               <div className="ce-filter-chips">
-                <button className={`ce-chip ${hostelOnly ? 'active' : ''}`} onClick={() => setHostelOnly(!hostelOnly)}>
-                  Hostel
-                </button>
+                {['All', 'Science', 'Commerce', 'Humanities'].map(s => (
+                  <button key={s} className={`ce-chip ${streamFilter === s ? 'active' : ''}`} onClick={() => setStreamFilter(s)}>
+                    {s}
+                  </button>
+                ))}
               </div>
             </div>
             </div>
@@ -138,6 +162,26 @@ export function CollegeExplorer() {
 
       {filteredColleges.length > 0 ? (
         <>
+          {streamFilter !== 'All' && (
+            <div className="ce-top-picks-banner">
+              <h2 className="ce-top-picks-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#b45309' }}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Top Picks for {streamFilter}
+              </h2>
+              <div className="ce-top-picks-scroll">
+                {(topPicks[streamFilter] || []).map(id => {
+                  const coll = colleges.find(c => c.id === id);
+                  if (!coll) return null;
+                  return (
+                    <Link to={`/college/${coll.id}`} key={coll.id} className="ce-top-pick-card">
+                      <img src={coll.imageUrl || `https://placehold.co/48x48?text=${encodeURIComponent(coll.name)}`} alt={coll.name} className="ce-top-pick-img" />
+                      <span className="ce-top-pick-name">{coll.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="ce-grid">
             {filteredColleges.slice(0, visibleCount).map(college => (
               <div key={college.id} className="ce-card">

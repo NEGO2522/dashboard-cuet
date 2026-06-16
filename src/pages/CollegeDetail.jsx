@@ -23,6 +23,10 @@ const getStreamGroup = (subjectGroup) => {
   return 'Others';
 };
 
+const avatarColors = ['#2563eb','#059669','#7c3aed','#e11d48','#d97706','#0891b2'];
+const getAvatarColor = (name) => avatarColors[name.charCodeAt(0) % avatarColors.length];
+const getInitials = (name) => name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
 export function CollegeDetail() {
   const { id } = useParams();
   const college = useMemo(() => colleges.find(c => c.id === id), [id]);
@@ -262,6 +266,104 @@ export function CollegeDetail() {
                 </Popup>
               </Marker>
             </MapContainer>
+          </div>
+        </section>
+
+        {/* Section A - Notable Alumni */}
+        <section className="cd-alumni-section">
+          <h2 className="cd-section-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-blue)' }}><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            Notable Alumni
+          </h2>
+          <div className="cd-alumni-scroll">
+            {(!college.notableAlumni || college.notableAlumni.length === 0) ? (
+              <div className="cd-alumni-card cd-alumni-placeholder">
+                Alumni data being compiled
+              </div>
+            ) : (
+              college.notableAlumni.map((alumni, idx) => (
+                <div key={idx} className="cd-alumni-card">
+                  <div className="cd-alumni-avatar" style={{ backgroundColor: getAvatarColor(alumni.name) }}>
+                    {getInitials(alumni.name)}
+                  </div>
+                  <div className="cd-alumni-name">{alumni.name}</div>
+                  <div className="cd-alumni-field">{alumni.field}</div>
+                  <div className="cd-alumni-year">{alumni.year}</div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+
+        {/* Section B - Societies & Clubs */}
+        <section className="cd-societies-section">
+          <h2 className="cd-section-title">Societies & Clubs</h2>
+          <div className="cd-societies-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {(!college.societies || college.societies.length === 0) ? (
+              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Society info coming soon</span>
+            ) : (
+              college.societies.map((soc, idx) => (
+                <span key={idx} className="cd-society-pill">
+                  {soc}
+                </span>
+              ))
+            )}
+          </div>
+        </section>
+
+        {/* Section C - Annual Fests */}
+        <section className="cd-fests-section">
+          <h2 className="cd-section-title">Annual Fests</h2>
+          <div className="cd-fests-grid">
+            {(!college.fests || college.fests.length === 0) ? (
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1rem', color: '#94a3b8' }}>Fest data being updated</div>
+            ) : (
+              college.fests.map((fest, idx) => {
+                let badgeBg = '#f1f5f9';
+                let badgeColor = '#475569';
+                if (fest.type === 'Cultural') { badgeBg = '#f5f3ff'; badgeColor = '#7c3aed'; }
+                else if (fest.type === 'Literary') { badgeBg = '#ecfdf5'; badgeColor = '#059669'; }
+                else if (fest.type === 'Sports') { badgeBg = '#fff1f2'; badgeColor = '#e11d48'; }
+                else if (fest.type === 'Commerce & Management') { badgeBg = '#fffbeb'; badgeColor = '#d97706'; }
+                else if (fest.type === 'Music' || fest.type === 'Debate' || fest.type === 'Social' || fest.type === 'Humanities') { badgeBg = '#eff6ff'; badgeColor = '#2563eb'; }
+
+                return (
+                  <div key={idx} className="cd-fest-card">
+                    <div className="cd-fest-name">{fest.name}</div>
+                    <div className="cd-fest-meta">
+                      <span className="cd-fest-type-badge" style={{ backgroundColor: badgeBg, color: badgeColor }}>{fest.type}</span>
+                      <span className="cd-fest-month">{fest.month}</span>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </section>
+
+        {/* Section D - Nearest Metro */}
+        <section className="cd-metro-section" style={{ marginBottom: '2rem' }}>
+          <h2 className="cd-section-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><rect x="4" y="3" width="16" height="16" rx="2" ry="2"></rect><path d="M4 11h16"></path><path d="M12 3v8"></path><path d="M8 19l-2 3"></path><path d="M18 22l-2-3"></path><path d="M8 15h.01"></path><path d="M16 15h.01"></path></svg>
+            Getting There
+          </h2>
+          <div className="cd-metro-card">
+            {(!college.nearestMetro || college.nearestMetro.station === "Check college website") ? (
+              <div style={{ color: 'var(--text-muted)' }}>Metro info not available — check Google Maps</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className="cd-metro-station">{college.nearestMetro.station}</div>
+                <div className="cd-metro-details">
+                  <span className="cd-metro-line-pill" style={{ backgroundColor: `${college.nearestMetro.lineColor}15`, color: college.nearestMetro.lineColor, border: `1px solid ${college.nearestMetro.lineColor}40` }}>
+                    {college.nearestMetro.line}
+                  </span>
+                  <span className="cd-metro-walk">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    {college.nearestMetro.walkTime}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </div>
