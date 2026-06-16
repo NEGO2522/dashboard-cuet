@@ -4,9 +4,9 @@ import {
   Home, 
   CollegeExplorer, 
   CollegeDetail, 
-  Cutoffs, 
-  Eligibility, 
-  Predictor, 
+  Cutoffs,
+  Eligibility,
+  CutoffAndSeats,
   PreferenceSheet, 
   Map 
 } from './pages';
@@ -21,8 +21,7 @@ function App() {
           <Route path="/colleges" element={<CollegeExplorer />} />
           <Route path="/college/:id" element={<CollegeDetail />} />
           <Route path="/eligibility" element={<Eligibility />} />
-          <Route path="/cutoffs" element={<Cutoffs />} />
-          <Route path="/predictor" element={<Predictor />} />
+          <Route path="/cutoffs" element={<CutoffAndSeats />} />
           <Route path="/preference-sheet" element={<PreferenceSheet />} />
           <Route path="/map" element={<Map />} />
         </Routes>

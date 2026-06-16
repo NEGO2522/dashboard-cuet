@@ -3,6 +3,6 @@ export { CollegeExplorer } from './CollegeExplorer';
 export { CollegeDetail } from './CollegeDetail';
 export { Cutoffs } from './Cutoffs';
 export { Eligibility } from './Eligibility';
-export { Predictor } from './Predictor';
+export { CutoffAndSeats } from './CutoffAndSeats';
 export { PreferenceSheet } from './PreferenceSheet';
 export { Map } from './Map';
