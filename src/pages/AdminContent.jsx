@@ -56,9 +56,16 @@ export function AdminContent() {
   const [recentPosts, setRecentPosts] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState('');
+
   useEffect(() => {
-    fetchRecentPosts();
-  }, []);
+    if (isAuthenticated) {
+      fetchRecentPosts();
+    }
+  }, [isAuthenticated]);
 
   const fetchRecentPosts = async () => {
     setIsFetching(true);
@@ -139,14 +146,48 @@ export function AdminContent() {
       
       // Refresh list
       fetchRecentPosts();
-      
     } catch (error) {
-      console.error('Error inserting news:', error);
-      setStatus({ type: 'error', message: error.message || 'Failed to publish news update.' });
+      console.error('Error inserting data:', error);
+      setStatus({ type: 'error', message: 'Failed to publish post. Check connection.' });
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (passwordInput === 'Cuetpro@Tushar') {
+      setIsAuthenticated(true);
+      setAuthError('');
+    } else {
+      setAuthError('Incorrect password. Access denied.');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="admin-login-container">
+        <div className="admin-login-card">
+          <div className="admin-login-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <h1>Admin Access</h1>
+          <p>Please enter the administrator password to continue.</p>
+          <form onSubmit={handleLogin} className="admin-login-form">
+            <input 
+              type="password" 
+              placeholder="Enter Password" 
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              autoFocus
+            />
+            {authError && <div className="auth-error">{authError}</div>}
+            <button type="submit" className="login-btn">Unlock Dashboard</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-container">
