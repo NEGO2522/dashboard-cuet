@@ -8,8 +8,10 @@ export function CollegeExplorer() {
   const [campusFilter, setCampusFilter] = useState('All');
   const [typeFilter, setTypeFilter] = useState('All');
   const [hostelOnly, setHostelOnly] = useState(false);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   
-  const [visibleCount, setVisibleCount] = useState(15);
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const filteredColleges = useMemo(() => {
     return colleges.filter(college => {
@@ -30,18 +32,24 @@ export function CollegeExplorer() {
   }, [searchQuery, campusFilter, typeFilter, hostelOnly]);
 
   useEffect(() => {
-    setVisibleCount(15);
+    setVisibleCount(12);
   }, [searchQuery, campusFilter, typeFilter, hostelOnly]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 300) {
-        setVisibleCount(prev => (prev >= filteredColleges.length ? prev : prev + 15));
+        if (!isLoadingMore && visibleCount < filteredColleges.length) {
+          setIsLoadingMore(true);
+          setTimeout(() => {
+            setVisibleCount(prev => prev + 12);
+            setIsLoadingMore(false);
+          }, 2000);
+        }
       }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [filteredColleges.length]);
+  }, [filteredColleges.length, isLoadingMore, visibleCount]);
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -52,13 +60,13 @@ export function CollegeExplorer() {
 
   return (
     <div className="ce-container">
-      <div className="ce-hero">
-        <h1 className="ce-title">Explore DU Colleges</h1>
-        <p className="ce-subtitle">Discover all 91 affiliated colleges, check facilities, and explore their campuses.</p>
-      </div>
+      <div className="ce-top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '2rem' }}>
+        <div className="ce-hero" style={{ textAlign: 'left', marginBottom: 0 }}>
+          <h1 className="ce-title" style={{ fontSize: '2rem' }}>Explore DU Colleges</h1>
+          <p className="ce-subtitle" style={{ margin: 0, maxWidth: '100%' }}>Discover all affiliated colleges, check facilities, and explore their campuses.</p>
+        </div>
 
-      <div className="ce-controls-container">
-        <div className="ce-search-wrapper">
+        <div className="ce-search-wrapper" style={{ flex: '1', minWidth: '300px', maxWidth: '450px' }}>
           <svg className="ce-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -66,21 +74,33 @@ export function CollegeExplorer() {
           <input 
             type="text" 
             className="ce-search-input" 
-            placeholder="Search colleges by name (e.g. Hindu, Miranda)..." 
+            placeholder="Search colleges by name (e.g. Hindu)..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+      </div>
+
+      <div className="ce-controls-container" style={{ padding: '1rem 1.5rem' }}>
 
         <div className="ce-filters-section">
-          <div className="ce-filters-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          <div className={`ce-filters-header ${isFiltersOpen ? 'open' : ''}`} onClick={() => setIsFiltersOpen(!isFiltersOpen)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              <span style={{ fontWeight: 600 }}>Filter Colleges</span>
+            </div>
+            <svg 
+              width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ transform: isFiltersOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
-            <span>Filter Colleges</span>
           </div>
           
-          <div className="ce-filters-row">
+          {isFiltersOpen && (
+            <div className="ce-filters-row" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #eaeaea' }}>
             <div className="ce-filter-group">
               <span className="ce-filter-label">Campus</span>
               <div className="ce-filter-chips">
@@ -104,22 +124,17 @@ export function CollegeExplorer() {
             </div>
 
             <div className="ce-filter-group">
-              <span className="ce-filter-label">Facilities</span>
               <div className="ce-filter-chips">
                 <button className={`ce-chip ${hostelOnly ? 'active' : ''}`} onClick={() => setHostelOnly(!hostelOnly)}>
                   Hostel
                 </button>
               </div>
             </div>
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="ce-results-header">
-        <span className="ce-results-count">
-          Showing {Math.min(visibleCount, filteredColleges.length)} of {filteredColleges.length} {filteredColleges.length === 1 ? 'college' : 'colleges'}
-        </span>
-      </div>
 
       {filteredColleges.length > 0 ? (
         <>
@@ -149,7 +164,7 @@ export function CollegeExplorer() {
                   </p>
 
                   <div className="ce-card-facilities">
-                    {college.facilities && college.facilities.length > 0 ? (
+                    {college.facilities && college.facilities.length > 0 && (
                       college.facilities.slice(0, 3).map(f => (
                         <span key={f} className="ce-facility-tag">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -158,8 +173,6 @@ export function CollegeExplorer() {
                           {f}
                         </span>
                       ))
-                    ) : (
-                      <span className="ce-facility-none">Facilities data unavailable</span>
                     )}
                   </div>
 
@@ -183,10 +196,10 @@ export function CollegeExplorer() {
             ))}
           </div>
           
-          {visibleCount < filteredColleges.length && (
-            <div className="ce-loading-spinner">
-              <div className="spinner"></div>
-              <span>Loading more colleges...</span>
+          {isLoadingMore && (
+            <div className="ce-loading-spinner" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '2rem 0', gap: '1rem' }}>
+              <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+              <span style={{ color: '#64748b', fontWeight: 500 }}>Loading more colleges...</span>
             </div>
           )}
         </>

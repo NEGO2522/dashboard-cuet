@@ -13,7 +13,7 @@ export const colleges = [
       "lng": 77.2502
     },
     "intro": "Founded in 1991, Acharya Narendra Dev College is located in Govindpuri, South Delhi. Known for its strong Science and Commerce programs, it has produced many distinguished scientists and civil servants.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Acharya_Narendra_Dev_College%2C_Delhi.jpg/960px-Acharya_Narendra_Dev_College%2C_Delhi.jpg"
+    "imageUrl": "https://resize.indiatvnews.com/en/resize/oldbucket/1200_-/mainnational/IndiaTv8bcb7d_acharya_narendra_dev_colleg.jpg"
   },
   {
     "id": "aditi-mahavidyalaya-w",
@@ -101,7 +101,7 @@ export const colleges = [
       "lng": 77.0769
     },
     "intro": "Founded in 1999, BCAS is located in Dwarka, West Delhi. Named after the 12th-century mathematician, it specialises in Applied Sciences and Technology and is known for its modern labs and industry collaborations.",
-    "imageUrl": "https://static.wixstatic.com/media/e43dd0_c070c7c2f36e43978b9749ba4ee66887~mv2.jpg/v1/fill/w_568,h_324,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/e43dd0_c070c7c2f36e43978b9749ba4ee66887~mv2.jpg"
+    "imageUrl": "https://static.wixstatic.com/media/e43dd0_c070c7c2f36e43978b9749ba4ee66887~mv2.jpg/v1/fill/w_1920,h_1080,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/e43dd0_c070c7c2f36e43978b9749ba4ee66887~mv2.jpg"
   },
   {
     "id": "cluster-innovation-centre",
@@ -129,7 +129,7 @@ export const colleges = [
       "lng": 77.1756
     },
     "intro": "Founded in 1972, CVS is located in Sheikh Sarai, South Delhi. It was one of India's first colleges to offer vocational programs and continues to bridge the gap between education and employability.",
-    "imageUrl": "https://images.indianexpress.com/2021/07/College-of-Vocational-Studies.jpg?w=1200"
+    "imageUrl": "https://images.indianexpress.com/2021/07/College-of-Vocational-Studies.jpg?w=1920"
   },
   {
     "id": "daulat-ram-college-w",
@@ -201,7 +201,7 @@ export const colleges = [
       "lng": 77.2091
     },
     "intro": "The Department of Germanic and Romance Studies is a postgraduate department of the University of Delhi, North Campus. It offers specialised programs in French, German, Italian, and Spanish language and literature.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/960px-Front_Lawn_and_College..JPG"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/1080px-Front_Lawn_and_College..JPG"
   },
   {
     "id": "department-of-slavonic-and-finno-ugrian-studies",
@@ -335,7 +335,7 @@ export const colleges = [
       "lng": 77.2198
     },
     "intro": "Founded in 1924, Indraprastha College is one of DU's oldest women's colleges, located at North Campus. It offers strong programs in Humanities and Social Sciences and has a rich legacy of empowering women through education.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Jama_Masjid_2011.jpg/960px-Jama_Masjid_2011.jpg"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Jama_Masjid_2011.jpg/1080px-Jama_Masjid_2011.jpg"
   },
   {
     "id": "institute-of-home-economics-w",
@@ -543,7 +543,7 @@ export const colleges = [
       "lng": 77.2153
     },
     "intro": "Founded in 1948, Miranda House is consistently ranked as India's top women's college. Located at North Campus, it is celebrated for its academic excellence across Sciences and Humanities and its distinguished global alumni network.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/960px-Front_Lawn_and_College..JPG"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Front_Lawn_and_College..JPG/1080px-Front_Lawn_and_College..JPG"
   },
   {
     "id": "motilal-nehru-college",
@@ -641,7 +641,7 @@ export const colleges = [
       "lng": 77.2501
     },
     "intro": "Founded in 2010, Ramanujan College is located in Kalkaji, South Delhi. Named after the legendary mathematician Srinivasa Ramanujan, it is one of DU's newer colleges with a growing reputation in Science and Commerce.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Ramanujan_college.jpg/960px-Ramanujan_college.jpg"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Ramanujan_college.jpg/1080px-Ramanujan_college.jpg"
   },
   {
     "id": "ramjas-college",
@@ -657,7 +657,7 @@ export const colleges = [
       "lng": 77.2163
     },
     "intro": "Established in 1917, Ramjas College is one of Delhi University's oldest colleges, located at North Campus. It has a distinguished academic tradition and notable alumni spanning literature, politics, and public service.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Ramjas_building.jpg/960px-Ramjas_building.jpg"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Ramjas_building.jpg/1080px-Ramjas_building.jpg"
   },
   {
     "id": "satyawati-college",
@@ -919,7 +919,7 @@ export const colleges = [
       "lng": 77.2108
     },
     "intro": "Founded in 1881, St. Stephen's College is the oldest constituent college of Delhi University, located at North Campus. It is one of India's most prestigious institutions with notable alumni spanning academia, politics, and the arts.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Crest_of_St.Stephens_Coll%2C_UOD.svg/960px-Crest_of_St.Stephens_Coll%2C_UOD.svg.png"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Crest_of_St.Stephens_Coll%2C_UOD.svg/1080px-Crest_of_St.Stephens_Coll%2C_UOD.svg.png"
   },
   {
     "id": "swami-shardhanand-college",
@@ -1094,7 +1094,7 @@ export const colleges = [
       "lng": 77.2025
     },
     "intro": "A unique postgraduate medical institution devoted to research, teaching, and patient care in the field of chest diseases.",
-    "imageUrl": "https://images.indianexpress.com/2023/12/DU-CAMPUS.jpg?w=1600"
+    "imageUrl": "https://images.indianexpress.com/2023/12/DU-CAMPUS.jpg?w=1920"
   },
   {
     "id": "rajkumari-amrit-kaur-college-of-nursing",
@@ -1162,7 +1162,7 @@ export const colleges = [
       "lng": 77.1555
     },
     "intro": "Affiliated with the prestigious Army Hospital (Research & Referral), it trains nursing cadets for the Armed Forces Medical Services.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Army_Hospital_Research_and_Referral.svg/960px-Army_Hospital_Research_and_Referral.svg.png"
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Army_Hospital_Research_and_Referral.svg/1080px-Army_Hospital_Research_and_Referral.svg.png"
   },
   {
     "id": "holy-family-college-of-nursing",
