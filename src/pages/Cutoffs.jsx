@@ -27,23 +27,23 @@ function groupColor(group) {
 }
 
 function Ring({ value, color, max = 950 }) {
-  const r = 19;
+  const r = 24;
   const circ = 2 * Math.PI * r;
   const frac = Math.max(0, Math.min(1, (value || 0) / max));
   return (
-    <svg width="50" height="50" viewBox="0 0 50 50" className="cf-ring">
-      <circle cx="25" cy="25" r={r} fill="none" stroke="var(--border-color)" strokeWidth="4.5" />
+    <svg width="64" height="64" viewBox="0 0 64 64" className="cf-ring">
+      <circle cx="32" cy="32" r={r} fill="none" stroke="var(--border-color)" strokeWidth="5.5" />
       <circle
-        cx="25" cy="25" r={r} fill="none" stroke={color} strokeWidth="4.5"
+        cx="32" cy="32" r={r} fill="none" stroke={color} strokeWidth="5.5"
         strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - frac)}
-        transform="rotate(-90 25 25)"
+        transform="rotate(-90 32 32)"
       />
-      <text x="25" y="28.5" textAnchor="middle" className="cf-ring-num">{value ? Math.round(value) : '—'}</text>
+      <text x="32" y="37" textAnchor="middle" className="cf-ring-num">{value ? Math.round(value) : '—'}</text>
     </svg>
   );
 }
 
-function ListRow({ title, sub, accent, elig, count, countLabel, seats, top, onOpen }) {
+function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) {
   return (
     <button className="cf-li" onClick={onOpen} style={{ '--rail': accent }}>
       <span className="cf-li-rail" />
@@ -51,13 +51,6 @@ function ListRow({ title, sub, accent, elig, count, countLabel, seats, top, onOp
         <span className="cf-li-title">{title}</span>
         <span className="cf-li-tag" style={{ color: accent, background: accent + '14' }}>{sub}</span>
       </span>
-      {elig && (
-        <span className="cf-li-elig">
-          <i>Eligibility</i>
-          <b>{elig}</b>
-          <em>Tap for full text</em>
-        </span>
-      )}
       <span className="cf-li-right">
         <span className="cf-stat"><b>{count}</b><i>{countLabel}</i></span>
         <span className="cf-stat"><b>{seats === null ? '-' : nf(seats)}</b><i>seats</i></span>
@@ -359,7 +352,6 @@ export function Cutoffs() {
                 title={p.name}
                 sub={p.subjectGroup}
                 accent={groupColor(p.subjectGroup)}
-                elig={p.eligibility}
                 count={p.count}
                 countLabel="colleges"
                 seats={p.totalSeats}
