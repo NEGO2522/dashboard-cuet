@@ -1,315 +1,401 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { colleges } from '../data/colleges';
 import { programs } from '../data/programs';
-import { offerings } from '../data/offerings';
+import {
+  offerings,
+  CATEGORIES,
+  buildIndices,
+  getCutoff,
+  getSeats,
+  getEligibilityForProgram,
+} from '../data/cutoffsData';
 import { SourceBadge } from '../components/SourceBadge';
 import './Cutoffs.css';
 
-export function Cutoffs() {
-  const [viewMode, setViewMode] = useState('program'); // 'program' or 'college'
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const [category, setCategory] = useState('General');
-  const [round, setRound] = useState('round1');
-  
-  // Extract available years from mock data
-  const availableYears = useMemo(() => {
-    const years = new Set(offerings.map(o => o.year));
-    return Array.from(years).sort((a, b) => b - a);
-  }, []);
-  const [year, setYear] = useState(availableYears[0]?.toString() || '2023');
-  
-  const [sortBy, setSortBy] = useState('A-Z');
-  const [expandedRows, setExpandedRows] = useState(new Set());
+const SUBJECT_GROUPS = {
+  Commerce: { label: 'Commerce', color: '#2563eb' },
+  Humanities: { label: 'Humanities', color: '#7c3aed' },
+  Science: { label: 'Science', color: '#059669' },
+};
 
-  const toggleRow = (id) => {
-    const newExpanded = new Set(expandedRows);
-    if (newExpanded.has(id)) {
-      newExpanded.delete(id);
-    } else {
-      newExpanded.add(id);
-    }
-    setExpandedRows(newExpanded);
-  };
+function nf(n) {
+  return (n || 0).toLocaleString('en-IN');
+}
 
-  // Helper to extract cutoff value correctly
-  const getCutoffValue = (cutoffs) => {
-    if (!cutoffs || !cutoffs[category]) return null;
-    return cutoffs[category][round];
-  };
+function groupColor(group) {
+  return SUBJECT_GROUPS[group]?.color || '#64748b';
+}
 
-  // Helper to safely get seats
-  const getSeatsValue = (seatsObj) => {
-    if (!seatsObj || seatsObj[category] === undefined) return 0;
-    return seatsObj[category];
-  };
+function Ring({ value, color, max = 950 }) {
+  const r = 19;
+  const circ = 2 * Math.PI * r;
+  const frac = Math.max(0, Math.min(1, (value || 0) / max));
+  return (
+    <svg width="50" height="50" viewBox="0 0 50 50" className="cf-ring">
+      <circle cx="25" cy="25" r={r} fill="none" stroke="var(--border-color)" strokeWidth="4.5" />
+      <circle
+        cx="25" cy="25" r={r} fill="none" stroke={color} strokeWidth="4.5"
+        strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - frac)}
+        transform="rotate(-90 25 25)"
+      />
+      <text x="25" y="28.5" textAnchor="middle" className="cf-ring-num">{value ? Math.round(value) : '—'}</text>
+    </svg>
+  );
+}
 
-  // Generate data rows based on viewMode
-  const tableData = useMemo(() => {
-    let rows = [];
+function ListRow({ title, sub, accent, elig, count, countLabel, seats, top, onOpen }) {
+  return (
+    <button className="cf-li" onClick={onOpen} style={{ '--rail': accent }}>
+      <span className="cf-li-rail" />
+      <span className="cf-li-main">
+        <span className="cf-li-title">{title}</span>
+        <span className="cf-li-tag" style={{ color: accent, background: accent + '14' }}>{sub}</span>
+      </span>
+      {elig && (
+        <span className="cf-li-elig">
+          <i>Eligibility</i>
+          <b>{elig}</b>
+          <em>Tap for full text</em>
+        </span>
+      )}
+      <span className="cf-li-right">
+        <span className="cf-stat"><b>{count}</b><i>{countLabel}</i></span>
+        <span className="cf-stat"><b>{seats === null ? '-' : nf(seats)}</b><i>seats</i></span>
+        <span className="cf-ringwrap"><Ring value={top} color={accent} /><i>highest cutoff</i></span>
+      </span>
+      <span className="cf-li-go">›</span>
+    </button>
+  );
+}
 
-    // Filter offerings by year
-    const yearOfferings = offerings.filter(o => o.year.toString() === year.toString());
+function DetailModal({ open, onClose, mode, item, indices }) {
+  const [view, setView] = useState('cutoffs');
+  const [score, setScore] = useState('');
 
-    if (viewMode === 'program') {
-      rows = programs.map(prog => {
-        const progOfferings = yearOfferings.filter(o => o.programId === prog.id);
-        let totalSeats = 0;
-        let cutoffs = [];
-        
-        const subRows = progOfferings.map(o => {
-          const coll = colleges.find(c => c.id === o.collegeId);
-          const seats = getSeatsValue(o.seatsByCategory);
-          const cutoff = getCutoffValue(o.cutoffsByCategoryAndRound);
-          
-          totalSeats += seats;
-          if (cutoff !== null) cutoffs.push(cutoff);
-          
-          return {
-            id: coll ? coll.id : o.collegeId,
-            name: coll ? coll.name : o.collegeId,
-            seats,
-            cutoff
-          };
-        });
+  useEffect(() => {
+    function onKey(e) { if (e.key === 'Escape') onClose(); }
+    if (open) document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
 
-        return {
-          id: prog.id,
-          name: prog.name,
-          count: progOfferings.length,
-          totalSeats,
-          minCutoff: cutoffs.length > 0 ? Math.min(...cutoffs) : null,
-          maxCutoff: cutoffs.length > 0 ? Math.max(...cutoffs) : null,
-          subRows
-        };
-      });
-    } else {
-      rows = colleges.map(coll => {
-        const collOfferings = yearOfferings.filter(o => o.collegeId === coll.id);
-        let totalSeats = 0;
-        let cutoffs = [];
-        
-        const subRows = collOfferings.map(o => {
-          const prog = programs.find(p => p.id === o.programId);
-          const seats = getSeatsValue(o.seatsByCategory);
-          const cutoff = getCutoffValue(o.cutoffsByCategoryAndRound);
-          
-          totalSeats += seats;
-          if (cutoff !== null) cutoffs.push(cutoff);
-          
-          return {
-            id: prog ? prog.id : o.programId,
-            name: prog ? prog.name : o.programId,
-            seats,
-            cutoff
-          };
-        });
+  if (!open || !item) return null;
 
-        return {
-          id: coll.id,
-          name: coll.name,
-          count: collOfferings.length,
-          totalSeats,
-          minCutoff: cutoffs.length > 0 ? Math.min(...cutoffs) : null,
-          maxCutoff: cutoffs.length > 0 ? Math.max(...cutoffs) : null,
-          subRows
-        };
-      });
-    }
+  const numScore = score === '' ? null : Math.max(0, Math.min(1000, Number(score) || 0));
+  let title, accent, rows;
 
-    // Filter by search query
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      rows = rows.filter(r => r.name.toLowerCase().includes(q));
-    }
+  if (mode === 'program') {
+    const p = item;
+    accent = groupColor(p.subjectGroup);
+    title = 'Colleges offering ' + p.name;
+    const offs = indices.byProgram.get(p.id) || [];
+    rows = offs.map((o) => ({
+      key: o.collegeId,
+      name: o.college ? o.college.name : o.collegeName,
+      women: o.college?.type === 'Women' || o.gender === 'Female',
+      cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)),
+      seats: CATEGORIES.map((cat) => (cat === 'PwBD' ? null : getSeats(o, cat))),
+    }));
+  } else {
+    const c = item;
+    accent = '#2563eb';
+    title = 'Programs at ' + c.name;
+    const offs = indices.byCollege.get(c.id) || [];
+    rows = offs.map((o) => ({
+      key: o.programId,
+      name: o.program ? o.program.name : o.programName,
+      group: o.program?.subjectGroup,
+      cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)),
+      seats: CATEGORIES.map((cat) => (cat === 'PwBD' ? null : getSeats(o, cat))),
+    }));
+  }
 
-    // Sort
-    rows.sort((a, b) => {
-      if (sortBy === 'A-Z') {
-        return a.name.localeCompare(b.name);
-      } else if (sortBy === 'Seats') {
-        return b.totalSeats - a.totalSeats;
-      } else if (sortBy === 'Cutoff') {
-        const valA = a.maxCutoff || 0;
-        const valB = b.maxCutoff || 0;
-        return valB - valA;
-      }
-      return 0;
-    });
-
-    return rows;
-  }, [viewMode, searchQuery, category, round, year, sortBy]);
-
-  const renderCutoffRange = (min, max) => {
-    if (min === null && max === null) return 'N/A';
-    if (min === max) return min;
-    return `${min} – ${max}`;
-  };
+  rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
 
   return (
-    <div className="cutoffs-container">
-      <div className="cutoffs-header">
-        <h1 className="cutoffs-title">Cutoffs & Seats</h1>
-        <p className="cutoffs-critical-rule">
-          Official seat matrix and previous year cutoff scores — CSAS 2023 data
-        </p>
-      </div>
-
-      <div className="quick-stats-bar" style={{ display: 'flex', gap: '1.5rem', marginBottom: '2rem' }}>
-        <div className="stat-card" style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.5rem', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
-          <div style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>{programs.length}</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Total Programs</div>
+    <div className="cf-overlay" onClick={onClose}>
+      <div className="cf-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ '--maccent': accent }}>
+        <div className="cf-modal-head">
+          <div className="cf-modal-title">{title}</div>
+          <button className="cf-x" onClick={onClose} aria-label="Close">×</button>
         </div>
-        <div className="stat-card" style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.5rem', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
-          <div style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>{colleges.length}</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Total Colleges</div>
+        {mode === 'program' && item.eligibility && (
+          <div className="cf-modal-elig">
+            <i>Eligibility</i>
+            <p>{item.eligibility}</p>
+          </div>
+        )}
+        <div className="cf-modal-tools">
+          <div className="cf-tabs">
+            <span className="cf-tabs-label">View</span>
+            <button className={'cf-tab ' + (view === 'seats' ? 'on' : '')} onClick={() => setView('seats')}>Seats</button>
+            <button className={'cf-tab ' + (view === 'cutoffs' ? 'on' : '')} onClick={() => setView('cutoffs')}>Cutoffs</button>
+          </div>
+          {view === 'cutoffs' && (
+            <input
+              className="cf-scorein"
+              type="number"
+              inputMode="numeric"
+              placeholder="Your CUET score → where you qualify lights up"
+              value={score}
+              onChange={(e) => setScore(e.target.value)}
+              max={1000}
+              min={0}
+            />
+          )}
         </div>
-        <div className="stat-card" style={{ background: 'white', borderRadius: '12px', padding: '1rem 1.5rem', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
-          <div style={{ fontSize: '1.75rem', fontWeight: 'bold' }}>2023</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Data Year</div>
-        </div>
-      </div>
-
-      <div className="cutoffs-top-controls">
-        <div className="view-toggle">
-          <button 
-            className={viewMode === 'program' ? 'active' : ''} 
-            onClick={() => { setViewMode('program'); setExpandedRows(new Set()); }}
-          >
-            By program
-          </button>
-          <button 
-            className={viewMode === 'college' ? 'active' : ''} 
-            onClick={() => { setViewMode('college'); setExpandedRows(new Set()); }}
-          >
-            By college
-          </button>
-        </div>
-        <input 
-          type="text" 
-          className="search-box"
-          placeholder={`Search ${viewMode === 'program' ? 'programs' : 'colleges'}...`}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-
-      <div className="filter-row">
-        <div className="filter-group">
-          <label>Category</label>
-          <select className="filter-select" value={category} onChange={e => setCategory(e.target.value)}>
-            <option value="General">General</option>
-            <option value="OBC-NCL">OBC-NCL</option>
-            <option value="EWS">EWS</option>
-            <option value="SC">SC</option>
-            <option value="ST">ST</option>
-            <option value="PwBD">PwBD</option>
-          </select>
-        </div>
-        
-        <div className="filter-group">
-          <label>Round</label>
-          <select className="filter-select" value={round} onChange={e => setRound(e.target.value)}>
-            <option value="round1">Round 1</option>
-            <option value="round2">Round 2</option>
-            <option value="round3">Final</option>
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label>Year</label>
-          <select className="filter-select" value={year} onChange={e => setYear(e.target.value)}>
-            {availableYears.map(y => (
-              <option key={y} value={y}>{y}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label>Sort By</label>
-          <select className="filter-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-            <option value="A-Z">A–Z</option>
-            <option value="Seats">Seats</option>
-            <option value="Cutoff">Cutoff</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="table-badge-row">
-        <h3>{viewMode === 'program' ? 'Programs' : 'Colleges'}</h3>
-        <SourceBadge date="Aug 2023" />
-      </div>
-
-      <div className="cutoffs-table-container">
-        <table className="cutoffs-table">
-          <thead>
-            <tr>
-              <th>{viewMode === 'program' ? 'Program Name' : 'College Name'}</th>
-              <th>{viewMode === 'program' ? 'Colleges Offering' : 'Courses Offered'}</th>
-              <th>Total Seats</th>
-              <th>Cutoff Range</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.length === 0 && (
+        <div className="cf-tablewrap">
+          <table className="cf-table">
+            <thead>
               <tr>
-                <td colSpan="4" style={{ textAlign: 'center' }}>No results found.</td>
+                <th className="cf-th-name">{mode === 'program' ? 'College' : 'Program'}</th>
+                {CATEGORIES.map((c) => <th key={c}>{c}</th>)}
               </tr>
-            )}
-            {tableData.map(row => {
-              const isExpanded = expandedRows.has(row.id);
-              
-              return (
-                <React.Fragment key={row.id}>
-                  <tr onClick={() => toggleRow(row.id)}>
-                    <td style={{ fontWeight: 500 }}>
-                      {isExpanded ? '▾' : '▸'} {row.name}
+            </thead>
+            <tbody>
+              {rows.length === 0 && (
+                <tr><td colSpan={CATEGORIES.length + 1} style={{ textAlign: 'center', padding: '2rem' }}>No data available.</td></tr>
+              )}
+              {rows.map((r) => {
+                const vals = view === 'cutoffs' ? r.cutoffs : r.seats;
+                return (
+                  <tr key={r.key}>
+                    <td className="cf-td-name">
+                      <span>{r.name}</span>
+                      {r.women && <span className="cf-badge-w">Women</span>}
+                      {r.group && (
+                        <span className="cf-badge-s" style={{ color: groupColor(r.group), background: groupColor(r.group) + '14' }}>
+                          {r.group}
+                        </span>
+                      )}
                     </td>
-                    <td>{row.count}</td>
-                    <td>{row.totalSeats}</td>
-                    <td>{renderCutoffRange(row.minCutoff, row.maxCutoff)}</td>
+                    {vals.map((v, i) => {
+                      const isCut = view === 'cutoffs';
+                      const q = isCut && numScore !== null && v !== null && numScore >= v;
+                      return (
+                        <td key={i} className={'cf-num-cell ' + (q ? 'cf-q' : '')}>
+                          {v === null || v === undefined ? <span className="cf-dash">-</span> : (isCut ? v.toFixed(1) : v)}
+                          {q && <i className="cf-tick">✓</i>}
+                        </td>
+                      );
+                    })}
                   </tr>
-                  
-                  {isExpanded && (
-                    <tr className="expanded-row-content">
-                      <td colSpan="4" style={{ padding: '1rem 2rem' }}>
-                        {row.subRows.length > 0 ? (
-                          <table className="sub-table">
-                            <thead>
-                              <tr>
-                                <th>{viewMode === 'program' ? 'College' : 'Course'}</th>
-                                <th>Seats</th>
-                                <th>Cutoff</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {row.subRows.map((sub, idx) => (
-                                <tr key={sub.id + idx}>
-                                  <td>{sub.name}</td>
-                                  <td>{sub.seats}</td>
-                                  <td>{sub.cutoff !== null ? sub.cutoff : 'N/A'}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        ) : (
-                          <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b' }}>
-                            No offerings match this filter.
-                          </p>
-                        )}
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </tbody>
-        </table>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="cf-modal-foot">
+          Cutoff = the CUET merit score (out of 1000) at which the last seat was allotted, by category. "-" means that figure wasn't reported in the official CSAS data. Source: CSAS 2025 official seat matrix.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Cutoffs() {
+  const [mode, setMode] = useState('program');
+  const [query, setQuery] = useState('');
+  const [group, setGroup] = useState('all');
+  const [campus, setCampus] = useState('all');
+  const [sort, setSort] = useState('seats');
+  const [selected, setSelected] = useState(null);
+
+  const indices = useMemo(() => buildIndices(offerings), []);
+
+  const programAgg = useMemo(() => {
+    const map = new Map();
+    programs.forEach((p) => {
+      const offs = indices.byProgram.get(p.id) || [];
+      let totalSeats = null;
+      let topCutoff = 0;
+      offs.forEach((o) => {
+        const s = getSeats(o, 'total');
+        if (s !== null) totalSeats = (totalSeats || 0) + s;
+        const c = getCutoff(o, 'UR');
+        if (c && c > topCutoff) topCutoff = c;
+      });
+      map.set(p.id, { count: offs.length, totalSeats, topCutoff });
+    });
+    return map;
+  }, [indices]);
+
+  const collegeAgg = useMemo(() => {
+    const map = new Map();
+    colleges.forEach((c) => {
+      const offs = indices.byCollege.get(c.id) || [];
+      let totalSeats = null;
+      let topCutoff = 0;
+      offs.forEach((o) => {
+        const s = getSeats(o, 'total');
+        if (s !== null) totalSeats = (totalSeats || 0) + s;
+        const cut = getCutoff(o, 'UR');
+        if (cut && cut > topCutoff) topCutoff = cut;
+      });
+      map.set(c.id, { count: offs.length, totalSeats, topCutoff });
+    });
+    return map;
+  }, [indices]);
+
+  const totalSeatsAll = useMemo(() => {
+    let sum = 0;
+    collegeAgg.forEach((v) => { sum += v.totalSeats || 0; });
+    return sum;
+  }, [collegeAgg]);
+
+  const programList = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = programs
+      .filter((p) => (group === 'all' || p.subjectGroup === group) && (!q || p.name.toLowerCase().includes(q)))
+      .map((p) => ({
+        ...p,
+        ...(programAgg.get(p.id) || { count: 0, totalSeats: null, topCutoff: 0 }),
+        eligibility: p.eligibility || getEligibilityForProgram(p.name),
+      }))
+      .filter((p) => p.count > 0);
+    list.sort((a, b) => {
+      if (sort === 'az') return a.name.localeCompare(b.name);
+      if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
+      if (sort === 'colleges') return b.count - a.count;
+      return (b.totalSeats || 0) - (a.totalSeats || 0);
+    });
+    return list;
+  }, [query, group, sort, programAgg]);
+
+  const collegeList = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = colleges
+      .filter((c) => (campus === 'all' || (campus === 'women' ? c.type === 'Women' : c.campus === campus)) && (!q || c.name.toLowerCase().includes(q)))
+      .map((c) => ({ ...c, ...(collegeAgg.get(c.id) || { count: 0, totalSeats: null, topCutoff: 0 }) }))
+      .filter((c) => c.count > 0);
+    list.sort((a, b) => {
+      if (sort === 'az') return a.name.localeCompare(b.name);
+      if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
+      if (sort === 'colleges') return b.count - a.count;
+      return (b.totalSeats || 0) - (a.totalSeats || 0);
+    });
+    return list;
+  }, [query, campus, sort, collegeAgg]);
+
+  const campusOptions = useMemo(() => {
+    const set = new Set(colleges.map((c) => c.campus));
+    return Array.from(set).filter((c) => c !== 'Various').sort();
+  }, []);
+
+  return (
+    <div className="cf-wrap">
+      <section className="cf-herowrap">
+        <span className="cf-herobadge">CSAS 2025 · Official seat matrix</span>
+        <h1>DU Cutoff &amp; Seat Explorer</h1>
+        <p>Browse every Delhi University program and college. Tap a row for category-wise seats and cutoffs.</p>
+      </section>
+
+      <div className="cf-statstrip">
+        <div className="cf-kpi"><b>{programList.length}</b><span>Programs</span></div>
+        <div className="cf-divider" />
+        <div className="cf-kpi"><b>{collegeList.length}</b><span>Colleges</span></div>
+        <div className="cf-divider" />
+        <div className="cf-kpi"><b>{nf(totalSeatsAll)}</b><span>Seats</span></div>
+        <div className="cf-divider" />
+        <div className="cf-kpi"><b>{CATEGORIES.length}</b><span>Categories</span></div>
       </div>
 
-      <div className="bottom-note">
-        Cutoff = the lowest CUET merit score (out of 1000) at which a seat was allotted in the selected round and category.
+      <div className="cf-seg" data-on={mode}>
+        <button className={mode === 'program' ? 'on' : ''} onClick={() => { setMode('program'); setQuery(''); }}>Browse by Program</button>
+        <button className={mode === 'college' ? 'on' : ''} onClick={() => { setMode('college'); setQuery(''); }}>Browse by College</button>
+        <span className="cf-seg-knob" />
       </div>
+
+      <div className="cf-controls">
+        <input
+          className="cf-search"
+          placeholder={mode === 'program' ? 'Search programs…' : 'Search colleges…'}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <select className="cf-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="seats">Most seats</option>
+          <option value="cutoff">Highest cutoff</option>
+          <option value="colleges">{mode === 'program' ? 'Most colleges' : 'Most programs'}</option>
+          <option value="az">A–Z</option>
+        </select>
+      </div>
+
+      <div className="cf-filters">
+        {mode === 'program' ? (
+          <>
+            <button className={'cf-chip ' + (group === 'all' ? 'on' : '')} onClick={() => setGroup('all')}>All</button>
+            {Object.entries(SUBJECT_GROUPS).map(([k, v]) => (
+              <button
+                key={k}
+                className={'cf-chip ' + (group === k ? 'on' : '')}
+                onClick={() => setGroup(k)}
+                style={group === k ? { borderColor: v.color, color: '#fff', background: v.color } : {}}
+              >
+                {v.label}
+              </button>
+            ))}
+          </>
+        ) : (
+          <>
+            <button className={'cf-chip ' + (campus === 'all' ? 'on' : '')} onClick={() => setCampus('all')}>All</button>
+            {campusOptions.map((c) => (
+              <button key={c} className={'cf-chip ' + (campus === c ? 'on' : '')} onClick={() => setCampus(c)}>{c} Campus</button>
+            ))}
+            <button className={'cf-chip ' + (campus === 'women' ? 'on' : '')} onClick={() => setCampus('women')}>Women's</button>
+          </>
+        )}
+      </div>
+
+      <div className="cf-table-badge-row">
+        <div className="cf-count">Showing {mode === 'program' ? programList.length + ' programs' : collegeList.length + ' colleges'}</div>
+        <SourceBadge date="CSAS 2025" />
+      </div>
+
+      <main className="cf-list">
+        {mode === 'program'
+          ? programList.map((p) => (
+              <ListRow
+                key={p.id}
+                title={p.name}
+                sub={p.subjectGroup}
+                accent={groupColor(p.subjectGroup)}
+                elig={p.eligibility}
+                count={p.count}
+                countLabel="colleges"
+                seats={p.totalSeats}
+                top={p.topCutoff}
+                onOpen={() => setSelected({ mode: 'program', item: p })}
+              />
+            ))
+          : collegeList.map((c) => (
+              <ListRow
+                key={c.id}
+                title={c.name}
+                sub={c.campus + ' · ' + c.type}
+                accent="#2563eb"
+                count={c.count}
+                countLabel="programs"
+                seats={c.totalSeats}
+                top={c.topCutoff}
+                onOpen={() => setSelected({ mode: 'college', item: c })}
+              />
+            ))}
+        {((mode === 'program' && !programList.length) || (mode === 'college' && !collegeList.length)) && (
+          <div className="cf-empty">Nothing matches that search.</div>
+        )}
+      </main>
+
+      <footer className="cf-foot">
+        <p>Official CSAS 2025 seat matrix and cutoff scores. "Highest cutoff" shown on each row is the UR (Unreserved) category cutoff at the toughest college or program in that group — tap a row to see every category and college. A "-" means that figure wasn't reported in the official data.</p>
+      </footer>
+
+      <DetailModal
+        open={!!selected}
+        onClose={() => setSelected(null)}
+        mode={selected?.mode}
+        item={selected?.item}
+        indices={indices}
+      />
     </div>
   );
 }
