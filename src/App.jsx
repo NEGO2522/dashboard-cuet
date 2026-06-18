@@ -8,7 +8,7 @@ import {
   Cutoffs,
   Eligibility,
   PreferenceSheet, 
-  Map,
+  SubjectCombination,
   Rankings,
   Documents,
   AdminContent
@@ -27,7 +27,7 @@ function App() {
           <Route path="/eligibility" element={<Eligibility />} />
           <Route path="/cutoffs" element={<Cutoffs />} />
           <Route path="/preference-sheet" element={<PreferenceSheet />} />
-          <Route path="/map" element={<Map />} />
+          <Route path="/subject-combination" element={<SubjectCombination />} />
           <Route path="/rankings" element={<Rankings />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/admincontent" element={<AdminContent />} />

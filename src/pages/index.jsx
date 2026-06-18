@@ -4,7 +4,7 @@ export { CollegeDetail } from './CollegeDetail';
 export { Cutoffs } from './Cutoffs';
 export { Eligibility } from './Eligibility';
 export { PreferenceSheet } from './PreferenceSheet';
-export { Map } from './Map';
+export { SubjectCombination } from './SubjectCombination';
 export { Rankings } from './Rankings';
 export { Documents } from './Documents';
 export { AdminContent } from './AdminContent';
