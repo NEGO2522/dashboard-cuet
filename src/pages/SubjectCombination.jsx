@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 
-import { offerings, CATEGORIES, getCutoff, getSeats } from "../data/cutoffsData";
+import { offerings, CATEGORIES, getCutoff, getSeats, getEligibilityForProgram } from "../data/cutoffsData";
 import { colleges as REAL_COLLEGES } from "../data/colleges";
 import { SourceBadge } from "../components/SourceBadge";
 import "./Cutoffs.css";
@@ -135,11 +135,13 @@ function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) 
 function Modal({ open, onClose, payload }) {
   const [view, setView] = useState("cutoffs");
   const [score, setScore] = useState("");
+  const [eligExpanded, setEligExpanded] = useState(false);
   useEffect(() => { function k(e) { if (e.key === "Escape") onClose(); } if (open) document.addEventListener("keydown", k); return () => document.removeEventListener("keydown", k); }, [open, onClose]);
   if (!open || !payload) return null;
   const { mode, item, eligibleIds } = payload;
   const numScore = score === "" ? null : Math.max(0, Math.min(1000, Number(score) || 0));
   let title, accent, rows;
+  const eligibility = mode === "program" ? (item.eligibility || getEligibilityForProgram(item.name)) : null;
   if (mode === "program") {
     const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name;
     const myOffs = offerings.filter(o => o.programId === p.id);
@@ -181,6 +183,15 @@ function Modal({ open, onClose, payload }) {
     <div className="cf-overlay" onClick={onClose}>
       <div className="cf-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ "--maccent": accent }}>
         <div className="cf-modal-head"><div className="cf-modal-title">{title}</div><button className="cf-x" onClick={onClose} aria-label="Close">×</button></div>
+        {eligibility && (
+          <div className="cf-elig-strip">
+            <span className="cf-elig-label">📋 Eligibility</span>
+            <span className={`cf-elig-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</span>
+            <button className="cf-elig-toggle" onClick={() => setEligExpanded(e => !e)}>
+              {eligExpanded ? 'Less ▲' : 'More ▼'}
+            </button>
+          </div>
+        )}
 
         <div className="cf-modal-tools">
           <div className="cf-tabs"><span className="cf-tabs-label">View</span>
