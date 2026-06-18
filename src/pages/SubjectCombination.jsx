@@ -1,5 +1,8 @@
 import React, { useMemo, useState, useEffect } from "react";
 
+import { offerings, CATEGORIES, getCutoff, getSeats } from "../data/cutoffsData";
+import { colleges as REAL_COLLEGES } from "../data/colleges";
+
 /* =========================================================================
    CUET Pro — Subject Combination → Course/College Finder · "Dashboard Theme"
    Pick CUET subjects → Eligible Programs / Other Programs / Eligible Colleges.
@@ -11,37 +14,24 @@ const STREAMS = {
   lang: { label: "Languages", color: "#e11d48" },
   sci: { label: "Science, Math & Tech", color: "#059669" },
 };
+
 const PROGRAMS = [
-  { id: "bcomh", name: "B.Com (Hons)", stream: "com", comp: 0.965, base: 110 },
-  { id: "eco", name: "B.A. (Hons) Economics", stream: "com", comp: 0.958, base: 55 },
-  { id: "bms", name: "Bachelor of Management Studies (BMS)", stream: "com", comp: 0.945, base: 50 },
-  { id: "bbafia", name: "BBA (Financial Investment Analysis)", stream: "com", comp: 0.92, base: 46 },
-  { id: "bcomp", name: "B.Com (Programme)", stream: "com", comp: 0.9, base: 150 },
-  { id: "psy", name: "B.A. (Hons) Psychology", stream: "arts", comp: 0.92, base: 30 },
-  { id: "pol", name: "B.A. (Hons) Political Science", stream: "arts", comp: 0.915, base: 50 },
-  { id: "hist", name: "B.A. (Hons) History", stream: "arts", comp: 0.9, base: 46 },
-  { id: "socio", name: "B.A. (Hons) Sociology", stream: "arts", comp: 0.885, base: 40 },
-  { id: "bap", name: "B.A. (Programme)", stream: "arts", comp: 0.82, base: 120 },
-  { id: "eng", name: "B.A. (Hons) English", stream: "lang", comp: 0.925, base: 46 },
-  { id: "hindi", name: "B.A. (Hons) Hindi", stream: "lang", comp: 0.76, base: 80 },
-  { id: "csc", name: "B.Sc (Hons) Computer Science", stream: "sci", comp: 0.925, base: 50 },
-  { id: "math", name: "B.Sc (Hons) Mathematics", stream: "sci", comp: 0.88, base: 42 },
-  { id: "stat", name: "B.Sc (Hons) Statistics", stream: "sci", comp: 0.86, base: 30 },
+  { id: "b-com-hons", name: "B.Com. (Hons.)", stream: "com" },
+  { id: "b-a-hons-economics", name: "B.A. (Hons.) Economics", stream: "com" },
+  { id: "bachelor-of-management-studies-bms", name: "Bachelor of Management Studies (BMS)", stream: "com" },
+  { id: "bachelor-of-business-administration-financial-investment-analysis-bba-fia", name: "Bachelor of Business Administration (Financial Investment Analysis) (BBA(FIA))", stream: "com" },
+  { id: "b-com", name: "B.Com.", stream: "com" },
+  { id: "b-a-hons-psychology", name: "B.A. (Hons.) Psychology", stream: "arts" },
+  { id: "b-a-hons-political-science", name: "B.A. (Hons.) Political Science", stream: "arts" },
+  { id: "b-a-hons-history", name: "B.A. (Hons.) History", stream: "arts" },
+  { id: "b-a-hons-sociology", name: "B.A. (Hons.) Sociology", stream: "arts" },
+  { id: "b-a-hons-english", name: "B.A. (Hons.) English", stream: "lang" },
+  { id: "b-a-hons-hindi", name: "B.A. (Hons.) Hindi", stream: "lang" },
+  { id: "b-sc-hons-computer-science", name: "B.Sc. (Hons.) Computer Science", stream: "sci" },
+  { id: "b-sc-hons-mathematics", name: "B.Sc. (Hons.) Mathematics", stream: "sci" },
+  { id: "b-sc-hons-statistics", name: "B.Sc. (Hons.) Statistics", stream: "sci" },
 ];
-const COLLEGES = [
-  { id: "srcc", name: "Shri Ram College of Commerce", short: "SRCC", rep: 1.0, size: 1.25, campus: "North", type: "Co-ed", offers: ["bcomh", "eco", "bbafia"] },
-  { id: "hindu", name: "Hindu College", rep: 0.97, size: 1.1, campus: "North", type: "Co-ed", offers: ["bcomh", "eco", "eng", "pol", "hist", "socio", "math", "stat", "csc", "psy", "bap", "hindi"] },
-  { id: "hansraj", name: "Hansraj College", rep: 0.95, size: 1.1, campus: "North", type: "Co-ed", offers: ["bcomh", "bcomp", "eco", "eng", "hist", "math", "stat", "csc", "bap", "hindi"] },
-  { id: "lsr", name: "Lady Shri Ram College for Women", short: "LSR", rep: 0.96, size: 1.0, campus: "South", type: "Women", offers: ["bcomh", "eco", "bms", "eng", "pol", "hist", "socio", "psy", "math", "stat", "bap"] },
-  { id: "miranda", name: "Miranda House", rep: 0.95, size: 1.0, campus: "North", type: "Women", offers: ["bcomh", "eco", "eng", "pol", "hist", "socio", "math", "stat", "csc", "psy", "bap", "hindi"] },
-  { id: "kmc", name: "Kirori Mal College", short: "KMC", rep: 0.9, size: 1.12, campus: "North", type: "Co-ed", offers: ["bcomh", "bcomp", "eco", "eng", "pol", "hist", "socio", "math", "stat", "csc", "bap", "hindi"] },
-  { id: "ramjas", name: "Ramjas College", rep: 0.89, size: 1.05, campus: "North", type: "Co-ed", offers: ["bcomh", "bcomp", "eco", "eng", "pol", "hist", "math", "stat", "csc", "bap", "hindi"] },
-  { id: "venky", name: "Sri Venkateswara College", short: "Venky", rep: 0.9, size: 1.05, campus: "South", type: "Co-ed", offers: ["bcomh", "bcomp", "eco", "bms", "eng", "pol", "math", "stat", "csc", "psy", "bap"] },
-  { id: "gargi", name: "Gargi College", rep: 0.86, size: 1.0, campus: "South", type: "Women", offers: ["bcomh", "bcomp", "eco", "bms", "eng", "pol", "hist", "socio", "psy", "bap", "hindi"] },
-  { id: "drc", name: "Daulat Ram College", short: "DRC", rep: 0.84, size: 0.95, campus: "North", type: "Women", offers: ["bcomh", "bcomp", "eco", "eng", "hist", "psy", "bap", "hindi"] },
-  { id: "knc", name: "Kamala Nehru College", short: "KNC", rep: 0.85, size: 0.95, campus: "South", type: "Women", offers: ["bcomh", "bcomp", "eco", "bms", "bbafia", "eng", "pol", "socio", "psy", "math", "bap", "hindi"] },
-  { id: "dsc", name: "Dyal Singh College", rep: 0.8, size: 1.0, campus: "South", type: "Co-ed", offers: ["bcomh", "bcomp", "eco", "eng", "pol", "hist", "math", "bap", "hindi"] },
-];
+const COLLEGES = [];
 const RES_CATS = [
   { id: "UR", label: "UR", delta: 0, share: 0.4 }, { id: "OBC", label: "OBC", delta: 150, share: 0.27 },
   { id: "SC", label: "SC", delta: 205, share: 0.15 }, { id: "ST", label: "ST", delta: 235, share: 0.075 },
@@ -54,50 +44,42 @@ const MATHS = "Mathematics / Applied Mathematics";
 const ACCT = "Accountancy / Book Keeping";
 
 const RULES = {
-  bcomh: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 1 }, { dom: [ACCT] }, { domAny: 2 }]],
-  eco: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }]],
-  bms: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 1 }, { gt: true }]],
-  bbafia: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 1 }, { gt: true }]],
-  bcomp: [[{ lang: 1 }, { domAny: 3 }], [{ lang: 1 }, { domAny: 1 }, { gt: true }]],
-  psy: [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  pol: [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  hist: [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  socio: [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  bap: [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }], [{ lang: 1 }, { domAny: 1 }, { gt: true }]],
-  eng: [[{ slang: "English" }, { domAny: 3 }], [{ slang: "English" }, { lang: 1 }, { domAny: 2 }]],
-  hindi: [[{ slang: "Hindi" }, { domAny: 3 }], [{ slang: "Hindi" }, { lang: 1 }, { domAny: 2 }]],
-  csc: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
-  math: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
-  stat: [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
-};
-const ELIG = {
-  bcomh: [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["1 Language", "Accountancy / Book-Keeping", "+ 2 Domain"] }],
-  eco: [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }],
-  bms: [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "1 Domain", "General Test"] }],
-  bbafia: [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "1 Domain", "General Test"] }],
-  bcomp: [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["1 Language", "1 Domain", "General Test"] }],
-  psy: [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  pol: [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  hist: [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  socio: [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  bap: [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }, { name: "Combination III", reqs: ["1 Language", "1 Domain", "General Test"] }],
-  eng: [{ name: "Combination I", reqs: ["English (Language)", "3 Domain"] }, { name: "Combination II", reqs: ["English (Language)", "1 Language", "2 Domain"] }],
-  hindi: [{ name: "Combination I", reqs: ["Hindi (Language)", "3 Domain"] }, { name: "Combination II", reqs: ["Hindi (Language)", "1 Language", "2 Domain"] }],
-  csc: [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
-  math: [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
-  stat: [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
+  "b-com-hons": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 1 }, { dom: [ACCT] }, { domAny: 2 }]],
+  "b-a-hons-economics": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }]],
+  "bachelor-of-management-studies-bms": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 1 }, { gt: true }]],
+  "bachelor-of-business-administration-financial-investment-analysis-bba-fia": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 1 }, { gt: true }]],
+  "b-com": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 1 }, { domAny: 1 }, { gt: true }]],
+  "b-a-hons-psychology": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
+  "b-a-hons-political-science": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
+  "b-a-hons-history": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
+  "b-a-hons-sociology": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
+  "b-a-hons-english": [[{ slang: "English" }, { domAny: 3 }], [{ slang: "English" }, { lang: 1 }, { domAny: 2 }]],
+  "b-a-hons-hindi": [[{ slang: "Hindi" }, { domAny: 3 }], [{ slang: "Hindi" }, { lang: 1 }, { domAny: 2 }]],
+  "b-sc-hons-computer-science": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
+  "b-sc-hons-mathematics": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
+  "b-sc-hons-statistics": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
 };
 
-function seed(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; }
+const ELIG = {
+  "b-com-hons": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["1 Language", "Accountancy / Book-Keeping", "+ 2 Domain"] }],
+  "b-a-hons-economics": [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }],
+  "bachelor-of-management-studies-bms": [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "1 Domain", "General Test"] }],
+  "bachelor-of-business-administration-financial-investment-analysis-bba-fia": [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "1 Domain", "General Test"] }],
+  "b-com": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["1 Language", "1 Domain", "General Test"] }],
+  "b-a-hons-psychology": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
+  "b-a-hons-political-science": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
+  "b-a-hons-history": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
+  "b-a-hons-sociology": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
+  "b-a-hons-english": [{ name: "Combination I", reqs: ["English (Language)", "3 Domain"] }, { name: "Combination II", reqs: ["English (Language)", "1 Language", "2 Domain"] }],
+  "b-a-hons-hindi": [{ name: "Combination I", reqs: ["Hindi (Language)", "3 Domain"] }, { name: "Combination II", reqs: ["Hindi (Language)", "1 Language", "2 Domain"] }],
+  "b-sc-hons-computer-science": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
+  "b-sc-hons-mathematics": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
+  "b-sc-hons-statistics": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
+};
+
 function nf(n) { return n.toLocaleString("en-IN"); }
-function urCutoff(c, p) { const j = seed(c.id + p.id) * 14; return Math.round(Math.min(966, p.comp * 1000 - (1 - c.rep) * 62 - j) * 10) / 10; }
-function progTotalSeats(c, p) { return Math.max(8, Math.round(p.base * c.size)); }
-function pwbdExists(c, p) { return seed(c.id + p.id + "pwbd") > 0.22; }
-function catCutoff(c, p, cat) { if (cat.id === "PwBD" && !pwbdExists(c, p)) return null; const jit = (seed(c.id + p.id + cat.id + "j") - 0.5) * 70; return Math.max(290, Math.round((urCutoff(c, p) - cat.delta + jit) * 10) / 10); }
-function catSeats(c, p, cat) { if (cat.id === "PwBD" && !pwbdExists(c, p)) return null; return Math.max(1, Math.round(progTotalSeats(c, p) * cat.share)); }
-function heatBg(v) { const t = Math.max(0, Math.min(1, (v - 650) / 300)); const hue = 145 * (1 - t); return `hsla(${hue},72%,45%,0.20)`; }
-function progCols(p) { return COLLEGES.filter((c) => c.offers.includes(p.id)); }
-function progStats(p) { const cols = progCols(p); return { count: cols.length, totalSeats: cols.reduce((s, c) => s + progTotalSeats(c, p), 0), topCutoff: cols.reduce((m, c) => Math.max(m, urCutoff(c, p)), 0) }; }
+function heatBg(v) { if (!v) return "transparent"; const t = Math.max(0, Math.min(1, (v - 650) / 300)); const hue = 145 * (1 - t); return `hsla(${hue},72%,45%,0.20)`; }
+function progStats(p) { const myOffs = offerings.filter(o => o.programId === p.id); return { count: myOffs.length, totalSeats: myOffs.reduce((s, o) => s + (o.seats.total || 0), 0), topCutoff: myOffs.reduce((m, o) => Math.max(m, o.cutoffs.UR || 0), 0) }; }
 
 function comboRank(s) { return (s.gt || s.slang || s.dom) ? 0 : 1; }
 function matchCombo(combo, L0, D0, gt) {
@@ -166,10 +148,16 @@ function Modal({ open, onClose, payload }) {
   let title, accent, rows, combos = null;
   if (mode === "program") {
     const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name; combos = ELIG[p.id];
-    rows = progCols(p).map((c) => ({ key: c.id, name: c.short || c.name, women: c.type === "Women", cutoffs: RES_CATS.map((cat) => catCutoff(c, p, cat)), seats: RES_CATS.map((cat) => catSeats(c, p, cat)) }));
+    const myOffs = offerings.filter(o => o.programId === p.id);
+    rows = myOffs.map((o) => ({ key: o.collegeId, name: o.college?.short || o.collegeName, women: o.gender === "Women", cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)), seats: CATEGORIES.map((cat) => getSeats(o, cat)) }));
   } else {
     const c = item; accent = "#2563eb"; title = "Your courses at " + c.name;
-    rows = c.offers.filter((id) => !eligibleIds || eligibleIds.has(id)).map((id) => PROGRAMS.find((p) => p.id === id)).filter(Boolean).map((p) => ({ key: p.id, name: p.name, stream: p.stream, cutoffs: RES_CATS.map((cat) => catCutoff(c, p, cat)), seats: RES_CATS.map((cat) => catSeats(c, p, cat)) }));
+    const myOffs = offerings.filter(o => o.collegeId === c.id);
+    rows = myOffs.filter((o) => !eligibleIds || eligibleIds.has(o.programId)).map(o => {
+      const p = PROGRAMS.find(px => px.id === o.programId);
+      if (!p) return null;
+      return { key: p.id, name: p.name, stream: p.stream, cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)), seats: CATEGORIES.map((cat) => getSeats(o, cat)) };
+    }).filter(Boolean);
   }
   rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
   return (
@@ -191,7 +179,7 @@ function Modal({ open, onClose, payload }) {
         </div>
         <div className="cp-tablewrap">
           <table className="cp-table">
-            <thead><tr><th className="cp-th-name">{mode === "program" ? "College" : "Program"}</th>{RES_CATS.map((c) => <th key={c.id}>{c.label}</th>)}</tr></thead>
+            <thead><tr><th className="cp-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
             <tbody>
               {rows.map((r) => { const vals = view === "cutoffs" ? r.cutoffs : r.seats; return (
                 <tr key={r.key}>
@@ -252,7 +240,13 @@ export function SubjectCombination() {
   const evaluated = useMemo(() => PROGRAMS.map((p) => ({ p, ok: isEligible(p.id, langs, domains, gt) })), [langs, domains, gt]);
   const eligible = useMemo(() => evaluated.filter((x) => x.ok).map((x) => x.p), [evaluated]);
   const eligibleIds = useMemo(() => new Set(eligible.map((p) => p.id)), [eligible]);
-  const openColleges = useMemo(() => COLLEGES.map((c) => ({ c, eProgs: c.offers.filter((id) => eligibleIds.has(id)).map((id) => PROGRAMS.find((p) => p.id === id)).filter(Boolean) })).filter((x) => x.eProgs.length), [eligibleIds]);
+  const openColleges = useMemo(() => {
+    return REAL_COLLEGES.map(c => {
+      const myOfferings = offerings.filter(o => o.collegeId === c.id);
+      const eProgs = myOfferings.map(o => PROGRAMS.find(p => p.id === o.programId)).filter(Boolean).filter(p => eligibleIds.has(p.id));
+      return { c, eProgs: Array.from(new Set(eProgs)) };
+    }).filter(x => x.eProgs.length > 0);
+  }, [eligibleIds]);
 
   // if the chosen course is no longer eligible (subjects changed), reset it
   useEffect(() => { if (courseSel !== "all" && !eligibleIds.has(courseSel)) setCourseSel("all"); }, [eligibleIds, courseSel]);
@@ -323,7 +317,12 @@ export function SubjectCombination() {
           </div>
           <div className="cp-reslist">
             {tab === "eligible" && (eligShown.length ? eligShown.map((p) => { const st = progStats(p); return <ListRow key={p.id} title={p.name} sub={STREAMS[p.stream].label} accent={STREAMS[p.stream].color} count={st.count} countLabel="colleges" seats={st.totalSeats} top={st.topCutoff} onOpen={() => setSelected({ mode: "program", item: p })} />; }) : <div className="cp-empty">No eligible programs for this filter.</div>)}
-            {tab === "colleges" && (collegesShown.length ? collegesShown.map(({ c, eProgs }) => { const seats = eProgs.reduce((s, p) => s + progTotalSeats(c, p), 0); const top = eProgs.reduce((m, p) => Math.max(m, urCutoff(c, p)), 0); return <ListRow key={c.id} title={c.name} sub={c.campus + " Campus · " + c.type} accent="#2563eb" count={eProgs.length} countLabel="courses" seats={seats} top={top} onOpen={() => setSelected({ mode: "college", item: c, eligibleIds })} />; }) : <div className="cp-empty">No open colleges for this filter.</div>)}
+            {tab === "colleges" && (collegesShown.length ? collegesShown.map(({ c, eProgs }) => { 
+              const myOffs = offerings.filter(o => o.collegeId === c.id && eProgs.some(p => p.id === o.programId));
+              const seats = myOffs.reduce((s, o) => s + (o.seats.total || 0), 0); 
+              const top = myOffs.reduce((m, o) => Math.max(m, o.cutoffs.UR || 0), 0); 
+              return <ListRow key={c.id} title={c.name} sub={c.campus + " Campus · " + c.type} accent="#2563eb" count={eProgs.length} countLabel="courses" seats={seats} top={top} onOpen={() => setSelected({ mode: "college", item: c, eligibleIds })} />; 
+            }) : <div className="cp-empty">No open colleges for this filter.</div>)}
           </div>
         </div>
       )}
