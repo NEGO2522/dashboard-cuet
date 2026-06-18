@@ -105,6 +105,29 @@ function DetailModal({ open, onClose, mode, item, indices }) {
 
   rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
 
+  // Heatmap: compute min/max per column for cutoffs and seats view
+  const colStats = CATEGORIES.map((_, ci) => {
+    const vals = rows.map(r => r.cutoffs[ci]).filter(v => v !== null && v !== undefined);
+    return { min: Math.min(...vals), max: Math.max(...vals) };
+  });
+
+  const seatColStats = CATEGORIES.map((_, ci) => {
+    const vals = rows.map(r => r.seats[ci]).filter(v => v !== null && v !== undefined);
+    return { min: Math.min(...vals), max: Math.max(...vals) };
+  });
+
+  function heatClass(v, ci, isCut) {
+    if (v === null || v === undefined) return '';
+    const { min, max } = isCut ? colStats[ci] : seatColStats[ci];
+    if (max === min) return 'cf-heat-5';
+    const pct = (v - min) / (max - min);
+    if (pct >= 0.8) return 'cf-heat-5';
+    if (pct >= 0.6) return 'cf-heat-4';
+    if (pct >= 0.4) return 'cf-heat-3';
+    if (pct >= 0.2) return 'cf-heat-2';
+    return 'cf-heat-1';
+  }
+
   return (
     <div className="cf-overlay" onClick={onClose}>
       <div className="cf-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ '--maccent': accent }}>
@@ -148,26 +171,29 @@ function DetailModal({ open, onClose, mode, item, indices }) {
                 return (
                   <tr key={r.key}>
                     <td className="cf-td-name">
-                      <span className="cf-td-name-text">{r.name}</span>
-                      {(r.women || (r.campus && r.campus !== 'Off') || r.group) && (
-                        <span className="cf-td-badges">
-                          {r.women && <span className="cf-badge-w">Women</span>}
-                          {r.campus && r.campus !== 'Off' && (
-                            <span className="cf-badge-campus">{r.campus} Campus</span>
-                          )}
-                          {r.group && (
-                            <span className="cf-badge-s" style={{ color: groupColor(r.group), background: groupColor(r.group) + '14' }}>
-                              {r.group}
-                            </span>
-                          )}
-                        </span>
-                      )}
+                      <div className="cf-td-name-inner">
+                        <span className="cf-td-name-text">{r.name}</span>
+                        {(r.women || (r.campus && r.campus !== 'Off') || r.group) && (
+                          <span className="cf-td-badges">
+                            {r.women && <span className="cf-badge-w">Women</span>}
+                            {r.campus && r.campus !== 'Off' && (
+                              <span className="cf-badge-campus">{r.campus} Campus</span>
+                            )}
+                            {r.group && (
+                              <span className="cf-badge-s" style={{ color: groupColor(r.group), background: groupColor(r.group) + '14' }}>
+                                {r.group}
+                              </span>
+                            )}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     {vals.map((v, i) => {
                       const isCut = view === 'cutoffs';
                       const q = isCut && numScore !== null && v !== null && numScore >= v;
+                      const heat = isCut && !q ? heatClass(v, i, true) : !isCut && v !== null ? heatClass(v, i, false) : '';
                       return (
-                        <td key={i} className={'cf-num-cell ' + (q ? 'cf-q' : '')}>
+                        <td key={i} className={'cf-num-cell ' + heat + (q ? ' cf-q' : '')}>
                           {v === null || v === undefined ? <span className="cf-dash">-</span> : (isCut ? v.toFixed(1) : v)}
                           {q && <i className="cf-tick">✓</i>}
                         </td>
