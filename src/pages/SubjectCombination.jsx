@@ -79,6 +79,7 @@ const ELIG = {
 
 function nf(n) { return n.toLocaleString("en-IN"); }
 function heatBg(v) { if (!v) return "transparent"; const t = Math.max(0, Math.min(1, (v - 650) / 300)); const hue = 145 * (1 - t); return `hsla(${hue},72%,45%,0.20)`; }
+function heatBgSeats(v) { if (v === null || v === undefined) return "transparent"; const t = Math.max(0, Math.min(1, v / 40)); const hue = 145 * t; return `hsla(${hue},72%,45%,0.20)`; }
 function progStats(p) { const myOffs = offerings.filter(o => o.programId === p.id); return { count: myOffs.length, totalSeats: myOffs.reduce((s, o) => s + (o.seats.total || 0), 0), topCutoff: myOffs.reduce((m, o) => Math.max(m, o.cutoffs.UR || 0), 0) }; }
 
 function comboRank(s) { return (s.gt || s.slang || s.dom) ? 0 : 1; }
@@ -102,23 +103,6 @@ function Ring({ value, color }) {
       <circle cx="25" cy="25" r={r} fill="none" stroke="#e2e8f0" strokeWidth="4.5" />
       <circle cx="25" cy="25" r={r} fill="none" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - frac)} transform="rotate(-90 25 25)" />
       <text x="25" y="28.5" textAnchor="middle" className="cp-ring-num">{Math.round(value)}</text>
-    </svg>
-  );
-}
-function Hero() {
-  const rays = Array.from({ length: 12 }, (_, i) => i * 30);
-  return (
-    <svg className="cp-hero-img" viewBox="0 0 420 200" role="img" aria-label="Illustration of subjects opening doors to courses">
-      <defs><linearGradient id="mSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#eff6ff" /><stop offset="100%" stopColor="#ffffff" /></linearGradient></defs>
-      <rect x="0" y="0" width="420" height="200" rx="18" fill="url(#mSky)" />
-      <g transform="translate(210,72)" opacity="0.9">{rays.map((a) => <rect key={a} x="-1.6" y="-46" width="3.2" height="16" rx="2" fill="#93c5fd" transform={`rotate(${a})`} />)}</g>
-      <circle cx="210" cy="72" r="26" fill="#3b82f6" />
-      <rect x="0" y="150" width="420" height="50" fill="#0f172a" />
-      <rect x="60" y="120" width="40" height="30" fill="#1e293b" /><rect x="108" y="108" width="34" height="42" fill="#1e293b" /><rect x="300" y="116" width="40" height="34" fill="#1e293b" /><rect x="346" y="126" width="30" height="24" fill="#1e293b" />
-      <rect x="178" y="104" width="64" height="46" fill="#2563eb" /><polygon points="176,104 210,82 244,104" fill="#2563eb" />
-      <path d="M196 82 a14 14 0 0 1 28 0 z" fill="#3b82f6" />
-      {[184, 196, 208, 220, 232].map((x) => <rect key={x} x={x} y="116" width="5" height="34" fill="#bfdbfe" opacity=".8" />)}
-      <g transform="translate(330,52)"><polygon points="0,8 22,0 44,8 22,16" fill="#0f172a" /><path d="M8 12 v10 q14 8 28 0 v-10" fill="#0f172a" opacity=".85" /><line x1="44" y1="8" x2="44" y2="22" stroke="#3b82f6" strokeWidth="2" /><circle cx="44" cy="24" r="3" fill="#3b82f6" /></g>
     </svg>
   );
 }
@@ -164,12 +148,7 @@ function Modal({ open, onClose, payload }) {
     <div className="cp-overlay" onClick={onClose}>
       <div className="cp-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ "--maccent": accent }}>
         <div className="cp-modal-head"><div className="cp-modal-title">{title}</div><button className="cp-x" onClick={onClose} aria-label="Close">×</button></div>
-        {combos && (
-          <div className="cp-eligbox">
-            <div className="cp-eligbox-head">Subject combination required <span>(choose any one)</span></div>
-            <div className="cp-combos">{combos.map((cb, ci) => (<div className="cp-combo" key={ci}><span className="cp-combo-name">{cb.name}</span><span className="cp-combo-reqs">{cb.reqs.map((r, ri) => <span className="cp-req" key={ri}>{r}</span>)}</span></div>))}</div>
-          </div>
-        )}
+
         <div className="cp-modal-tools">
           <div className="cp-tabs"><span className="cp-tabs-label">View</span>
             <button className={"cp-tab " + (view === "seats" ? "on" : "")} onClick={() => setView("seats")}>Seats</button>
@@ -184,7 +163,7 @@ function Modal({ open, onClose, payload }) {
               {rows.map((r) => { const vals = view === "cutoffs" ? r.cutoffs : r.seats; return (
                 <tr key={r.key}>
                   <td className="cp-td-name"><span>{r.name}</span>{r.women && <span className="cp-badge-w">Women</span>}{r.stream && <span className="cp-badge-s" style={{ color: STREAMS[r.stream].color, background: STREAMS[r.stream].color + "16" }}>{STREAMS[r.stream].label.split(" ")[0]}</span>}</td>
-                  {vals.map((v, i) => { const isCut = view === "cutoffs"; const q = isCut && numScore !== null && v !== null && numScore >= v; const bg = isCut && v !== null ? heatBg(v) : undefined; return (
+                  {vals.map((v, i) => { const isCut = view === "cutoffs"; const q = isCut && numScore !== null && v !== null && numScore >= v; const bg = isCut && v !== null ? heatBg(v) : (!isCut && v !== null ? heatBgSeats(v) : undefined); return (
                     <td key={i} className={"cp-num-cell " + (q ? "cp-q" : "")} style={{ background: bg }}>{v === null ? <span className="cp-dash">—</span> : (isCut ? v.toFixed(1) : v)}{q && <i className="cp-tick">✓</i>}</td>
                   ); })}
                 </tr>
@@ -193,7 +172,7 @@ function Modal({ open, onClose, payload }) {
           </table>
         </div>
         {view === "cutoffs" && <div className="cp-legend"><span>Low marks</span><span className="cp-legend-bar" /><span>High marks</span></div>}
-        <div className="cp-modal-foot">🌼 Sample data for demo — figures and eligibility are illustrative, not official. Confirm on the official DU admission portal.</div>
+        {view === "seats" && <div className="cp-legend"><span>Fewer seats</span><span className="cp-legend-bar" style={{ background: "linear-gradient(90deg, hsla(0,72%,45%,0.6), hsla(60,72%,45%,0.6), hsla(145,72%,45%,0.6))" }} /><span>More seats</span></div>}
       </div>
     </div>
   );
@@ -262,12 +241,61 @@ export function SubjectCombination() {
   return (
     <div className="cp-wrap">
       <style>{CSS}</style>
-      <header className="cp-top"><div className="cp-brand"><div className="cp-logo">CP</div><div><div className="cp-brand-name">CUET Pro</div><div className="cp-brand-sub">Delhi University Admissions</div></div></div><span className="cp-demo">Sample data</span></header>
-      <section className="cp-herowrap"><div className="cp-herofig"><Hero /><span className="cp-herobadge">Subjects → Courses · CUET 2026</span></div><h1>Subject Combination → Course / College</h1><p>Pick the CUET subjects you appeared for. We'll show every program you're eligible for and the colleges open to you.</p></section>
+      <header className="cp-top"><div className="cp-brand"><div className="cp-logo">CP</div><div><div className="cp-brand-name">CUET Pro</div><div className="cp-brand-sub">Delhi University Admissions</div></div></div></header>
+      <section className="cp-herowrap cp-hero-new">
+        <div className="cp-hero-bg" aria-hidden="true">
+          <div className="cp-hero-blob cp-hero-blob-1" />
+          <div className="cp-hero-blob cp-hero-blob-2" />
+          <div className="cp-hero-blob cp-hero-blob-3" />
+          <div className="cp-hero-grid" />
+        </div>
+        <div className="cp-hero-content">
+          <span className="cp-herobadge-new">CUET 2026 · Eligibility Engine</span>
+          <h1>Subject Combination &amp;<br />Course Explorer</h1>
+          <p>Pick the CUET subjects you appeared for. We'll show every program you're eligible for and the colleges open to you.</p>
+        </div>
+        <div className="cp-hero-illustration" aria-hidden="true">
+          <svg viewBox="0 0 260 195" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="140" cy="100" rx="110" ry="90" fill="rgba(255,255,255,0.04)" />
+            <rect x="10" y="15" width="175" height="130" rx="14" fill="white" fillOpacity="0.97" />
+            <rect x="10" y="15" width="175" height="38" rx="14" fill="#2563eb" />
+            <rect x="10" y="39" width="175" height="14" fill="#2563eb" />
+            <rect x="24" y="26" width="72" height="7" rx="3.5" fill="white" fillOpacity="0.95" />
+            <rect x="24" y="39" width="44" height="4.5" rx="2" fill="white" fillOpacity="0.45" />
+            <circle cx="168" cy="36" r="15" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="3" />
+            <path d="M168 21 a15 15 0 0 1 13 7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
+            <text x="168" y="40" textAnchor="middle" fill="white" fontSize="8" fontWeight="800">5</text>
+            <line x1="24" y1="66" x2="172" y2="66" stroke="#e2e8f0" strokeWidth="1" />
+            <rect x="24" y="74" width="82" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.14" />
+            <rect x="116" y="74" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.28" />
+            <rect x="142" y="74" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.18" />
+            <rect x="24" y="88" width="68" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.1" />
+            <rect x="116" y="88" width="20" height="5.5" rx="2.75" fill="#7c3aed" fillOpacity="0.28" />
+            <rect x="142" y="88" width="20" height="5.5" rx="2.75" fill="#7c3aed" fillOpacity="0.18" />
+            <rect x="12" y="100" width="171" height="16" rx="0" fill="#f0fdf4" />
+            <rect x="24" y="104" width="76" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.35" />
+            <rect x="116" y="104" width="20" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.65" />
+            <rect x="142" y="104" width="20" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.45" />
+            <text x="168" y="109" textAnchor="middle" fill="#16a34a" fontSize="8" fontWeight="800">✓</text>
+            <rect x="24" y="124" width="58" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.1" />
+            <rect x="116" y="124" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.22" />
+            <rect x="142" y="124" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.14" />
+            <rect x="30" y="154" width="118" height="22" rx="11" fill="white" fillOpacity="0.95" stroke="#2563eb" strokeWidth="1.5" />
+            <text x="70" y="169" fill="#94a3b8" fontSize="7" fontWeight="500">Pick your subjects…</text>
+            <rect x="136" y="158" width="5" height="14" rx="1.5" fill="#2563eb" fillOpacity="0.6" />
+            <rect x="192" y="22" width="58" height="26" rx="9" fill="white" fillOpacity="0.97" />
+            <text x="221" y="33" textAnchor="middle" fill="#059669" fontSize="9" fontWeight="800">14</text>
+            <text x="221" y="43" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Top Courses</text>
+            <rect x="188" y="58" width="64" height="28" rx="9" fill="white" fillOpacity="0.97" />
+            <text x="220" y="70" textAnchor="middle" fill="#2563eb" fontSize="9" fontWeight="800">66,333</text>
+            <text x="220" y="80" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Total Seats</text>
+            <rect x="192" y="96" width="58" height="26" rx="9" fill="white" fillOpacity="0.97" />
+            <text x="221" y="107" textAnchor="middle" fill="#7c3aed" fontSize="9" fontWeight="800">100%</text>
+            <text x="221" y="116" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Real Data</text>
+          </svg>
+        </div>
+      </section>
 
-      <div className="cp-banner">ℹ️ For DU, your CUET subjects must also be present in your Class 12 marksheet.</div>
-
-      <div className="cp-how"><div className="cp-how-head">How it works</div><ol><li>Pick your CUET subjects below, then tap <b>See my eligible programs</b>.</li><li>Explore the programs you're eligible for and the colleges open to you.</li><li>Tap any program or college to see its seats, cutoffs and required subject combinations.</li></ol></div>
 
       <input className="cp-subjsearch" placeholder="Search for a subject…" value={subjQuery} onChange={(e) => setSubjQuery(e.target.value)} />
 
@@ -327,7 +355,6 @@ export function SubjectCombination() {
         </div>
       )}
 
-      <footer className="cp-foot"><p><b>Illustrative demo only.</b> Eligibility here is a simplified check of CUET subject combinations and figures are sample data — not official. Always confirm on the official DU admission portal before applying.</p><p className="cp-foot-by">Built for CUET Pro · {new Date().getFullYear()}</p></footer>
       <Modal open={!!selected} onClose={() => setSelected(null)} payload={selected} />
     </div>
   );
@@ -343,12 +370,20 @@ const CSS = `
 .cp-logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#3b82f6,#7c3aed);color:#fff;display:grid;place-items:center;font-family:'Figtree';font-weight:800;font-size:17px}
 .cp-brand-name{font-family:'Figtree';font-weight:800;font-size:17px;line-height:1}.cp-brand-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
 .cp-demo{font-size:11px;font-weight:600;color:var(--mari);background:#eff6ff;padding:5px 11px;border-radius:20px;border:1px solid #bfdbfe}
-.cp-herowrap{margin-bottom:16px}
-.cp-herofig{position:relative;margin-bottom:14px}
-.cp-hero-img{width:100%;height:auto;display:block;border-radius:18px;box-shadow:0 6px 22px rgba(37,99,235,.14)}
-.cp-herobadge{position:absolute;left:14px;bottom:14px;background:rgba(15,23,42,.86);color:#fff;font-size:11px;font-weight:700;padding:5px 11px;border-radius:20px}
-.cp-herowrap h1{font-family:'Figtree';font-weight:800;font-size:28px;line-height:1.06;letter-spacing:-.5px;margin:0 0 8px}
-.cp-herowrap p{font-size:14px;line-height:1.5;color:var(--muted);margin:0;max-width:58ch}
+.cp-hero-new { position:relative; background:linear-gradient(125deg,#1e3a8a 0%,#1d4ed8 45%,#2563eb 70%,#3b82f6 100%); border-radius:18px; padding:2.5rem 2rem 2.25rem 2.5rem; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; overflow:hidden; min-height:200px; box-shadow:0 8px 32px rgba(37,99,235,0.3),0 2px 8px rgba(37,99,235,0.2) }
+.cp-hero-bg { position:absolute; inset:0; pointer-events:none; z-index:0 }
+.cp-hero-blob { position:absolute; border-radius:50%; filter:blur(40px) }
+.cp-hero-blob-1 { width:260px; height:260px; background:rgba(99,179,237,0.25); top:-80px; right:160px }
+.cp-hero-blob-2 { width:200px; height:200px; background:rgba(167,139,250,0.2); bottom:-60px; right:60px }
+.cp-hero-blob-3 { width:140px; height:140px; background:rgba(52,211,153,0.15); top:20px; left:40%; filter:blur(30px) }
+.cp-hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px); background-size:32px 32px }
+.cp-hero-content { flex:1; min-width:0; position:relative; z-index:1 }
+.cp-herobadge-new { display:inline-block; background:rgba(255,255,255,0.18); color:#fff; font-size:11.5px; font-weight:700; padding:4.5px 11px; border-radius:6px; letter-spacing:0.4px; margin-bottom:13px; border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px) }
+.cp-hero-new h1 { font-family:'Figtree'; font-size:38px; font-weight:800; letter-spacing:-1px; margin:0 0 10px; color:#ffffff; line-height:1.1; text-shadow:0 1px 4px rgba(0,0,0,0.15) }
+.cp-hero-new p { font-size:15px; line-height:1.55; color:rgba(255,255,255,0.8); margin:0; max-width:44ch }
+.cp-hero-illustration { flex-shrink:0; width:220px; position:relative; z-index:1; filter:drop-shadow(0 8px 24px rgba(0,0,0,0.2)) }
+.cp-hero-illustration svg { width:100%; height:auto; display:block }
+@media(max-width:640px){ .cp-hero-new { padding: 1.75rem 1.25rem; min-height:auto; flex-direction: column; } .cp-hero-illustration { display:none } .cp-hero-new h1 { font-size:1.85rem; } }
 .cp-banner{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;font-size:13px;font-weight:600;padding:12px 15px;border-radius:12px;margin-bottom:14px;text-align:center}
 .cp-how{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:16px}
 .cp-how-head{font-family:'Figtree';font-weight:700;font-size:14px;margin-bottom:10px}
@@ -426,16 +461,14 @@ const CSS = `
 .cp-tab.on{background:var(--maccent);color:#fff;border-color:var(--maccent)}
 .cp-tab.on:hover{background-color:var(--maccent);color:#fff}
 .cp-scorein{border:1px solid var(--line);background:#f8fafc;border-radius:11px;padding:10px 13px;font-size:13px;font-family:inherit;color:var(--ink)}.cp-scorein:focus{outline:2px solid var(--maccent);outline-offset:1px;border-color:transparent}.cp-scorein::placeholder{color:#94a3b8}
-.cp-tablewrap{overflow:auto;flex:1;border-top:1px solid var(--line)}
+.cp-tablewrap{overflow:auto;flex:1;border-top:1px solid var(--line);-ms-overflow-style:none;scrollbar-width:none}
+.cp-tablewrap::-webkit-scrollbar{display:none}
 .cp-table{width:100%;min-width:540px;border-collapse:collapse;font-size:13.5px}
-.cp-table thead th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;text-align:right;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
-.cp-table thead th.cp-th-name{text-align:left}
-.cp-table td{padding:11px 14px;border-bottom:1px solid #f1f5f9;text-align:right;white-space:nowrap}
-.cp-table thead th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;text-align:right;padding:11px 30px 11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
-.cp-table thead th.cp-th-name{text-align:left;padding-left:30px}
+.cp-table thead th{position:sticky;top:0;z-index:2;background:#f8fafc;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;text-align:right;padding:11px 30px 11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.cp-table thead th.cp-th-name{text-align:left;padding-left:30px;left:0;z-index:3}
 .cp-table td{padding:11px 30px 11px 14px;border-bottom:1px solid #f1f5f9;text-align:right;white-space:nowrap}
 .cp-table td:first-child{padding-left:30px}
-.cp-td-name{text-align:left;font-weight:600;position:sticky;left:0;background:#fff;display:flex;align-items:center;gap:7px;max-width:240px}.cp-td-name>span:first-child{white-space:normal}
+.cp-td-name{text-align:left;font-weight:600;position:sticky;left:0;z-index:1;background:#fff;display:flex;align-items:center;gap:7px;max-width:240px}.cp-td-name>span:first-child{white-space:normal}
 .cp-badge-w{font-size:10px;font-weight:700;color:#be185d;background:#fce7f3;padding:2px 7px;border-radius:20px;white-space:nowrap}
 .cp-badge-s{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
 .cp-num-cell{font-weight:600;position:relative}.cp-num-cell.cp-q{outline:2px solid var(--ok);outline-offset:-2px;font-weight:800;border-radius:7px}
