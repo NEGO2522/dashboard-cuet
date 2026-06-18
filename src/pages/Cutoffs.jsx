@@ -276,9 +276,83 @@ export function Cutoffs() {
   return (
     <div className="cf-wrap">
       <section className="cf-herowrap">
-        <span className="cf-herobadge">CSAS 2025 · Official seat matrix</span>
-        <h1>DU Cutoff &amp; Seat Explorer</h1>
-        <p>Browse every Delhi University program and college. Tap a row for category-wise seats and cutoffs.</p>
+        {/* Background decoration */}
+        <div className="cf-hero-bg" aria-hidden="true">
+          <div className="cf-hero-blob cf-hero-blob-1" />
+          <div className="cf-hero-blob cf-hero-blob-2" />
+          <div className="cf-hero-blob cf-hero-blob-3" />
+          <div className="cf-hero-grid" />
+        </div>
+
+        <div className="cf-hero-content">
+          <span className="cf-herobadge">CSAS 2025 · Official seat matrix</span>
+          <h1>DU Cutoff &amp;<br />Seat Explorer</h1>
+          <p>Browse every Delhi University program and college. Tap a row for category-wise seats and cutoffs.</p>
+
+        </div>
+        <div className="cf-hero-illustration" aria-hidden="true">
+          <svg viewBox="0 0 260 195" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer glow */}
+            <ellipse cx="140" cy="100" rx="110" ry="90" fill="rgba(255,255,255,0.04)" />
+
+            {/* Main card */}
+            <rect x="10" y="15" width="175" height="130" rx="14" fill="white" fillOpacity="0.97" />
+            <rect x="10" y="15" width="175" height="38" rx="14" fill="#2563eb" />
+            <rect x="10" y="39" width="175" height="14" fill="#2563eb" />
+
+            {/* Header text */}
+            <rect x="24" y="26" width="72" height="7" rx="3.5" fill="white" fillOpacity="0.95" />
+            <rect x="24" y="39" width="44" height="4.5" rx="2" fill="white" fillOpacity="0.45" />
+
+            {/* Score ring */}
+            <circle cx="168" cy="36" r="15" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="3" />
+            <path d="M168 21 a15 15 0 0 1 13 7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
+            <text x="168" y="40" textAnchor="middle" fill="white" fontSize="8" fontWeight="800">917</text>
+
+            {/* Separator */}
+            <line x1="24" y1="66" x2="172" y2="66" stroke="#e2e8f0" strokeWidth="1" />
+
+            {/* Row 1 */}
+            <rect x="24" y="74" width="82" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.14" />
+            <rect x="116" y="74" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.28" />
+            <rect x="142" y="74" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.18" />
+
+            {/* Row 2 */}
+            <rect x="24" y="88" width="68" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.1" />
+            <rect x="116" y="88" width="20" height="5.5" rx="2.75" fill="#7c3aed" fillOpacity="0.28" />
+            <rect x="142" y="88" width="20" height="5.5" rx="2.75" fill="#7c3aed" fillOpacity="0.18" />
+
+            {/* Row 3 — highlighted green */}
+            <rect x="12" y="100" width="171" height="16" rx="0" fill="#f0fdf4" />
+            <rect x="24" y="104" width="76" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.35" />
+            <rect x="116" y="104" width="20" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.65" />
+            <rect x="142" y="104" width="20" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.45" />
+            <text x="168" y="109" textAnchor="middle" fill="#16a34a" fontSize="8" fontWeight="800">✓</text>
+
+            {/* Row 4 */}
+            <rect x="24" y="124" width="58" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.1" />
+            <rect x="116" y="124" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.22" />
+            <rect x="142" y="124" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.14" />
+
+            {/* Score pill */}
+            <rect x="30" y="154" width="118" height="22" rx="11" fill="white" fillOpacity="0.95" stroke="#2563eb" strokeWidth="1.5" />
+            <text x="70" y="169" fill="#94a3b8" fontSize="7" fontWeight="500">Your CUET score…</text>
+            <rect x="136" y="158" width="5" height="14" rx="1.5" fill="#2563eb" fillOpacity="0.6" />
+
+            {/* Floating badges */}
+            <rect x="192" y="22" width="58" height="26" rx="9" fill="white" fillOpacity="0.97" />
+            <text x="221" y="33" textAnchor="middle" fill="#059669" fontSize="9" fontWeight="800">67</text>
+            <text x="221" y="43" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Colleges</text>
+
+            <rect x="188" y="58" width="64" height="28" rx="9" fill="white" fillOpacity="0.97" />
+            <text x="220" y="70" textAnchor="middle" fill="#2563eb" fontSize="9" fontWeight="800">66,333</text>
+            <text x="220" y="80" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Total Seats</text>
+
+            <rect x="192" y="96" width="58" height="26" rx="9" fill="white" fillOpacity="0.97" />
+            <text x="221" y="107" textAnchor="middle" fill="#7c3aed" fontSize="9" fontWeight="800">262</text>
+            <text x="221" y="116" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Programs</text>
+          </svg>
+        </div>
       </section>
 
       <div className="cf-statstrip">

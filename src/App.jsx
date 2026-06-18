@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
-import { AMABot } from './components/AMABot';
 import { 
   Home, 
   CollegeExplorer, 
@@ -34,7 +33,6 @@ function App() {
         </Routes>
         </main>
       </div>
-      <AMABot />
     </Router>
   );
 }
