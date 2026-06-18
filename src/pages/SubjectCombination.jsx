@@ -326,43 +326,44 @@ export function SubjectCombination() {
           <p>Pick the CUET subjects you appeared for. We'll show every program you're eligible for and the colleges open to you.</p>
         </div>
         <div className="cp-hero-illustration" aria-hidden="true">
-          <svg viewBox="0 0 260 195" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="140" cy="100" rx="110" ry="90" fill="rgba(255,255,255,0.04)" />
-            <rect x="10" y="15" width="175" height="130" rx="14" fill="white" fillOpacity="0.97" />
-            <rect x="10" y="15" width="175" height="38" rx="14" fill="#2563eb" />
-            <rect x="10" y="39" width="175" height="14" fill="#2563eb" />
-            <rect x="24" y="26" width="72" height="7" rx="3.5" fill="white" fillOpacity="0.95" />
-            <rect x="24" y="39" width="44" height="4.5" rx="2" fill="white" fillOpacity="0.45" />
-            <circle cx="168" cy="36" r="15" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="3" />
-            <path d="M168 21 a15 15 0 0 1 13 7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
-            <text x="168" y="40" textAnchor="middle" fill="white" fontSize="8" fontWeight="800">5</text>
-            <line x1="24" y1="66" x2="172" y2="66" stroke="#e2e8f0" strokeWidth="1" />
-            <rect x="24" y="74" width="82" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.14" />
-            <rect x="116" y="74" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.28" />
-            <rect x="142" y="74" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.18" />
-            <rect x="24" y="88" width="68" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.1" />
-            <rect x="116" y="88" width="20" height="5.5" rx="2.75" fill="#7c3aed" fillOpacity="0.28" />
-            <rect x="142" y="88" width="20" height="5.5" rx="2.75" fill="#7c3aed" fillOpacity="0.18" />
-            <rect x="12" y="100" width="171" height="16" rx="0" fill="#f0fdf4" />
-            <rect x="24" y="104" width="76" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.35" />
-            <rect x="116" y="104" width="20" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.65" />
-            <rect x="142" y="104" width="20" height="5.5" rx="2.75" fill="#16a34a" fillOpacity="0.45" />
-            <text x="168" y="109" textAnchor="middle" fill="#16a34a" fontSize="8" fontWeight="800">✓</text>
-            <rect x="24" y="124" width="58" height="5.5" rx="2.75" fill="#1e3a8a" fillOpacity="0.1" />
-            <rect x="116" y="124" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.22" />
-            <rect x="142" y="124" width="20" height="5.5" rx="2.75" fill="#2563eb" fillOpacity="0.14" />
-            <rect x="30" y="154" width="118" height="22" rx="11" fill="white" fillOpacity="0.95" stroke="#2563eb" strokeWidth="1.5" />
-            <text x="70" y="169" fill="#94a3b8" fontSize="7" fontWeight="500">Pick your subjects…</text>
-            <rect x="136" y="158" width="5" height="14" rx="1.5" fill="#2563eb" fillOpacity="0.6" />
-            <rect x="192" y="22" width="58" height="26" rx="9" fill="white" fillOpacity="0.97" />
-            <text x="221" y="33" textAnchor="middle" fill="#059669" fontSize="9" fontWeight="800">14</text>
-            <text x="221" y="43" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Top Courses</text>
-            <rect x="188" y="58" width="64" height="28" rx="9" fill="white" fillOpacity="0.97" />
-            <text x="220" y="70" textAnchor="middle" fill="#2563eb" fontSize="9" fontWeight="800">66,333</text>
-            <text x="220" y="80" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Total Seats</text>
-            <rect x="192" y="96" width="58" height="26" rx="9" fill="white" fillOpacity="0.97" />
-            <text x="221" y="107" textAnchor="middle" fill="#7c3aed" fontSize="9" fontWeight="800">100%</text>
-            <text x="221" y="116" textAnchor="middle" fill="#94a3b8" fontSize="6.5" fontWeight="600">Real Data</text>
+          <svg viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="120" cy="100" r="80" fill="url(#hero-grad-bg)" opacity="0.15" />
+            <circle cx="160" cy="70" r="50" fill="url(#hero-grad-glow)" opacity="0.2" filter="blur(10px)" />
+            
+            <g filter="url(#card-shadow)">
+              <rect x="20" y="30" width="160" height="90" rx="16" fill="white" fillOpacity="0.12" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" style={{ backdropFilter: 'blur(8px)' }} />
+              <rect x="36" y="46" width="48" height="8" rx="4" fill="white" opacity="0.8" />
+              <circle cx="156" cy="50" r="6" fill="#10b981" />
+              <rect x="36" y="66" width="100" height="5" rx="2.5" fill="white" opacity="0.4" />
+              <rect x="36" y="78" width="112" height="5" rx="2.5" fill="white" opacity="0.4" />
+              <rect x="36" y="90" width="76" height="5" rx="2.5" fill="white" opacity="0.4" />
+            </g>
+
+            <g filter="url(#card-shadow-large)">
+              <rect x="80" y="100" width="140" height="64" rx="16" fill="white" fillOpacity="0.95" />
+              <circle cx="106" cy="132" r="14" fill="#eff6ff" />
+              <path d="M101 132l3 3 7-7" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              
+              <rect x="132" y="122" width="72" height="7" rx="3.5" fill="#1e293b" />
+              <rect x="132" y="135" width="48" height="5" rx="2.5" fill="#64748b" />
+            </g>
+            
+            <defs>
+              <linearGradient id="hero-grad-bg" x1="40" y1="20" x2="200" y2="180" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#60a5fa" />
+                <stop offset="100%" stopColor="#c084fc" />
+              </linearGradient>
+              <linearGradient id="hero-grad-glow" x1="110" y1="20" x2="210" y2="120" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#34d399" />
+                <stop offset="100%" stopColor="#60a5fa" />
+              </linearGradient>
+              <filter id="card-shadow" x="10" y="24" width="180" height="110" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor="#0f172a" floodOpacity="0.15" />
+              </filter>
+              <filter id="card-shadow-large" x="70" y="94" width="160" height="84" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#0f172a" floodOpacity="0.25" />
+              </filter>
+            </defs>
           </svg>
         </div>
       </section>
