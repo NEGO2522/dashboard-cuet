@@ -16,22 +16,15 @@ const STREAMS = {
   Science: { label: "Science", color: "#059669" },
 };
 
-const PROGRAMS = [
-  { id: "b-com-hons", name: "B.Com. (Hons.)", stream: "Commerce" },
-  { id: "b-a-hons-economics", name: "B.A. (Hons.) Economics", stream: "Commerce" },
-  { id: "bachelor-of-management-studies-bms", name: "Bachelor of Management Studies (BMS)", stream: "Commerce" },
-  { id: "bachelor-of-business-administration-financial-investment-analysis-bba-fia", name: "Bachelor of Business Administration (Financial Investment Analysis) (BBA(FIA))", stream: "Commerce" },
-  { id: "b-com", name: "B.Com.", stream: "Commerce" },
-  { id: "b-a-hons-psychology", name: "B.A. (Hons.) Psychology", stream: "Humanities" },
-  { id: "b-a-hons-political-science", name: "B.A. (Hons.) Political Science", stream: "Humanities" },
-  { id: "b-a-hons-history", name: "B.A. (Hons.) History", stream: "Humanities" },
-  { id: "b-a-hons-sociology", name: "B.A. (Hons.) Sociology", stream: "Humanities" },
-  { id: "b-a-hons-english", name: "B.A. (Hons.) English", stream: "Humanities" },
-  { id: "b-a-hons-hindi", name: "B.A. (Hons.) Hindi", stream: "Humanities" },
-  { id: "b-sc-hons-computer-science", name: "B.Sc. (Hons.) Computer Science", stream: "Science" },
-  { id: "b-sc-hons-mathematics", name: "B.Sc. (Hons.) Mathematics", stream: "Science" },
-  { id: "b-sc-hons-statistics", name: "B.Sc. (Hons.) Statistics", stream: "Science" },
-];
+import rawEligibility from '../data/course_requirements.json';
+import { programs as ALL_PROGRAMS } from '../data/programs';
+import { getScoreBreakdown } from '../lib/scoreEngine';
+
+const PROGRAMS = ALL_PROGRAMS.map(p => ({
+  ...p,
+  stream: p.subjectGroup || "Humanities"
+}));
+
 const COLLEGES = [];
 const RES_CATS = [
   { id: "UR", label: "UR", delta: 0, share: 0.4 }, { id: "OBC", label: "OBC", delta: 150, share: 0.27 },
@@ -41,61 +34,22 @@ const RES_CATS = [
 
 const LANGUAGES = ["Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Malayalam", "Marathi", "Odia", "Punjabi", "Sanskrit", "Tamil", "Telugu", "Urdu"];
 const DOMAINS = ["Accountancy / Book Keeping", "Agriculture", "Anthropology", "Biology / Biological Studies / Biotechnology / Biochemistry", "Business Studies", "Chemistry", "Computer Science / Information Practices", "Economics / Business Economics", "Environmental Studies / Environmental Science", "Fine Arts / Visual Arts / Commercial Arts", "Geography / Geology", "History", "Home Science", "Knowledge Tradition - Practices in India", "Mass Media / Mass Communication", "Mathematics / Applied Mathematics", "Performing Arts (Dance, Drama, Music)", "Physical Education (Yoga, Sports)", "Physics", "Political Science", "Psychology", "Sociology"];
-const MATHS = "Mathematics / Applied Mathematics";
-const ACCT = "Accountancy / Book Keeping";
-
-const RULES = {
-  "b-com-hons": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 1 }, { dom: [ACCT] }, { domAny: 2 }]],
-  "b-a-hons-economics": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }]],
-  "bachelor-of-management-studies-bms": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 1 }, { gt: true }]],
-  "bachelor-of-business-administration-financial-investment-analysis-bba-fia": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 1 }, { gt: true }]],
-  "b-com": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 1 }, { domAny: 1 }, { gt: true }]],
-  "b-a-hons-psychology": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  "b-a-hons-political-science": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  "b-a-hons-history": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  "b-a-hons-sociology": [[{ lang: 1 }, { domAny: 3 }], [{ lang: 2 }, { domAny: 2 }]],
-  "b-a-hons-english": [[{ slang: "English" }, { domAny: 3 }], [{ slang: "English" }, { lang: 1 }, { domAny: 2 }]],
-  "b-a-hons-hindi": [[{ slang: "Hindi" }, { domAny: 3 }], [{ slang: "Hindi" }, { lang: 1 }, { domAny: 2 }]],
-  "b-sc-hons-computer-science": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
-  "b-sc-hons-mathematics": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
-  "b-sc-hons-statistics": [[{ lang: 1 }, { dom: [MATHS] }, { domAny: 2 }], [{ lang: 2 }, { dom: [MATHS] }, { domAny: 1 }]],
-};
-
-const ELIG = {
-  "b-com-hons": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["1 Language", "Accountancy / Book-Keeping", "+ 2 Domain"] }],
-  "b-a-hons-economics": [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }],
-  "bachelor-of-management-studies-bms": [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "1 Domain", "General Test"] }],
-  "bachelor-of-business-administration-financial-investment-analysis-bba-fia": [{ name: "Required", reqs: ["1 Language", "Maths / Applied Maths", "1 Domain", "General Test"] }],
-  "b-com": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["1 Language", "1 Domain", "General Test"] }],
-  "b-a-hons-psychology": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  "b-a-hons-political-science": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  "b-a-hons-history": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  "b-a-hons-sociology": [{ name: "Combination I", reqs: ["1 Language", "3 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "2 Domain"] }],
-  "b-a-hons-english": [{ name: "Combination I", reqs: ["English (Language)", "3 Domain"] }, { name: "Combination II", reqs: ["English (Language)", "1 Language", "2 Domain"] }],
-  "b-a-hons-hindi": [{ name: "Combination I", reqs: ["Hindi (Language)", "3 Domain"] }, { name: "Combination II", reqs: ["Hindi (Language)", "1 Language", "2 Domain"] }],
-  "b-sc-hons-computer-science": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
-  "b-sc-hons-mathematics": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
-  "b-sc-hons-statistics": [{ name: "Combination I", reqs: ["1 Language", "Maths / Applied Maths", "+ 2 Domain"] }, { name: "Combination II", reqs: ["2 Languages", "Maths / Applied Maths", "1 Domain"] }],
-};
 
 function nf(n) { return n.toLocaleString("en-IN"); }
 function heatBg(v) { if (!v) return "transparent"; const t = Math.max(0, Math.min(1, (v - 650) / 300)); const hue = 145 * (1 - t); return `hsla(${hue},72%,45%,0.20)`; }
 function heatBgSeats(v) { if (v === null || v === undefined) return "transparent"; const t = Math.max(0, Math.min(1, v / 40)); const hue = 145 * t; return `hsla(${hue},72%,45%,0.20)`; }
 function progStats(p) { const myOffs = offerings.filter(o => o.programId === p.id); return { count: myOffs.length, totalSeats: myOffs.reduce((s, o) => s + (o.seats.total || 0), 0), topCutoff: myOffs.reduce((m, o) => Math.max(m, o.cutoffs.UR || 0), 0) }; }
 
-function comboRank(s) { return (s.gt || s.slang || s.dom) ? 0 : 1; }
-function matchCombo(combo, L0, D0, gt) {
-  let L = [...L0], D = [...D0];
-  for (const slot of [...combo].sort((a, b) => comboRank(a) - comboRank(b))) {
-    if (slot.gt) { if (!gt) return false; }
-    else if (slot.slang) { const i = L.indexOf(slot.slang); if (i < 0) return false; L.splice(i, 1); }
-    else if (slot.dom) { const i = D.findIndex((d) => slot.dom.includes(d)); if (i < 0) return false; D.splice(i, 1); }
-    else if (slot.lang) { if (L.length < slot.lang) return false; L.splice(0, slot.lang); }
-    else if (slot.domAny) { if (D.length < slot.domAny) return false; D.splice(0, slot.domAny); }
-  }
-  return true;
+function isEligibleDynamic(programName, langs, domains, gt) {
+  const subjectEntries = [
+    ...langs.map(l => ({ subject: l, marks: 100 })),
+    ...domains.map(d => ({ subject: d, marks: 100 }))
+  ];
+  if (gt) subjectEntries.push({ subject: "General Aptitude Test", marks: 100 });
+  
+  const res = getScoreBreakdown(subjectEntries, programName, rawEligibility);
+  return res ? res.isEligible : false;
 }
-function isEligible(pid, L, D, gt) { const r = RULES[pid] || []; return r.some((c) => matchCombo(c, L, D, gt)); }
 
 function Ring({ value, color, max = 950 }) {
   const r = 24;
@@ -296,7 +250,7 @@ export function SubjectCombination() {
 
   const reset = () => { setLangs([]); setDomains([]); setGt(false); setShown(false); setSelectionChanged(false); };
 
-  const evaluated = useMemo(() => PROGRAMS.map((p) => ({ p, ok: isEligible(p.id, langs, domains, gt) })), [langs, domains, gt]);
+  const evaluated = useMemo(() => PROGRAMS.map((p) => ({ p, ok: isEligibleDynamic(p.name, langs, domains, gt) })), [langs, domains, gt]);
   const eligible = useMemo(() => evaluated.filter((x) => x.ok).map((x) => x.p), [evaluated]);
   const eligibleIds = useMemo(() => new Set(eligible.map((p) => p.id)), [eligible]);
   const openColleges = useMemo(() => {
@@ -432,8 +386,8 @@ export function SubjectCombination() {
       </div>
 
       <div className="cp-cta-wrap">
-        <button className="cp-cta" disabled={langs.length !== 1} onClick={() => { setShown(true); setSelectionChanged(false); }}>
-          {langs.length === 0 ? "Select 1 Language to proceed" : selectionChanged ? `Selection changed — click to update results (${totalPicked}/5 selected)` : `See my eligible programs (${totalPicked}/5 selected)`}
+        <button className="cp-cta" disabled={langs.length < 1} onClick={() => { setShown(true); setSelectionChanged(false); }}>
+          {langs.length === 0 ? "Select at least 1 Language to proceed" : selectionChanged ? `Selection changed — click to update results (${totalPicked}/5 selected)` : `See my eligible programs (${totalPicked}/5 selected)`}
         </button>
         {totalPicked > 0 && <button className="cp-reset" onClick={reset}>Clear all</button>}
       </div>
