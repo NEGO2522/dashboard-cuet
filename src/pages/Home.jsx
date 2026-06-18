@@ -201,13 +201,13 @@ export function Home() {
           </div>
         </a>
 
-        <Link to="/map" className="nav-tile tile-map">
+        <Link to="/subject-combination" className="nav-tile tile-combinations">
           <div className="nav-tile-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path><path d="M9 10h6"></path><path d="M12 7v6"></path></svg>
           </div>
           <div className="nav-tile-content">
-            <h3>Campus Map</h3>
-            <p>Interactive map of North, South & Off-campus colleges</p>
+            <h3>Subject Combinations</h3>
+            <p>Check CUET subject requirements for various courses</p>
           </div>
         </Link>
 

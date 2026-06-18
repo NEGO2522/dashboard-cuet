@@ -4,16 +4,7 @@ import { colleges } from '../data/colleges';
 import { programs } from '../data/programs';
 import { offerings } from '../data/offerings';
 import { SourceBadge } from '../components/SourceBadge';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import './CollegeDetail.css';
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({ iconUrl: markerIcon, iconRetinaUrl: markerIcon2x, shadowUrl: markerShadow });
 
 const getStreamGroup = (subjectGroup) => {
   if (!subjectGroup) return 'Others';
@@ -245,27 +236,45 @@ export function CollegeDetail() {
           })}
         </section>
 
-        {/* 4. Interactive Map */}
-        <section className="cd-location-section">
-          <h2 className="cd-section-title">Location & Map</h2>
-          <div className="cd-map-premium-wrapper">
-            <MapContainer 
-              center={[college.coordinates.lat, college.coordinates.lng]} 
-              zoom={15} 
-              scrollWheelZoom={false}
-              style={{ height: '100%', width: '100%' }}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[college.coordinates.lat, college.coordinates.lng]}>
-                <Popup className="map-popup-custom">
-                  <strong>{college.name}</strong><br/>
-                  {college.campus} Campus
-                </Popup>
-              </Marker>
-            </MapContainer>
+        {/* 4. Subject Combination */}
+        <section className="cd-subject-combination-section">
+          <h2 className="cd-section-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-blue)' }}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            Subject Combinations
+          </h2>
+          <div className="cd-subject-combo-grid">
+            <div className="cd-subject-card">
+              <div className="cd-subject-icon science">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div className="cd-subject-content">
+                <h3>Science Programs</h3>
+                <p><strong>Option 1:</strong> 1 Language + Physics + Chemistry + Mathematics</p>
+                <p><strong>Option 2:</strong> 1 Language + Physics + Chemistry + Biology</p>
+              </div>
+            </div>
+            
+            <div className="cd-subject-card">
+              <div className="cd-subject-icon commerce">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
+              <div className="cd-subject-content">
+                <h3>Commerce Programs</h3>
+                <p><strong>Option 1:</strong> 1 Language + Accountancy + Any 2 Subjects</p>
+                <p><strong>Option 2:</strong> 1 Language + Mathematics + Any 2 Subjects</p>
+              </div>
+            </div>
+
+            <div className="cd-subject-card">
+              <div className="cd-subject-icon humanities">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="5"></circle><path d="M3 21v-2a7 7 0 0 1 14 0v2"></path></svg>
+              </div>
+              <div className="cd-subject-content">
+                <h3>Humanities Programs</h3>
+                <p><strong>Option 1:</strong> 1 Language + Any 3 Subjects from Section II</p>
+                <p><strong>Option 2:</strong> 1 Language + 1 Subject from Section II + General Test</p>
+              </div>
+            </div>
           </div>
         </section>
 

@@ -22,7 +22,7 @@ export function Navbar() {
     { name: 'Cutoffs & Seats', path: '/cutoffs' },
     { name: 'Rankings', path: '/rankings' },
     { name: 'Documents', path: '/documents' },
-    { name: 'Map', path: '/map' }
+    { name: 'Subject Combination', path: '/subject-combination' }
   ];
 
   const closeMobileMenu = () => {

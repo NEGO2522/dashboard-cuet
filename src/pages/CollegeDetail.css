@@ -396,13 +396,79 @@
   font-size: 0.95rem;
 }
 
-/* Map */
-.cd-map-premium-wrapper {
-  height: 400px;
+/* Subject Combinations */
+.cd-subject-combination-section {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  border: 1px solid #f1f5f9;
+}
+
+.cd-subject-combo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.cd-subject-card {
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
   border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cd-subject-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.cd-subject-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cd-subject-icon.science {
+  background-color: #eff6ff;
+  color: #3b82f6;
+}
+
+.cd-subject-icon.commerce {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+.cd-subject-icon.humanities {
+  background-color: #f5f3ff;
+  color: #7c3aed;
+}
+
+.cd-subject-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 1rem 0;
+}
+
+.cd-subject-content p {
+  font-size: 0.95rem;
+  color: #475569;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+}
+
+.cd-subject-content p strong {
+  color: #1e293b;
 }
 
 .cd-alumni-section,
