@@ -2,6 +2,8 @@ import React, { useMemo, useState, useEffect } from "react";
 
 import { offerings, CATEGORIES, getCutoff, getSeats } from "../data/cutoffsData";
 import { colleges as REAL_COLLEGES } from "../data/colleges";
+import { SourceBadge } from "../components/SourceBadge";
+import "./Cutoffs.css";
 
 /* =========================================================================
    CUET Pro — Subject Combination → Course/College Finder · "Dashboard Theme"
@@ -9,27 +11,26 @@ import { colleges as REAL_COLLEGES } from "../data/colleges";
    ========================================================================= */
 
 const STREAMS = {
-  com: { label: "Commerce & Management", color: "#d97706" },
-  arts: { label: "Arts & Social Sciences", color: "#7c3aed" },
-  lang: { label: "Languages", color: "#e11d48" },
-  sci: { label: "Science, Math & Tech", color: "#059669" },
+  Commerce: { label: "Commerce", color: "#2563eb" },
+  Humanities: { label: "Humanities", color: "#7c3aed" },
+  Science: { label: "Science", color: "#059669" },
 };
 
 const PROGRAMS = [
-  { id: "b-com-hons", name: "B.Com. (Hons.)", stream: "com" },
-  { id: "b-a-hons-economics", name: "B.A. (Hons.) Economics", stream: "com" },
-  { id: "bachelor-of-management-studies-bms", name: "Bachelor of Management Studies (BMS)", stream: "com" },
-  { id: "bachelor-of-business-administration-financial-investment-analysis-bba-fia", name: "Bachelor of Business Administration (Financial Investment Analysis) (BBA(FIA))", stream: "com" },
-  { id: "b-com", name: "B.Com.", stream: "com" },
-  { id: "b-a-hons-psychology", name: "B.A. (Hons.) Psychology", stream: "arts" },
-  { id: "b-a-hons-political-science", name: "B.A. (Hons.) Political Science", stream: "arts" },
-  { id: "b-a-hons-history", name: "B.A. (Hons.) History", stream: "arts" },
-  { id: "b-a-hons-sociology", name: "B.A. (Hons.) Sociology", stream: "arts" },
-  { id: "b-a-hons-english", name: "B.A. (Hons.) English", stream: "lang" },
-  { id: "b-a-hons-hindi", name: "B.A. (Hons.) Hindi", stream: "lang" },
-  { id: "b-sc-hons-computer-science", name: "B.Sc. (Hons.) Computer Science", stream: "sci" },
-  { id: "b-sc-hons-mathematics", name: "B.Sc. (Hons.) Mathematics", stream: "sci" },
-  { id: "b-sc-hons-statistics", name: "B.Sc. (Hons.) Statistics", stream: "sci" },
+  { id: "b-com-hons", name: "B.Com. (Hons.)", stream: "Commerce" },
+  { id: "b-a-hons-economics", name: "B.A. (Hons.) Economics", stream: "Commerce" },
+  { id: "bachelor-of-management-studies-bms", name: "Bachelor of Management Studies (BMS)", stream: "Commerce" },
+  { id: "bachelor-of-business-administration-financial-investment-analysis-bba-fia", name: "Bachelor of Business Administration (Financial Investment Analysis) (BBA(FIA))", stream: "Commerce" },
+  { id: "b-com", name: "B.Com.", stream: "Commerce" },
+  { id: "b-a-hons-psychology", name: "B.A. (Hons.) Psychology", stream: "Humanities" },
+  { id: "b-a-hons-political-science", name: "B.A. (Hons.) Political Science", stream: "Humanities" },
+  { id: "b-a-hons-history", name: "B.A. (Hons.) History", stream: "Humanities" },
+  { id: "b-a-hons-sociology", name: "B.A. (Hons.) Sociology", stream: "Humanities" },
+  { id: "b-a-hons-english", name: "B.A. (Hons.) English", stream: "Humanities" },
+  { id: "b-a-hons-hindi", name: "B.A. (Hons.) Hindi", stream: "Humanities" },
+  { id: "b-sc-hons-computer-science", name: "B.Sc. (Hons.) Computer Science", stream: "Science" },
+  { id: "b-sc-hons-mathematics", name: "B.Sc. (Hons.) Mathematics", stream: "Science" },
+  { id: "b-sc-hons-statistics", name: "B.Sc. (Hons.) Statistics", stream: "Science" },
 ];
 const COLLEGES = [];
 const RES_CATS = [
@@ -96,28 +97,37 @@ function matchCombo(combo, L0, D0, gt) {
 }
 function isEligible(pid, L, D, gt) { const r = RULES[pid] || []; return r.some((c) => matchCombo(c, L, D, gt)); }
 
-function Ring({ value, color }) {
-  const r = 19, circ = 2 * Math.PI * r, frac = Math.max(0, Math.min(1, (value - 600) / 400));
+function Ring({ value, color, max = 950 }) {
+  const r = 24;
+  const circ = 2 * Math.PI * r;
+  const frac = Math.max(0, Math.min(1, (value || 0) / max));
   return (
-    <svg className="cp-ring" width="50" height="50" viewBox="0 0 50 50">
-      <circle cx="25" cy="25" r={r} fill="none" stroke="#e2e8f0" strokeWidth="4.5" />
-      <circle cx="25" cy="25" r={r} fill="none" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - frac)} transform="rotate(-90 25 25)" />
-      <text x="25" y="28.5" textAnchor="middle" className="cp-ring-num">{Math.round(value)}</text>
+    <svg width="52" height="52" viewBox="0 0 64 64" className="cf-ring">
+      <circle cx="32" cy="32" r={r} fill="none" stroke="var(--border-color)" strokeWidth="5.5" />
+      <circle
+        cx="32" cy="32" r={r} fill="none" stroke={color} strokeWidth="5.5"
+        strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - frac)}
+        transform="rotate(-90 32 32)"
+      />
+      <text x="32" y="37" textAnchor="middle" className="cf-ring-num">{value ? Math.round(value) : '—'}</text>
     </svg>
   );
 }
 
 function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) {
   return (
-    <button className="cp-li" onClick={onOpen} style={{ "--rail": accent }}>
-      <span className="cp-li-rail" />
-      <span className="cp-li-main"><span className="cp-li-title">{title}</span><span className="cp-li-tag" style={{ color: accent, background: accent + "16" }}>{sub}</span></span>
-      <span className="cp-li-right">
-        <span className="cp-stat"><b>{count}</b><i>{countLabel}</i></span>
-        <span className="cp-stat"><b>{nf(seats)}</b><i>seats</i></span>
-        <span className="cp-ringwrap"><Ring value={top} color="#2563eb" /><i>top cutoff</i></span>
+    <button className="cf-li" onClick={onOpen} style={{ '--rail': accent }}>
+      <span className="cf-li-rail" />
+      <span className="cf-li-main">
+        <span className="cf-li-title">{title}</span>
+        <span className="cf-li-tag" style={{ color: accent, background: accent + '14' }}>{sub}</span>
       </span>
-      <span className="cp-li-go">›</span>
+      <span className="cf-li-right">
+        <span className="cf-stat"><b>{count}</b><i>{countLabel}</i></span>
+        <span className="cf-stat"><b>{seats === null ? '-' : nf(seats)}</b><i>seats</i></span>
+        <span className="cf-ringwrap"><Ring value={top} color="#2563eb" /><i>highest cutoff</i></span>
+      </span>
+      <span className="cf-li-go">›</span>
     </button>
   );
 }
@@ -129,9 +139,9 @@ function Modal({ open, onClose, payload }) {
   if (!open || !payload) return null;
   const { mode, item, eligibleIds } = payload;
   const numScore = score === "" ? null : Math.max(0, Math.min(1000, Number(score) || 0));
-  let title, accent, rows, combos = null;
+  let title, accent, rows;
   if (mode === "program") {
-    const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name; combos = ELIG[p.id];
+    const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name;
     const myOffs = offerings.filter(o => o.programId === p.id);
     rows = myOffs.map((o) => ({ key: o.collegeId, name: o.college?.short || o.collegeName, women: o.gender === "Women", cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)), seats: CATEGORIES.map((cat) => getSeats(o, cat)) }));
   } else {
@@ -144,35 +154,69 @@ function Modal({ open, onClose, payload }) {
     }).filter(Boolean);
   }
   rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
-  return (
-    <div className="cp-overlay" onClick={onClose}>
-      <div className="cp-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ "--maccent": accent }}>
-        <div className="cp-modal-head"><div className="cp-modal-title">{title}</div><button className="cp-x" onClick={onClose} aria-label="Close">×</button></div>
 
-        <div className="cp-modal-tools">
-          <div className="cp-tabs"><span className="cp-tabs-label">View</span>
-            <button className={"cp-tab " + (view === "seats" ? "on" : "")} onClick={() => setView("seats")}>Seats</button>
-            <button className={"cp-tab " + (view === "cutoffs" ? "on" : "")} onClick={() => setView("cutoffs")}>Cutoffs</button>
+  const colStats = CATEGORIES.map((_, ci) => {
+    const vals = rows.map(r => r.cutoffs[ci]).filter(v => v !== null && v !== undefined);
+    return { min: Math.min(...vals), max: Math.max(...vals) };
+  });
+
+  const seatColStats = CATEGORIES.map((_, ci) => {
+    const vals = rows.map(r => r.seats[ci]).filter(v => v !== null && v !== undefined);
+    return { min: Math.min(...vals), max: Math.max(...vals) };
+  });
+
+  function heatClass(v, ci, isCut) {
+    if (v === null || v === undefined) return '';
+    const { min, max } = isCut ? colStats[ci] : seatColStats[ci];
+    if (max === min) return 'cf-heat-5';
+    const pct = (v - min) / (max - min);
+    if (pct >= 0.8) return 'cf-heat-5';
+    if (pct >= 0.6) return 'cf-heat-4';
+    if (pct >= 0.4) return 'cf-heat-3';
+    if (pct >= 0.2) return 'cf-heat-2';
+    return 'cf-heat-1';
+  }
+
+  return (
+    <div className="cf-overlay" onClick={onClose}>
+      <div className="cf-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ "--maccent": accent }}>
+        <div className="cf-modal-head"><div className="cf-modal-title">{title}</div><button className="cf-x" onClick={onClose} aria-label="Close">×</button></div>
+
+        <div className="cf-modal-tools">
+          <div className="cf-tabs"><span className="cf-tabs-label">View</span>
+            <button className={"cf-tab " + (view === "seats" ? "on" : "")} onClick={() => setView("seats")}>Seats</button>
+            <button className={"cf-tab " + (view === "cutoffs" ? "on" : "")} onClick={() => setView("cutoffs")}>Cutoffs</button>
           </div>
-          {view === "cutoffs" && <input className="cp-scorein" type="number" inputMode="numeric" placeholder="Your CUET score → where you qualify lights up" value={score} onChange={(e) => setScore(e.target.value)} max={1000} min={0} />}
+          {view === "cutoffs" && <input className="cf-scorein" type="number" inputMode="numeric" placeholder="Your CUET score → where you qualify lights up" value={score} onChange={(e) => setScore(e.target.value)} max={1000} min={0} />}
         </div>
-        <div className="cp-tablewrap">
-          <table className="cp-table">
-            <thead><tr><th className="cp-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
+        <div className="cf-tablewrap">
+          <table className="cf-table">
+            <thead><tr><th className="cf-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
             <tbody>
-              {rows.map((r) => { const vals = view === "cutoffs" ? r.cutoffs : r.seats; return (
-                <tr key={r.key}>
-                  <td className="cp-td-name"><span>{r.name}</span>{r.women && <span className="cp-badge-w">Women</span>}{r.stream && <span className="cp-badge-s" style={{ color: STREAMS[r.stream].color, background: STREAMS[r.stream].color + "16" }}>{STREAMS[r.stream].label.split(" ")[0]}</span>}</td>
-                  {vals.map((v, i) => { const isCut = view === "cutoffs"; const q = isCut && numScore !== null && v !== null && numScore >= v; const bg = isCut && v !== null ? heatBg(v) : (!isCut && v !== null ? heatBgSeats(v) : undefined); return (
-                    <td key={i} className={"cp-num-cell " + (q ? "cp-q" : "")} style={{ background: bg }}>{v === null ? <span className="cp-dash">—</span> : (isCut ? v.toFixed(1) : v)}{q && <i className="cp-tick">✓</i>}</td>
-                  ); })}
-                </tr>
-              ); })}
+              {rows.map((r) => {
+                const vals = view === "cutoffs" ? r.cutoffs : r.seats; return (
+                  <tr key={r.key}>
+                    <td className="cf-td-name">
+                      <div className="cf-td-name-inner">
+                        <span className="cf-td-name-text">{r.name}</span>
+                        {r.women && <span className="cf-badge-w">Women</span>}
+                        {r.stream && <span className="cf-badge-s" style={{ color: STREAMS[r.stream].color, background: STREAMS[r.stream].color + "14" }}>{STREAMS[r.stream].label.split(" ")[0]}</span>}
+                      </div>
+                    </td>
+                    {vals.map((v, i) => {
+                      const isCut = view === "cutoffs";
+                      const q = isCut && numScore !== null && v !== null && numScore >= v;
+                      const heat = isCut && !q ? heatClass(v, i, true) : !isCut && v !== null ? heatClass(v, i, false) : '';
+                      return (
+                        <td key={i} className={"cf-num-cell " + heat + (q ? " cf-q" : "")}>{v === null ? <span className="cf-dash">—</span> : (isCut ? v.toFixed(1) : v)}{q && <i className="cf-tick">✓</i>}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
-        {view === "cutoffs" && <div className="cp-legend"><span>Low marks</span><span className="cp-legend-bar" /><span>High marks</span></div>}
-        {view === "seats" && <div className="cp-legend"><span>Fewer seats</span><span className="cp-legend-bar" style={{ background: "linear-gradient(90deg, hsla(0,72%,45%,0.6), hsla(60,72%,45%,0.6), hsla(145,72%,45%,0.6))" }} /><span>More seats</span></div>}
       </div>
     </div>
   );
@@ -185,10 +229,18 @@ export function SubjectCombination() {
   const [subjQuery, setSubjQuery] = useState("");
   const [shown, setShown] = useState(false);
   const [tab, setTab] = useState("eligible");
-  const [uni, setUni] = useState("du");
-  const [streamSel, setStreamSel] = useState("all");
-  const [courseSel, setCourseSel] = useState("all");
   const [selected, setSelected] = useState(null);
+  const [query, setQuery] = useState("");
+  const [group, setGroup] = useState("all");
+  const [campus, setCampus] = useState("all");
+  const [sort, setSort] = useState("seats");
+
+  const handleTabChange = (newTab) => {
+    setTab(newTab);
+    setQuery("");
+    setGroup("all");
+    setCampus("all");
+  };
 
   const domainGtPicked = domains.length + (gt ? 1 : 0);
   const totalPicked = langs.length + domainGtPicked;
@@ -227,21 +279,58 @@ export function SubjectCombination() {
     }).filter(x => x.eProgs.length > 0);
   }, [eligibleIds]);
 
-  // if the chosen course is no longer eligible (subjects changed), reset it
-  useEffect(() => { if (courseSel !== "all" && !eligibleIds.has(courseSel)) setCourseSel("all"); }, [eligibleIds, courseSel]);
+  const campusOptions = useMemo(() => {
+    const set = new Set(REAL_COLLEGES.map((c) => c.campus));
+    return Array.from(set).filter((c) => c !== 'Various').sort();
+  }, []);
 
-  const course = courseSel !== "all" && eligibleIds.has(courseSel) ? courseSel : "all";
-  const passProg = (p) => (course !== "all" ? p.id === course : (streamSel === "all" || p.stream === streamSel));
-  const eligShown = eligible.filter(passProg);
-  const collegesShown = openColleges
-    .map(({ c, eProgs }) => ({ c, eProgs: course !== "all" ? eProgs.filter((p) => p.id === course) : (streamSel === "all" ? eProgs : eProgs.filter((p) => p.stream === streamSel)) }))
-    .filter((x) => x.eProgs.length)
-    .sort((a, b) => b.eProgs.length - a.eProgs.length);
+  const eligShown = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = eligible
+      .filter((p) => (group === 'all' || p.stream === group) && (!q || p.name.toLowerCase().includes(q)))
+      .map((p) => ({
+        ...p,
+        ...progStats(p)
+      }));
+    
+    list.sort((a, b) => {
+      if (sort === 'az') return a.name.localeCompare(b.name);
+      if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
+      if (sort === 'colleges') return b.count - a.count;
+      return (b.totalSeats || 0) - (a.totalSeats || 0);
+    });
+    return list;
+  }, [eligible, query, group, sort]);
+
+  const collegesShown = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = openColleges
+      .filter(({ c }) => (campus === 'all' || (campus === 'women' ? c.type === 'Women' : c.campus === campus)) && (!q || c.name.toLowerCase().includes(q)))
+      .map(({ c, eProgs }) => {
+        const myOffs = offerings.filter(o => o.collegeId === c.id && eProgs.some(p => p.id === o.programId));
+        const totalSeats = myOffs.reduce((s, o) => s + (o.seats.total || 0), 0);
+        const topCutoff = myOffs.reduce((m, o) => Math.max(m, o.cutoffs.UR || 0), 0);
+        return {
+          c,
+          eProgs,
+          count: eProgs.length,
+          totalSeats,
+          topCutoff
+        };
+      });
+
+    list.sort((a, b) => {
+      if (sort === 'az') return a.c.name.localeCompare(b.c.name);
+      if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
+      if (sort === 'colleges') return b.count - a.count;
+      return (b.totalSeats || 0) - (a.totalSeats || 0);
+    });
+    return list;
+  }, [openColleges, query, campus, sort]);
 
   return (
     <div className="cp-wrap">
       <style>{CSS}</style>
-      <header className="cp-top"><div className="cp-brand"><div className="cp-logo">CP</div><div><div className="cp-brand-name">CUET Pro</div><div className="cp-brand-sub">Delhi University Admissions</div></div></div></header>
       <section className="cp-herowrap cp-hero-new">
         <div className="cp-hero-bg" aria-hidden="true">
           <div className="cp-hero-blob cp-hero-blob-1" />
@@ -321,37 +410,95 @@ export function SubjectCombination() {
         {totalPicked > 0 && <button className="cp-reset" onClick={reset}>Clear all</button>}
       </div>
 
-      {totalPicked > 0 && (
-        <div className="cp-selected-summary">
-          <div className="cp-selected-head">Your Selected Subjects</div>
-          <div className="cp-selected-chips">
-            {langs.map(l => <span key={l} className="cp-chip-sel cp-chip-lang">{l}</span>)}
-            {domains.map(d => <span key={d} className="cp-chip-sel cp-chip-dom">{d}</span>)}
-            {gt && <span className="cp-chip-sel cp-chip-gt">General Aptitude Test</span>}
-          </div>
-        </div>
-      )}
-
       {shown && totalPicked > 0 && (
-        <div className="cp-results">
-          <div className="cp-filters3">
-            <div className="cp-field"><label>University</label><select value={uni} onChange={(e) => setUni(e.target.value)}><option value="du">University of Delhi</option></select></div>
-            <div className="cp-field"><label>Stream</label><select value={streamSel} onChange={(e) => setStreamSel(e.target.value)} disabled={course !== "all"}><option value="all">All streams</option>{Object.entries(STREAMS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select></div>
-            <div className="cp-field"><label>Course</label><select value={courseSel} onChange={(e) => setCourseSel(e.target.value)}><option value="all">All eligible courses</option>{eligible.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div>
+        <div className="cf-results" style={{ marginTop: "2rem" }}>
+          <div className="cf-seg" data-on={tab === "eligible" ? "program" : "college"}>
+            <button className={tab === "eligible" ? "on" : ""} onClick={() => handleTabChange("eligible")}>Browse by Program</button>
+            <button className={tab === "colleges" ? "on" : ""} onClick={() => handleTabChange("colleges")}>Browse by College</button>
+            <span className="cf-seg-knob" />
           </div>
-          <div className="cp-restabs">
-            <button className={tab === "eligible" ? "on" : ""} onClick={() => setTab("eligible")}>Eligible Programs ({eligShown.length})</button>
-            <button className={tab === "colleges" ? "on" : ""} onClick={() => setTab("colleges")}>Eligible Colleges ({collegesShown.length})</button>
+
+          <div className="cf-controls">
+            <input
+              className="cf-search"
+              placeholder={tab === 'eligible' ? 'Search programs…' : 'Search colleges…'}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <select className="cf-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="seats">Most seats</option>
+              <option value="cutoff">Highest cutoff</option>
+              <option value="colleges">{tab === 'eligible' ? 'Most colleges' : 'Most programs'}</option>
+              <option value="az">A–Z</option>
+            </select>
           </div>
-          <div className="cp-reslist">
-            {tab === "eligible" && (eligShown.length ? eligShown.map((p) => { const st = progStats(p); return <ListRow key={p.id} title={p.name} sub={STREAMS[p.stream].label} accent={STREAMS[p.stream].color} count={st.count} countLabel="colleges" seats={st.totalSeats} top={st.topCutoff} onOpen={() => setSelected({ mode: "program", item: p })} />; }) : <div className="cp-empty">No eligible programs for this filter.</div>)}
-            {tab === "colleges" && (collegesShown.length ? collegesShown.map(({ c, eProgs }) => { 
-              const myOffs = offerings.filter(o => o.collegeId === c.id && eProgs.some(p => p.id === o.programId));
-              const seats = myOffs.reduce((s, o) => s + (o.seats.total || 0), 0); 
-              const top = myOffs.reduce((m, o) => Math.max(m, o.cutoffs.UR || 0), 0); 
-              return <ListRow key={c.id} title={c.name} sub={c.campus + " Campus · " + c.type} accent="#2563eb" count={eProgs.length} countLabel="courses" seats={seats} top={top} onOpen={() => setSelected({ mode: "college", item: c, eligibleIds })} />; 
-            }) : <div className="cp-empty">No open colleges for this filter.</div>)}
+
+          <div className="cf-filters">
+            {tab === 'eligible' ? (
+              <>
+                <button className={'cf-chip ' + (group === 'all' ? 'on' : '')} onClick={() => setGroup('all')}>All</button>
+                {Object.entries(STREAMS).map(([k, v]) => (
+                  <button
+                    key={k}
+                    className={'cf-chip ' + (group === k ? 'on' : '')}
+                    onClick={() => setGroup(k)}
+                    style={group === k ? { borderColor: v.color, color: '#fff', background: v.color } : {}}
+                  >
+                    {v.label}
+                  </button>
+                ))}
+              </>
+            ) : (
+              <>
+                <button className={'cf-chip ' + (campus === 'all' ? 'on' : '')} onClick={() => setCampus('all')}>All</button>
+                {campusOptions.map((c) => (
+                  <button key={c} className={'cf-chip ' + (campus === c ? 'on' : '')} onClick={() => setCampus(c)}>{c} Campus</button>
+                ))}
+                <button className={'cf-chip ' + (campus === 'women' ? 'on' : '')} onClick={() => setCampus('women')}>Women's</button>
+              </>
+            )}
           </div>
+
+          <div className="cf-table-badge-row">
+            <div className="cf-count">
+              Showing {tab === 'eligible' ? `${eligShown.length} programs` : `${collegesShown.length} colleges`}
+            </div>
+            <SourceBadge date="CSAS 2025" />
+          </div>
+
+          <main className="cf-list">
+            {tab === 'eligible'
+              ? (eligShown.length ? eligShown.map((p) => {
+                  return (
+                    <ListRow
+                      key={p.id}
+                      title={p.name}
+                      sub={STREAMS[p.stream].label}
+                      accent={STREAMS[p.stream].color}
+                      count={p.count}
+                      countLabel="colleges"
+                      seats={p.totalSeats}
+                      top={p.topCutoff}
+                      onOpen={() => setSelected({ mode: 'program', item: p })}
+                    />
+                  );
+                }) : <div className="cf-empty">No eligible programs match the criteria.</div>)
+              : (collegesShown.length ? collegesShown.map((item) => {
+                  return (
+                    <ListRow
+                      key={item.c.id}
+                      title={item.c.name}
+                      sub={item.c.campus + ' Campus · ' + item.c.type}
+                      accent="#2563eb"
+                      count={item.count}
+                      countLabel="courses"
+                      seats={item.totalSeats}
+                      top={item.topCutoff}
+                      onOpen={() => setSelected({ mode: 'college', item: item.c, eligibleIds })}
+                    />
+                  );
+                }) : <div className="cf-empty">No open colleges match the criteria.</div>)}
+          </main>
         </div>
       )}
 
