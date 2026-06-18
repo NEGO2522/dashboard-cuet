@@ -171,7 +171,9 @@ function Modal({ open, onClose, payload }) {
     if (v === null || v === undefined) return '';
     const { min, max } = isCut ? colStats[ci] : seatColStats[ci];
     if (max === min) return 'cf-heat-5';
-    const pct = (v - min) / (max - min);
+    // Cutoffs: lower score = easier to get in = green. Higher score = harder = red.
+    // Seats: more seats = better odds = green. Fewer seats = red.
+    const pct = isCut ? (max - v) / (max - min) : (v - min) / (max - min);
     if (pct >= 0.8) return 'cf-heat-5';
     if (pct >= 0.6) return 'cf-heat-4';
     if (pct >= 0.4) return 'cf-heat-3';
@@ -198,7 +200,12 @@ function Modal({ open, onClose, payload }) {
             <button className={"cf-tab " + (view === "seats" ? "on" : "")} onClick={() => setView("seats")}>Seats</button>
             <button className={"cf-tab " + (view === "cutoffs" ? "on" : "")} onClick={() => setView("cutoffs")}>Cutoffs</button>
           </div>
-          {view === "cutoffs" && <input className="cf-scorein" type="number" inputMode="numeric" placeholder="Your CUET score → where you qualify lights up" value={score} onChange={(e) => setScore(e.target.value)} max={1000} min={0} />}
+          {view === "cutoffs" && (
+            <div className="cf-score-field">
+              <input className="cf-scorein" type="number" inputMode="numeric" placeholder="Enter your CUET score (out of 1000)" value={score} onChange={(e) => setScore(e.target.value)} max={1000} min={0} />
+              <span className="cf-score-hint">Rows you qualify for will be highlighted</span>
+            </div>
+          )}
         </div>
         <div className="cf-tablewrap">
           <table className="cf-table">

@@ -505,9 +505,22 @@
   font-family: inherit;
   color: var(--text-color);
   outline: none;
+  width: 100%;
 }
 
 .cf-scorein:focus { border-color: var(--maccent); }
+
+.cf-score-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cf-score-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  padding-left: 0.1rem;
+}
 
 .cf-tablewrap { overflow: auto; flex: 1; border-top: 1px solid var(--border-color); }
 .cf-table { width: 100%; min-width: unset; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed; }
