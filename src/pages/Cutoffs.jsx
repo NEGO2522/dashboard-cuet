@@ -31,7 +31,7 @@ function Ring({ value, color, max = 950 }) {
   const circ = 2 * Math.PI * r;
   const frac = Math.max(0, Math.min(1, (value || 0) / max));
   return (
-    <svg width="64" height="64" viewBox="0 0 64 64" className="cf-ring">
+    <svg width="52" height="52" viewBox="0 0 64 64" className="cf-ring">
       <circle cx="32" cy="32" r={r} fill="none" stroke="var(--border-color)" strokeWidth="5.5" />
       <circle
         cx="32" cy="32" r={r} fill="none" stroke={color} strokeWidth="5.5"

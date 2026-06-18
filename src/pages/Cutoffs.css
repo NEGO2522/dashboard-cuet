@@ -190,7 +190,7 @@
 }
 
 .cf-li-main { flex: 1; min-width: 0; }
-.cf-li-title { display: block; font-weight: 700; font-size: 1.15rem; color: var(--text-color); line-height: 1.25; letter-spacing: -0.01em; }
+.cf-li-title { display: block; font-weight: 700; font-size: 1rem; color: var(--text-color); line-height: 1.25; letter-spacing: -0.01em; }
 .cf-li-tag {
   display: inline-block;
   margin-top: 0.55rem;
@@ -203,12 +203,12 @@
 
 .cf-li-right { display: flex; align-items: center; gap: 1.75rem; }
 .cf-stat { display: flex; flex-direction: column; align-items: center; text-align: center; white-space: nowrap; }
-.cf-stat b { font-weight: 800; font-size: 1.6rem; color: var(--text-color); line-height: 1; letter-spacing: -0.01em; }
-.cf-stat i { font-style: normal; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+.cf-stat b { font-weight: 800; font-size: 1.25rem; color: var(--text-color); line-height: 1; letter-spacing: -0.01em; }
+.cf-stat i { font-style: normal; font-size: 0.65rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
 
 .cf-ringwrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.cf-ringwrap i { font-style: normal; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
-.cf-ring-num { font-weight: 800; font-size: 17px; fill: var(--text-color); }
+.cf-ringwrap i { font-style: normal; font-size: 0.62rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+.cf-ring-num { font-weight: 800; font-size: 14px; fill: var(--text-color); }
 
 .cf-li-go { font-size: 1.6rem; color: #b6bdd6; line-height: 1; flex-shrink: 0; transition: var(--transition); }
 .cf-li:hover .cf-li-go { color: var(--accent-blue); transform: translateX(2px); }
@@ -346,13 +346,15 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   text-align: right;
-  padding: 0.7rem 0.85rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 0.85rem;
+  border-bottom: 2px solid var(--border-color);
   white-space: nowrap;
 }
 
 .cf-table thead th.cf-th-name { text-align: left; }
-.cf-table td { padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--border-color); text-align: right; white-space: nowrap; }
+.cf-table tbody tr { border-bottom: 1px solid var(--border-color); }
+.cf-table tbody tr:last-child { border-bottom: none; }
+.cf-table td { padding: 0.85rem 0.85rem; text-align: right; white-space: nowrap; border-bottom: none; }
 
 .cf-td-name {
   text-align: left !important;
