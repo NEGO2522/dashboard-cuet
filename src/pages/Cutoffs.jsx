@@ -141,11 +141,14 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <button className="cf-x" onClick={onClose} aria-label="Close">×</button>
         </div>
         {eligibility && (
-          <div className="cf-elig-strip">
-            <span className="cf-elig-label">📋 Eligibility</span>
-            <span className={`cf-elig-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</span>
+          <div className="cf-elig-card">
+            <div className="cf-elig-card-head">
+              <span className="cf-elig-icon">📋</span>
+              <span className="cf-elig-card-title">Eligibility</span>
+            </div>
+            <p className={`cf-elig-card-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</p>
             <button className="cf-elig-toggle" onClick={() => setEligExpanded(e => !e)}>
-              {eligExpanded ? 'Less ▲' : 'More ▼'}
+              {eligExpanded ? 'Show less ▲' : 'Show full eligibility ▼'}
             </button>
           </div>
         )}

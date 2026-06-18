@@ -186,11 +186,14 @@ function Modal({ open, onClose, payload }) {
       <div className="cf-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ "--maccent": accent }}>
         <div className="cf-modal-head"><div className="cf-modal-title">{title}</div><button className="cf-x" onClick={onClose} aria-label="Close">×</button></div>
         {eligibility && (
-          <div className="cf-elig-strip">
-            <span className="cf-elig-label">📋 Eligibility</span>
-            <span className={`cf-elig-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</span>
+          <div className="cf-elig-card">
+            <div className="cf-elig-card-head">
+              <span className="cf-elig-icon">📋</span>
+              <span className="cf-elig-card-title">Eligibility</span>
+            </div>
+            <p className={`cf-elig-card-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</p>
             <button className="cf-elig-toggle" onClick={() => setEligExpanded(e => !e)}>
-              {eligExpanded ? 'Less ▲' : 'More ▼'}
+              {eligExpanded ? 'Show less ▲' : 'Show full eligibility ▼'}
             </button>
           </div>
         )}
@@ -246,6 +249,7 @@ export function SubjectCombination() {
   const [gt, setGt] = useState(false);
   const [subjQuery, setSubjQuery] = useState("");
   const [shown, setShown] = useState(false);
+  const [selectionChanged, setSelectionChanged] = useState(false);
   const [tab, setTab] = useState("eligible");
   const [selected, setSelected] = useState(null);
   const [query, setQuery] = useState("");
@@ -264,11 +268,15 @@ export function SubjectCombination() {
   const totalPicked = langs.length + domainGtPicked;
 
   const toggleLang = (v) => {
+    if (shown) setSelectionChanged(true);
+    setShown(false);
     if (langs.includes(v)) setLangs([]);
     else setLangs([v]);
   };
 
   const toggleDomain = (v) => {
+    if (shown) setSelectionChanged(true);
+    setShown(false);
     if (domains.includes(v)) setDomains(domains.filter((x) => x !== v));
     else {
       if (domainGtPicked >= 4) return alert("You can select a maximum of 4 subjects across Domains and General Test.");
@@ -277,6 +285,8 @@ export function SubjectCombination() {
   };
 
   const toggleGt = () => {
+    if (shown) setSelectionChanged(true);
+    setShown(false);
     if (gt) setGt(false);
     else {
       if (domainGtPicked >= 4) return alert("You can select a maximum of 4 subjects across Domains and General Test.");
@@ -284,7 +294,7 @@ export function SubjectCombination() {
     }
   };
 
-  const reset = () => { setLangs([]); setDomains([]); setGt(false); setShown(false); };
+  const reset = () => { setLangs([]); setDomains([]); setGt(false); setShown(false); setSelectionChanged(false); };
 
   const evaluated = useMemo(() => PROGRAMS.map((p) => ({ p, ok: isEligible(p.id, langs, domains, gt) })), [langs, domains, gt]);
   const eligible = useMemo(() => evaluated.filter((x) => x.ok).map((x) => x.p), [evaluated]);
@@ -422,8 +432,8 @@ export function SubjectCombination() {
       </div>
 
       <div className="cp-cta-wrap">
-        <button className="cp-cta" disabled={langs.length !== 1} onClick={() => setShown(true)}>
-          {langs.length === 0 ? "Select 1 Language to proceed" : `See my eligible programs (${totalPicked}/5 selected)`}
+        <button className="cp-cta" disabled={langs.length !== 1} onClick={() => { setShown(true); setSelectionChanged(false); }}>
+          {langs.length === 0 ? "Select 1 Language to proceed" : selectionChanged ? `Selection changed — click to update results (${totalPicked}/5 selected)` : `See my eligible programs (${totalPicked}/5 selected)`}
         </button>
         {totalPicked > 0 && <button className="cp-reset" onClick={reset}>Clear all</button>}
       </div>
