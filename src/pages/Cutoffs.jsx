@@ -54,7 +54,7 @@ function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) 
       <span className="cf-li-right">
         <span className="cf-stat"><b>{count}</b><i>{countLabel}</i></span>
         <span className="cf-stat"><b>{seats === null ? '-' : nf(seats)}</b><i>seats</i></span>
-        <span className="cf-ringwrap"><Ring value={top} color={accent} /><i>highest cutoff</i></span>
+        <span className="cf-ringwrap"><Ring value={top} color="#2563eb" /><i>highest cutoff</i></span>
       </span>
       <span className="cf-li-go">›</span>
     </button>
@@ -458,31 +458,31 @@ export function Cutoffs() {
       <main className="cf-list">
         {mode === 'program'
           ? programList.map((p) => (
-              <ListRow
-                key={p.id}
-                title={p.name}
-                sub={p.subjectGroup}
-                accent={groupColor(p.subjectGroup)}
-                count={p.count}
-                countLabel="colleges"
-                seats={p.totalSeats}
-                top={p.topCutoff}
-                onOpen={() => setSelected({ mode: 'program', item: p })}
-              />
-            ))
+            <ListRow
+              key={p.id}
+              title={p.name}
+              sub={p.subjectGroup}
+              accent={groupColor(p.subjectGroup)}
+              count={p.count}
+              countLabel="colleges"
+              seats={p.totalSeats}
+              top={p.topCutoff}
+              onOpen={() => setSelected({ mode: 'program', item: p })}
+            />
+          ))
           : collegeList.map((c) => (
-              <ListRow
-                key={c.id}
-                title={c.name}
-                sub={c.campus + ' · ' + c.type}
-                accent="#2563eb"
-                count={c.count}
-                countLabel="programs"
-                seats={c.totalSeats}
-                top={c.topCutoff}
-                onOpen={() => setSelected({ mode: 'college', item: c })}
-              />
-            ))}
+            <ListRow
+              key={c.id}
+              title={c.name}
+              sub={c.campus + ' · ' + c.type}
+              accent="#2563eb"
+              count={c.count}
+              countLabel="programs"
+              seats={c.totalSeats}
+              top={c.topCutoff}
+              onOpen={() => setSelected({ mode: 'college', item: c })}
+            />
+          ))}
         {((mode === 'program' && !programList.length) || (mode === 'college' && !collegeList.length)) && (
           <div className="cf-empty">Nothing matches that search.</div>
         )}

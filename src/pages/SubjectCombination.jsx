@@ -115,7 +115,7 @@ function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) 
       <span className="cp-li-right">
         <span className="cp-stat"><b>{count}</b><i>{countLabel}</i></span>
         <span className="cp-stat"><b>{nf(seats)}</b><i>seats</i></span>
-        <span className="cp-ringwrap"><Ring value={top} color={accent} /><i>top cutoff</i></span>
+        <span className="cp-ringwrap"><Ring value={top} color="#2563eb" /><i>top cutoff</i></span>
       </span>
       <span className="cp-li-go">›</span>
     </button>
