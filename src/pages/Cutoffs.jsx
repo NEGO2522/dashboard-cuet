@@ -64,6 +64,7 @@ function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) 
 function DetailModal({ open, onClose, mode, item, indices }) {
   const [view, setView] = useState('cutoffs');
   const [score, setScore] = useState('');
+  const [eligExpanded, setEligExpanded] = useState(false);
 
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose(); }
@@ -103,6 +104,8 @@ function DetailModal({ open, onClose, mode, item, indices }) {
     }));
   }
 
+  const eligibility = mode === 'program' ? (item.eligibility || getEligibilityForProgram(item.name)) : null;
+
   rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
 
   // Heatmap: compute min/max per column for cutoffs and seats view
@@ -135,6 +138,15 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <div className="cf-modal-title">{title}</div>
           <button className="cf-x" onClick={onClose} aria-label="Close">×</button>
         </div>
+        {eligibility && (
+          <div className="cf-elig-strip">
+            <span className="cf-elig-label">📋 Eligibility</span>
+            <span className={`cf-elig-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</span>
+            <button className="cf-elig-toggle" onClick={() => setEligExpanded(e => !e)}>
+              {eligExpanded ? 'Less ▲' : 'More ▼'}
+            </button>
+          </div>
+        )}
         <div className="cf-modal-tools">
           <div className="cf-tabs">
             <span className="cf-tabs-label">View</span>
