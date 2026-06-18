@@ -1,17 +1,15 @@
 import React, { useMemo, useState, useEffect } from "react";
 
 /* =========================================================================
-   CUET Pro — Subject Combination → Course/College Finder · "Marigold"
+   CUET Pro — Subject Combination → Course/College Finder · "Dashboard Theme"
    Pick CUET subjects → Eligible Programs / Other Programs / Eligible Colleges.
-   Rows match the cutoff matrix; combinations + cutoffs/seats live in the popup.
-   Sample data — always verify on the official DU CSAS portal.
    ========================================================================= */
 
 const STREAMS = {
-  com: { label: "Commerce & Management", color: "#E8850C" },
-  arts: { label: "Arts & Social Sciences", color: "#4338CA" },
-  lang: { label: "Languages", color: "#B45309" },
-  sci: { label: "Science, Math & Tech", color: "#0E7490" },
+  com: { label: "Commerce & Management", color: "#d97706" },
+  arts: { label: "Arts & Social Sciences", color: "#7c3aed" },
+  lang: { label: "Languages", color: "#e11d48" },
+  sci: { label: "Science, Math & Tech", color: "#059669" },
 };
 const PROGRAMS = [
   { id: "bcomh", name: "B.Com (Hons)", stream: "com", comp: 0.965, base: 110 },
@@ -119,7 +117,7 @@ function Ring({ value, color }) {
   const r = 19, circ = 2 * Math.PI * r, frac = Math.max(0, Math.min(1, (value - 600) / 400));
   return (
     <svg className="cp-ring" width="50" height="50" viewBox="0 0 50 50">
-      <circle cx="25" cy="25" r={r} fill="none" stroke="#F1E6D2" strokeWidth="4.5" />
+      <circle cx="25" cy="25" r={r} fill="none" stroke="#e2e8f0" strokeWidth="4.5" />
       <circle cx="25" cy="25" r={r} fill="none" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={circ * (1 - frac)} transform="rotate(-90 25 25)" />
       <text x="25" y="28.5" textAnchor="middle" className="cp-ring-num">{Math.round(value)}</text>
     </svg>
@@ -129,16 +127,16 @@ function Hero() {
   const rays = Array.from({ length: 12 }, (_, i) => i * 30);
   return (
     <svg className="cp-hero-img" viewBox="0 0 420 200" role="img" aria-label="Illustration of subjects opening doors to courses">
-      <defs><linearGradient id="mSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#FFE7C2" /><stop offset="100%" stopColor="#FFF7EA" /></linearGradient></defs>
+      <defs><linearGradient id="mSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#eff6ff" /><stop offset="100%" stopColor="#ffffff" /></linearGradient></defs>
       <rect x="0" y="0" width="420" height="200" rx="18" fill="url(#mSky)" />
-      <g transform="translate(210,72)" opacity="0.9">{rays.map((a) => <rect key={a} x="-1.6" y="-46" width="3.2" height="16" rx="2" fill="#F6B23B" transform={`rotate(${a})`} />)}</g>
-      <circle cx="210" cy="72" r="26" fill="#F59E0B" />
-      <rect x="0" y="150" width="420" height="50" fill="#3730A3" />
-      <rect x="60" y="120" width="40" height="30" fill="#312E81" /><rect x="108" y="108" width="34" height="42" fill="#312E81" /><rect x="300" y="116" width="40" height="34" fill="#312E81" /><rect x="346" y="126" width="30" height="24" fill="#312E81" />
-      <rect x="178" y="104" width="64" height="46" fill="#4338CA" /><polygon points="176,104 210,82 244,104" fill="#4338CA" />
-      <path d="M196 82 a14 14 0 0 1 28 0 z" fill="#F59E0B" />
-      {[184, 196, 208, 220, 232].map((x) => <rect key={x} x={x} y="116" width="5" height="34" fill="#A5B4FC" opacity=".8" />)}
-      <g transform="translate(330,52)"><polygon points="0,8 22,0 44,8 22,16" fill="#1E1B4B" /><path d="M8 12 v10 q14 8 28 0 v-10" fill="#1E1B4B" opacity=".85" /><line x1="44" y1="8" x2="44" y2="22" stroke="#F59E0B" strokeWidth="2" /><circle cx="44" cy="24" r="3" fill="#F59E0B" /></g>
+      <g transform="translate(210,72)" opacity="0.9">{rays.map((a) => <rect key={a} x="-1.6" y="-46" width="3.2" height="16" rx="2" fill="#93c5fd" transform={`rotate(${a})`} />)}</g>
+      <circle cx="210" cy="72" r="26" fill="#3b82f6" />
+      <rect x="0" y="150" width="420" height="50" fill="#0f172a" />
+      <rect x="60" y="120" width="40" height="30" fill="#1e293b" /><rect x="108" y="108" width="34" height="42" fill="#1e293b" /><rect x="300" y="116" width="40" height="34" fill="#1e293b" /><rect x="346" y="126" width="30" height="24" fill="#1e293b" />
+      <rect x="178" y="104" width="64" height="46" fill="#2563eb" /><polygon points="176,104 210,82 244,104" fill="#2563eb" />
+      <path d="M196 82 a14 14 0 0 1 28 0 z" fill="#3b82f6" />
+      {[184, 196, 208, 220, 232].map((x) => <rect key={x} x={x} y="116" width="5" height="34" fill="#bfdbfe" opacity=".8" />)}
+      <g transform="translate(330,52)"><polygon points="0,8 22,0 44,8 22,16" fill="#0f172a" /><path d="M8 12 v10 q14 8 28 0 v-10" fill="#0f172a" opacity=".85" /><line x1="44" y1="8" x2="44" y2="22" stroke="#3b82f6" strokeWidth="2" /><circle cx="44" cy="24" r="3" fill="#3b82f6" /></g>
     </svg>
   );
 }
@@ -170,7 +168,7 @@ function Modal({ open, onClose, payload }) {
     const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name; combos = ELIG[p.id];
     rows = progCols(p).map((c) => ({ key: c.id, name: c.short || c.name, women: c.type === "Women", cutoffs: RES_CATS.map((cat) => catCutoff(c, p, cat)), seats: RES_CATS.map((cat) => catSeats(c, p, cat)) }));
   } else {
-    const c = item; accent = "#E8850C"; title = "Your courses at " + c.name;
+    const c = item; accent = "#2563eb"; title = "Your courses at " + c.name;
     rows = c.offers.filter((id) => !eligibleIds || eligibleIds.has(id)).map((id) => PROGRAMS.find((p) => p.id === id)).filter(Boolean).map((p) => ({ key: p.id, name: p.name, stream: p.stream, cutoffs: RES_CATS.map((cat) => catCutoff(c, p, cat)), seats: RES_CATS.map((cat) => catSeats(c, p, cat)) }));
   }
   rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
@@ -225,9 +223,31 @@ export function SubjectCombination() {
   const [courseSel, setCourseSel] = useState("all");
   const [selected, setSelected] = useState(null);
 
-  const toggle = (arr, set, v) => set(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
+  const domainGtPicked = domains.length + (gt ? 1 : 0);
+  const totalPicked = langs.length + domainGtPicked;
+
+  const toggleLang = (v) => {
+    if (langs.includes(v)) setLangs([]);
+    else setLangs([v]);
+  };
+
+  const toggleDomain = (v) => {
+    if (domains.includes(v)) setDomains(domains.filter((x) => x !== v));
+    else {
+      if (domainGtPicked >= 4) return alert("You can select a maximum of 4 subjects across Domains and General Test.");
+      setDomains([...domains, v]);
+    }
+  };
+
+  const toggleGt = () => {
+    if (gt) setGt(false);
+    else {
+      if (domainGtPicked >= 4) return alert("You can select a maximum of 4 subjects across Domains and General Test.");
+      setGt(true);
+    }
+  };
+
   const reset = () => { setLangs([]); setDomains([]); setGt(false); setShown(false); };
-  const totalPicked = langs.length + domains.length + (gt ? 1 : 0);
 
   const evaluated = useMemo(() => PROGRAMS.map((p) => ({ p, ok: isEligible(p.id, langs, domains, gt) })), [langs, domains, gt]);
   const eligible = useMemo(() => evaluated.filter((x) => x.ok).map((x) => x.p), [evaluated]);
@@ -260,22 +280,35 @@ export function SubjectCombination() {
       <div className="cp-picker">
         <div className="cp-col">
           <div className="cp-col-head">Languages <small>(List A)</small></div>
-          <div className="cp-col-body">{LANGUAGES.filter((l) => l.toLowerCase().includes(subjQuery.toLowerCase())).map((l) => <button key={l} className="cp-pick" onClick={() => toggle(langs, setLangs, l)} style={langs.includes(l) ? { borderColor: "#B45309", background: "#FBEAD7", color: "#B45309" } : {}}>{langs.includes(l) ? "✓ " : ""}{l}</button>)}</div>
+          <div className="cp-col-body">{LANGUAGES.filter((l) => l.toLowerCase().includes(subjQuery.toLowerCase())).map((l) => <button key={l} className="cp-pick" onClick={() => toggleLang(l)} style={langs.includes(l) ? { borderColor: "#2563eb", background: "#eff6ff", color: "#2563eb" } : {}}>{langs.includes(l) ? "✓ " : ""}{l}</button>)}</div>
         </div>
         <div className="cp-col cp-col-wide">
           <div className="cp-col-head">Domain Subjects <small>(List B)</small></div>
-          <div className="cp-col-body cp-col-grid">{DOMAINS.filter((d) => d.toLowerCase().includes(subjQuery.toLowerCase())).map((d) => <button key={d} className="cp-pick" onClick={() => toggle(domains, setDomains, d)} style={domains.includes(d) ? { borderColor: "#E8850C", background: "#FCEAD2", color: "#9A5B0A" } : {}}>{domains.includes(d) ? "✓ " : ""}{d}</button>)}</div>
+          <div className="cp-col-body cp-col-grid">{DOMAINS.filter((d) => d.toLowerCase().includes(subjQuery.toLowerCase())).map((d) => <button key={d} className="cp-pick" onClick={() => toggleDomain(d)} style={domains.includes(d) ? { borderColor: "#059669", background: "#ecfdf5", color: "#047857" } : {}}>{domains.includes(d) ? "✓ " : ""}{d}</button>)}</div>
         </div>
         <div className="cp-col">
           <div className="cp-col-head">General Test</div>
-          <div className="cp-col-body"><button className="cp-pick" onClick={() => setGt(!gt)} style={gt ? { borderColor: "#4338CA", background: "#E8E7FB", color: "#4338CA" } : {}}>{gt ? "✓ " : ""}General Aptitude Test</button></div>
+          <div className="cp-col-body"><button className="cp-pick" onClick={toggleGt} style={gt ? { borderColor: "#7c3aed", background: "#f5f3ff", color: "#7c3aed" } : {}}>{gt ? "✓ " : ""}General Aptitude Test</button></div>
         </div>
       </div>
 
       <div className="cp-cta-wrap">
-        <button className="cp-cta" disabled={totalPicked === 0} onClick={() => setShown(true)}>See my eligible programs{totalPicked ? ` (${totalPicked} selected)` : ""}</button>
+        <button className="cp-cta" disabled={langs.length !== 1} onClick={() => setShown(true)}>
+          {langs.length === 0 ? "Select 1 Language to proceed" : `See my eligible programs (${totalPicked}/5 selected)`}
+        </button>
         {totalPicked > 0 && <button className="cp-reset" onClick={reset}>Clear all</button>}
       </div>
+
+      {totalPicked > 0 && (
+        <div className="cp-selected-summary">
+          <div className="cp-selected-head">Your Selected Subjects</div>
+          <div className="cp-selected-chips">
+            {langs.map(l => <span key={l} className="cp-chip-sel cp-chip-lang">{l}</span>)}
+            {domains.map(d => <span key={d} className="cp-chip-sel cp-chip-dom">{d}</span>)}
+            {gt && <span className="cp-chip-sel cp-chip-gt">General Aptitude Test</span>}
+          </div>
+        </div>
+      )}
 
       {shown && totalPicked > 0 && (
         <div className="cp-results">
@@ -290,7 +323,7 @@ export function SubjectCombination() {
           </div>
           <div className="cp-reslist">
             {tab === "eligible" && (eligShown.length ? eligShown.map((p) => { const st = progStats(p); return <ListRow key={p.id} title={p.name} sub={STREAMS[p.stream].label} accent={STREAMS[p.stream].color} count={st.count} countLabel="colleges" seats={st.totalSeats} top={st.topCutoff} onOpen={() => setSelected({ mode: "program", item: p })} />; }) : <div className="cp-empty">No eligible programs for this filter.</div>)}
-            {tab === "colleges" && (collegesShown.length ? collegesShown.map(({ c, eProgs }) => { const seats = eProgs.reduce((s, p) => s + progTotalSeats(c, p), 0); const top = eProgs.reduce((m, p) => Math.max(m, urCutoff(c, p)), 0); return <ListRow key={c.id} title={c.name} sub={c.campus + " Campus · " + c.type} accent="#E8850C" count={eProgs.length} countLabel="courses" seats={seats} top={top} onOpen={() => setSelected({ mode: "college", item: c, eligibleIds })} />; }) : <div className="cp-empty">No open colleges for this filter.</div>)}
+            {tab === "colleges" && (collegesShown.length ? collegesShown.map(({ c, eProgs }) => { const seats = eProgs.reduce((s, p) => s + progTotalSeats(c, p), 0); const top = eProgs.reduce((m, p) => Math.max(m, urCutoff(c, p)), 0); return <ListRow key={c.id} title={c.name} sub={c.campus + " Campus · " + c.type} accent="#2563eb" count={eProgs.length} countLabel="courses" seats={seats} top={top} onOpen={() => setSelected({ mode: "college", item: c, eligibleIds })} />; }) : <div className="cp-empty">No open colleges for this filter.</div>)}
           </div>
         </div>
       )}
@@ -303,54 +336,64 @@ export function SubjectCombination() {
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-.cp-wrap{--bg:#FFFBF3;--card:#FFFFFF;--ink:#2A2340;--muted:#7A7290;--line:#F0E6D6;--mari:#E8850C;--ok:#1E9E6A;font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);max-width:1200px;margin:20px auto 100px;padding:32px 32px 48px;border-radius:24px;box-shadow:0 10px 30px -10px rgba(0,0,0,0.1);-webkit-font-smoothing:antialiased}
+.cp-wrap{--bg:#FFFFFF;--card:#f8fafc;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--mari:#2563eb;--ok:#059669;font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);max-width:1200px;margin:20px auto 100px;padding:32px 32px 48px;border-radius:24px;box-shadow:0 10px 30px -10px rgba(0,0,0,0.1);-webkit-font-smoothing:antialiased}
 .cp-wrap *{box-sizing:border-box}
 .cp-stat b,.cp-num-cell,.cp-scorein,.cp-ring-num{font-variant-numeric:tabular-nums}
 .cp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .cp-brand{display:flex;align-items:center;gap:11px}
-.cp-logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#F59E0B,#4338CA);color:#fff;display:grid;place-items:center;font-family:'Figtree';font-weight:800;font-size:17px}
+.cp-logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#3b82f6,#7c3aed);color:#fff;display:grid;place-items:center;font-family:'Figtree';font-weight:800;font-size:17px}
 .cp-brand-name{font-family:'Figtree';font-weight:800;font-size:17px;line-height:1}.cp-brand-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
-.cp-demo{font-size:11px;font-weight:600;color:var(--mari);background:#FCEFD9;padding:5px 11px;border-radius:20px;border:1px solid #F6DDB4}
+.cp-demo{font-size:11px;font-weight:600;color:var(--mari);background:#eff6ff;padding:5px 11px;border-radius:20px;border:1px solid #bfdbfe}
 .cp-herowrap{margin-bottom:16px}
 .cp-herofig{position:relative;margin-bottom:14px}
-.cp-hero-img{width:100%;height:auto;display:block;border-radius:18px;box-shadow:0 6px 22px rgba(232,133,12,.14)}
-.cp-herobadge{position:absolute;left:14px;bottom:14px;background:rgba(42,35,64,.86);color:#fff;font-size:11px;font-weight:700;padding:5px 11px;border-radius:20px}
+.cp-hero-img{width:100%;height:auto;display:block;border-radius:18px;box-shadow:0 6px 22px rgba(37,99,235,.14)}
+.cp-herobadge{position:absolute;left:14px;bottom:14px;background:rgba(15,23,42,.86);color:#fff;font-size:11px;font-weight:700;padding:5px 11px;border-radius:20px}
 .cp-herowrap h1{font-family:'Figtree';font-weight:800;font-size:28px;line-height:1.06;letter-spacing:-.5px;margin:0 0 8px}
 .cp-herowrap p{font-size:14px;line-height:1.5;color:var(--muted);margin:0;max-width:58ch}
-.cp-banner{background:#EAF7EE;border:1px solid #C9E9D3;color:#1E7A45;font-size:13px;font-weight:600;padding:12px 15px;border-radius:12px;margin-bottom:14px;text-align:center}
+.cp-banner{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;font-size:13px;font-weight:600;padding:12px 15px;border-radius:12px;margin-bottom:14px;text-align:center}
 .cp-how{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:16px}
 .cp-how-head{font-family:'Figtree';font-weight:700;font-size:14px;margin-bottom:10px}
 .cp-how ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px}
 .cp-how li{font-size:13px;color:var(--muted);line-height:1.5}.cp-how b{color:var(--ink)}
 .cp-subjsearch{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px 15px;font-size:14px;font-family:inherit;color:var(--ink);margin-bottom:14px}
-.cp-subjsearch:focus{outline:2px solid var(--mari);outline-offset:1px;border-color:transparent}.cp-subjsearch::placeholder{color:#aaa297}
+.cp-subjsearch:focus{outline:2px solid var(--mari);outline-offset:1px;border-color:transparent}.cp-subjsearch::placeholder{color:#94a3b8}
 .cp-picker{display:grid;grid-template-columns:1fr 1.6fr 0.9fr;gap:12px;margin-bottom:16px}
 .cp-col{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px}
 .cp-col-head{font-family:'Figtree';font-weight:700;font-size:14px;margin-bottom:12px}.cp-col-head small{font-weight:500;color:var(--muted);font-size:12px}
 .cp-col-body{display:flex;flex-direction:column;gap:7px}
 .cp-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.cp-pick{border:1px solid var(--line);background:#FAF7F0;color:#4a4458;border-radius:9px;padding:9px 11px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.14s;text-align:center;line-height:1.3}
-.cp-pick:hover{border-color:#E8C99A}
+.cp-pick{border:1px solid var(--line);background:#ffffff;color:#334155;border-radius:9px;padding:9px 11px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.14s;text-align:center;line-height:1.3}
+.cp-pick:hover{border-color:#94a3b8;background-color:#f8fafc;color:#0f172a;transform:none;box-shadow:none}
 .cp-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:24px}
-.cp-cta{border:0;background:var(--mari);color:#fff;font-family:'Figtree';font-weight:700;font-size:15px;padding:14px 28px;border-radius:13px;cursor:pointer;box-shadow:0 6px 16px rgba(232,133,12,.28);transition:.16s}
-.cp-cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 9px 22px rgba(232,133,12,.34)}
-.cp-cta:disabled{background:#E7DDCB;color:#aaa297;cursor:not-allowed;box-shadow:none}
+.cp-cta{border:0;background:var(--mari);color:#fff;font-family:'Figtree';font-weight:700;font-size:15px;padding:14px 28px;border-radius:13px;cursor:pointer;box-shadow:0 6px 16px rgba(37,99,235,.28);transition:.16s}
+.cp-cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 9px 22px rgba(37,99,235,.34)}
+.cp-cta:disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed;box-shadow:none}
 .cp-reset{border:0;background:none;color:var(--mari);font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
+.cp-reset:hover{background-color:transparent;color:#1d4ed8;box-shadow:none;transform:none}
+.cp-selected-summary{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:20px}
+.cp-selected-head{font-family:'Figtree';font-weight:700;font-size:14px;margin-bottom:12px;color:var(--ink)}
+.cp-selected-chips{display:flex;flex-wrap:wrap;gap:8px}
+.cp-chip-sel{font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px}
+.cp-chip-lang{background:#eff6ff;color:#2563eb}
+.cp-chip-dom{background:#ecfdf5;color:#059669}
+.cp-chip-gt{background:#f5f3ff;color:#7c3aed}
 .cp-results{margin-bottom:8px}
 .cp-filters3{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:10px;margin-bottom:16px}
 .cp-field{display:flex;flex-direction:column;gap:5px;min-width:0}
 .cp-field label{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
-.cp-field select{border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 12px;font-size:13px;font-family:inherit;color:var(--ink);cursor:pointer;width:100%}
-.cp-field select:focus{outline:2px solid var(--mari);outline-offset:1px;border-color:transparent}
-.cp-field select:disabled{background:#F4F0E8;color:#aaa297;cursor:not-allowed}
+.cp-field select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:#fff url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 14px center;background-size:14px;border-radius:11px;padding:11px 36px 11px 14px;font-size:13.5px;font-weight:500;font-family:inherit;color:var(--ink);cursor:pointer;width:100%;transition:all .2s ease;box-shadow:0 1px 2px rgba(0,0,0,0.02)}
+.cp-field select:hover:not(:disabled){border-color:#94a3b8;box-shadow:0 2px 5px rgba(0,0,0,0.05)}
+.cp-field select:focus{outline:none;border-color:var(--mari);box-shadow:0 0 0 3px rgba(37,99,235,0.15)}
+.cp-field select:disabled{background-color:#f8fafc;color:#94a3b8;cursor:not-allowed;opacity:0.8}
 .cp-chip{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}.cp-chip.on{border-color:var(--mari);color:#fff;background:var(--mari)}
 .cp-restabs{display:flex;gap:22px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
 .cp-restabs button{border:0;background:transparent;cursor:pointer;font-family:'Figtree';font-weight:700;font-size:14px;color:var(--muted);padding:0 0 12px;position:relative;white-space:nowrap;transition:color .18s}
+.cp-restabs button:hover{background-color:transparent;color:var(--ink);box-shadow:none;transform:none}
 .cp-restabs button.on{color:var(--mari)}
 .cp-restabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.5px;background:var(--mari);border-radius:2px}
 .cp-reslist{display:flex;flex-direction:column;gap:10px}
 .cp-li{position:relative;display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 14px 15px 19px;cursor:pointer;font-family:inherit;transition:.16s}
-.cp-li:hover{border-color:var(--rail);box-shadow:0 8px 22px rgba(232,133,12,.10);transform:translateY(-2px)}.cp-li:focus-visible{outline:2px solid var(--rail);outline-offset:2px}
+.cp-li:hover{border-color:var(--rail);background-color:var(--card);color:var(--ink);box-shadow:0 8px 22px rgba(37,99,235,.10);transform:translateY(-2px)}.cp-li:focus-visible{outline:2px solid var(--rail);outline-offset:2px}
 .cp-li-rail{position:absolute;left:0;top:13px;bottom:13px;width:4px;border-radius:4px;background:var(--rail)}
 .cp-li-main{flex:1;min-width:0}
 .cp-li-title{display:block;font-family:'Figtree';font-weight:700;font-size:16px;color:var(--ink);line-height:1.2}
@@ -360,39 +403,47 @@ const CSS = `
 .cp-stat b{font-family:'Figtree';font-weight:800;font-size:16px;color:var(--ink);line-height:1}.cp-stat i{font-style:normal;font-size:10px;color:var(--muted);margin-top:4px}
 .cp-ringwrap{display:flex;flex-direction:column;align-items:center;gap:3px}.cp-ringwrap i{font-style:normal;font-size:9.5px;color:var(--muted)}
 .cp-ring-num{font-family:'Figtree';font-weight:800;font-size:13px;fill:var(--ink)}
-.cp-li-go{font-size:23px;color:#cfc6b6;line-height:1;flex-shrink:0}
+.cp-li-go{font-size:23px;color:#cbd5e1;line-height:1;flex-shrink:0}
 .cp-empty{text-align:center;color:var(--muted);font-size:14px;padding:30px 20px;border:1px dashed var(--line);border-radius:14px;background:#fff}
-.cp-foot{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}.cp-foot p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 8px}.cp-foot b{color:var(--ink)}.cp-foot-by{font-size:11px;color:#aaa297}
-.cp-overlay{position:fixed;inset:0;background:rgba(42,35,64,.5);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;z-index:50;animation:f .18s ease}
-.cp-modal{background:#fff;width:100%;max-width:700px;max-height:92vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -10px 50px rgba(60,40,10,.3);animation:u .26s cubic-bezier(.2,.8,.2,1);border-top:4px solid var(--maccent)}
+.cp-foot{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}.cp-foot p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 8px}.cp-foot b{color:var(--ink)}.cp-foot-by{font-size:11px;color:#94a3b8}
+.cp-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;z-index:9999;animation:f .18s ease}
+.cp-modal{background:#fff;width:100%;max-width:700px;max-height:92vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -10px 50px rgba(15,23,42,.3);animation:u .26s cubic-bezier(.2,.8,.2,1);border-top:4px solid var(--maccent)}
 @keyframes f{from{opacity:0}to{opacity:1}}@keyframes u{from{transform:translateY(40px)}to{transform:none}}
-.cp-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 20px 12px}
+.cp-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:24px 30px 16px}
 .cp-modal-title{font-family:'Figtree';font-weight:800;font-size:19px;line-height:1.2;color:var(--ink)}
-.cp-x{border:0;background:#F4ECDD;width:32px;height:32px;border-radius:50%;font-size:20px;color:var(--ink);cursor:pointer;flex-shrink:0}
-.cp-eligbox{margin:0 20px 14px;background:#FFF7EA;border:1px solid #F6E3C4;border-radius:14px;padding:13px 15px}
-.cp-eligbox-head{font-family:'Figtree';font-weight:700;font-size:13px;color:#9A5B0A;margin-bottom:10px}.cp-eligbox-head span{font-weight:500;color:#B98A4A;font-size:11.5px}
+.cp-x{border:0;background:#f1f5f9;width:32px;height:32px;border-radius:50%;font-size:20px;color:var(--ink);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1}
+.cp-x:hover{background-color:#e2e8f0;color:var(--ink);box-shadow:none;transform:none}
+.cp-eligbox{margin:0 30px 18px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px 20px}
+.cp-eligbox-head{font-family:'Figtree';font-weight:700;font-size:13px;color:#1e40af;margin-bottom:10px}.cp-eligbox-head span{font-weight:500;color:#3b82f6;font-size:11.5px}
 .cp-combos{display:flex;flex-direction:column;gap:9px}
 .cp-combo{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.cp-combo-name{font-size:11px;font-weight:700;color:var(--mari);background:#FCEAD2;padding:3px 9px;border-radius:7px;white-space:nowrap}
+.cp-combo-name{font-size:11px;font-weight:700;color:var(--mari);background:#dbeafe;padding:3px 9px;border-radius:7px;white-space:nowrap}
 .cp-combo-reqs{display:flex;gap:6px;flex-wrap:wrap}
-.cp-req{font-size:12px;font-weight:600;color:#5C4B2C;background:#fff;border:1px solid #EAD9BB;padding:3px 9px;border-radius:7px}
-.cp-modal-tools{padding:0 20px 14px;display:flex;flex-direction:column;gap:10px}
+.cp-req{font-size:12px;font-weight:600;color:#1e3a8a;background:#fff;border:1px solid #bfdbfe;padding:3px 9px;border-radius:7px}
+.cp-modal-tools{padding:0 30px 16px;display:flex;flex-direction:column;gap:10px}
 .cp-tabs{display:flex;align-items:center;gap:8px}.cp-tabs-label{font-size:13px;font-weight:600;color:var(--muted);margin-right:2px}
-.cp-tab{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:9px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}.cp-tab.on{background:var(--maccent);color:#fff;border-color:var(--maccent)}
-.cp-scorein{border:1px solid var(--line);background:#FFFCF6;border-radius:11px;padding:10px 13px;font-size:13px;font-family:inherit;color:var(--ink)}.cp-scorein:focus{outline:2px solid var(--maccent);outline-offset:1px;border-color:transparent}.cp-scorein::placeholder{color:#aaa297}
+.cp-tab{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:9px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+.cp-tab:hover{background-color:#f8fafc;color:var(--ink);box-shadow:none;transform:none}
+.cp-tab.on{background:var(--maccent);color:#fff;border-color:var(--maccent)}
+.cp-tab.on:hover{background-color:var(--maccent);color:#fff}
+.cp-scorein{border:1px solid var(--line);background:#f8fafc;border-radius:11px;padding:10px 13px;font-size:13px;font-family:inherit;color:var(--ink)}.cp-scorein:focus{outline:2px solid var(--maccent);outline-offset:1px;border-color:transparent}.cp-scorein::placeholder{color:#94a3b8}
 .cp-tablewrap{overflow:auto;flex:1;border-top:1px solid var(--line)}
 .cp-table{width:100%;min-width:540px;border-collapse:collapse;font-size:13.5px}
-.cp-table thead th{position:sticky;top:0;background:#FBF4E8;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;text-align:right;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.cp-table thead th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;text-align:right;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
 .cp-table thead th.cp-th-name{text-align:left}
-.cp-table td{padding:11px 14px;border-bottom:1px solid #F4ECDD;text-align:right;white-space:nowrap}
+.cp-table td{padding:11px 14px;border-bottom:1px solid #f1f5f9;text-align:right;white-space:nowrap}
+.cp-table thead th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px;text-align:right;padding:11px 30px 11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.cp-table thead th.cp-th-name{text-align:left;padding-left:30px}
+.cp-table td{padding:11px 30px 11px 14px;border-bottom:1px solid #f1f5f9;text-align:right;white-space:nowrap}
+.cp-table td:first-child{padding-left:30px}
 .cp-td-name{text-align:left;font-weight:600;position:sticky;left:0;background:#fff;display:flex;align-items:center;gap:7px;max-width:240px}.cp-td-name>span:first-child{white-space:normal}
-.cp-badge-w{font-size:10px;font-weight:700;color:#B83280;background:#FCE7F3;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.cp-badge-w{font-size:10px;font-weight:700;color:#be185d;background:#fce7f3;padding:2px 7px;border-radius:20px;white-space:nowrap}
 .cp-badge-s{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
 .cp-num-cell{font-weight:600;position:relative}.cp-num-cell.cp-q{outline:2px solid var(--ok);outline-offset:-2px;font-weight:800;border-radius:7px}
-.cp-tick{font-style:normal;color:var(--ok);font-size:10px;margin-left:3px;font-weight:800}.cp-dash{color:#cdc4b3}
-.cp-legend{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding:9px 20px;font-size:10.5px;color:var(--muted)}
+.cp-tick{font-style:normal;color:var(--ok);font-size:10px;margin-left:3px;font-weight:800}.cp-dash{color:#cbd5e1}
+.cp-legend{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding:9px 30px;font-size:10.5px;color:var(--muted)}
 .cp-legend-bar{width:90px;height:7px;border-radius:5px;background:linear-gradient(90deg,hsla(145,72%,45%,.6),hsla(60,72%,45%,.6),hsla(0,72%,45%,.6))}
-.cp-modal-foot{padding:13px 20px;font-size:11.5px;color:#9a5b0a;background:#FFF7EA;border-top:1px solid #F6E3C4;line-height:1.5}
+.cp-modal-foot{padding:13px 30px;font-size:11.5px;color:#1e40af;background:#eff6ff;border-top:1px solid #bfdbfe;line-height:1.5}
 @media (min-width:560px){.cp-overlay{align-items:center;padding:24px}.cp-modal{border-radius:22px;border:1px solid var(--line);border-top:4px solid var(--maccent)}}
 @media (max-width:720px){.cp-picker{grid-template-columns:1fr}.cp-col-grid{grid-template-columns:1fr 1fr}.cp-filters3{grid-template-columns:1fr}}
 @media (max-width:480px){.cp-herowrap h1{font-size:24px}.cp-col-grid{grid-template-columns:1fr}.cp-li-right{gap:11px}.cp-stat i{font-size:9px}}
