@@ -27,7 +27,7 @@ export const colleges = [
   {
     "id": "aditi-mahavidyalaya-w",
     "name": "Aditi Mahavidyalaya (W)",
-    "campus": "North",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel"
@@ -100,7 +100,7 @@ export const colleges = [
   {
     "id": "bhagini-nivedita-college-w",
     "name": "Bhagini Nivedita College (W)",
-    "campus": "West",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://bncollege.du.ac.in",
@@ -123,7 +123,7 @@ export const colleges = [
   {
     "id": "bharati-college-w",
     "name": "Bharati College (W)",
-    "campus": "West",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://bharaticollege.du.ac.in",
@@ -146,7 +146,7 @@ export const colleges = [
   {
     "id": "bhaskaracharya-college-of-applied-sciences",
     "name": "Bhaskaracharya College of Applied Sciences",
-    "campus": "West",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://bcas.du.ac.in",
@@ -192,7 +192,7 @@ export const colleges = [
   {
     "id": "college-of-vocational-studies",
     "name": "College of Vocational Studies",
-    "campus": "South",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://cvs.du.ac.in",
@@ -240,7 +240,7 @@ export const colleges = [
   {
     "id": "deen-dayal-upadhyaya-college",
     "name": "Deen Dayal Upadhyaya College",
-    "campus": "West",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://ddu.du.ac.in",
@@ -263,7 +263,7 @@ export const colleges = [
   {
     "id": "delhi-college-of-arts-and-commerce",
     "name": "Delhi College of Arts and Commerce",
-    "campus": "North",
+    "campus": "South",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://dcac.du.ac.in",
@@ -378,7 +378,7 @@ export const colleges = [
   {
     "id": "dr-bhim-rao-ambedkar-college",
     "name": "Dr. Bhim Rao Ambedkar College",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://ambedkar.du.ac.in",
@@ -637,7 +637,7 @@ export const colleges = [
   {
     "id": "janki-devi-memorial-college-w",
     "name": "Janki Devi Memorial College (W)",
-    "campus": "West",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://jdmc.du.ac.in",
@@ -685,7 +685,7 @@ export const colleges = [
   {
     "id": "kalindi-college-w",
     "name": "Kalindi College (W)",
-    "campus": "East",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://kalindi.du.ac.in",
@@ -731,7 +731,7 @@ export const colleges = [
   {
     "id": "keshav-mahavidyalaya",
     "name": "Keshav Mahavidyalaya",
-    "campus": "North",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://keshav.du.ac.in",
@@ -812,7 +812,7 @@ export const colleges = [
   {
     "id": "lady-irwin-college-w",
     "name": "Lady Irwin College (W)",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel"
@@ -895,7 +895,7 @@ export const colleges = [
   {
     "id": "lakshmibai-college-w",
     "name": "Lakshmibai College (W)",
-    "campus": "North",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://lakshmibai.du.ac.in",
@@ -918,7 +918,7 @@ export const colleges = [
   {
     "id": "maharaja-agrasen-college",
     "name": "Maharaja Agrasen College",
-    "campus": "West",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://mac.du.ac.in",
@@ -964,7 +964,7 @@ export const colleges = [
   {
     "id": "mata-sundri-college-for-women-w",
     "name": "Mata Sundri College for Women (W)",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel"
@@ -1140,7 +1140,7 @@ export const colleges = [
   {
     "id": "rajdhani-college",
     "name": "Rajdhani College",
-    "campus": "West",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://rajdhani.du.ac.in",
@@ -1234,7 +1234,7 @@ export const colleges = [
   {
     "id": "satyawati-college",
     "name": "Satyawati College",
-    "campus": "North",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://satyawati.du.ac.in",
@@ -1257,7 +1257,7 @@ export const colleges = [
   {
     "id": "satyawati-college-evening",
     "name": "Satyawati College (Evening)",
-    "campus": "North",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://satyawati.du.ac.in",
@@ -1326,7 +1326,7 @@ export const colleges = [
   {
     "id": "shaheed-rajguru-college-of-applied-sciences-for-women-w",
     "name": "Shaheed Rajguru College of Applied Sciences for Women (W)",
-    "campus": "North",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://srcasw.du.ac.in",
@@ -1349,7 +1349,7 @@ export const colleges = [
   {
     "id": "shaheed-sukhdev-college-business-studies",
     "name": "Shaheed Sukhdev College Business Studies",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://sscbs.du.ac.in",
@@ -1372,7 +1372,7 @@ export const colleges = [
   {
     "id": "shivaji-college",
     "name": "Shivaji College",
-    "campus": "West",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://shivaji.du.ac.in",
@@ -1453,7 +1453,7 @@ export const colleges = [
   {
     "id": "shyam-lal-college",
     "name": "Shyam Lal College",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://shyamlal.du.ac.in",
@@ -1476,7 +1476,7 @@ export const colleges = [
   {
     "id": "shyam-lal-college-evening",
     "name": "Shyam Lal College (Evening)",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://shyamlal.du.ac.in",
@@ -1499,7 +1499,7 @@ export const colleges = [
   {
     "id": "shyama-prasad-mukherji-college-for-women-w",
     "name": "Shyama Prasad Mukherji College For Women (W)",
-    "campus": "South",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://spmcollege.ac.in",
@@ -1568,7 +1568,7 @@ export const colleges = [
   {
     "id": "sri-guru-gobind-singh-college-of-commerce",
     "name": "Sri Guru Gobind Singh College of Commerce",
-    "campus": "North",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://sggscc.ac.in",
@@ -1591,7 +1591,7 @@ export const colleges = [
   {
     "id": "sri-guru-nanak-dev-khalsa-college",
     "name": "Sri Guru Nanak Dev Khalsa College",
-    "campus": "North",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Hostel"
@@ -1719,7 +1719,7 @@ export const colleges = [
   {
     "id": "swami-shardhanand-college",
     "name": "Swami Shardhanand College",
-    "campus": "North",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://ssc.du.ac.in",
@@ -1742,7 +1742,7 @@ export const colleges = [
   {
     "id": "vivekananda-college-w",
     "name": "Vivekananda College (W)",
-    "campus": "North",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://vivekananda.du.ac.in",
@@ -1765,7 +1765,7 @@ export const colleges = [
   {
     "id": "zakir-husain-delhi-college",
     "name": "Zakir Husain Delhi College",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://zakirhusain.du.ac.in",
@@ -1788,7 +1788,7 @@ export const colleges = [
   {
     "id": "zakir-husain-delhi-college-evening",
     "name": "Zakir Husain Delhi College (Evening)",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [],
     "officialWebsite": "https://zakirhusain.du.ac.in",
@@ -1836,7 +1836,7 @@ export const colleges = [
   {
     "id": "ncweb",
     "name": "Non-Collegiate Women's Education Board (NCWEB)",
-    "campus": "Various",
+    "campus": "Off",
     "type": "Women",
     "facilities": [],
     "officialWebsite": "https://ncweb.du.ac.in",
@@ -1859,7 +1859,7 @@ export const colleges = [
   {
     "id": "maulana-azad-medical-college",
     "name": "Maulana Azad Medical College",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Hostel",
@@ -1886,7 +1886,7 @@ export const colleges = [
   {
     "id": "lady-hardinge-medical-college",
     "name": "Lady Hardinge Medical College",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel",
@@ -1913,7 +1913,7 @@ export const colleges = [
   {
     "id": "ucms",
     "name": "University College of Medical Sciences",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Hostel",
@@ -1940,7 +1940,7 @@ export const colleges = [
   {
     "id": "college-of-art",
     "name": "College of Art",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Library",
@@ -1993,7 +1993,7 @@ export const colleges = [
   {
     "id": "rajkumari-amrit-kaur-college-of-nursing",
     "name": "Rajkumari Amrit Kaur College of Nursing",
-    "campus": "South",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel",
@@ -2019,7 +2019,7 @@ export const colleges = [
   {
     "id": "ayurvedic-unani-tibbia-college",
     "name": "Ayurvedic and Unani Tibbia College",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Hospital",
@@ -2045,7 +2045,7 @@ export const colleges = [
   {
     "id": "nehru-homoeopathic-medical-college",
     "name": "Nehru Homoeopathic Medical College",
-    "campus": "South",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Hospital",
@@ -2071,7 +2071,7 @@ export const colleges = [
   {
     "id": "college-of-nursing-army-hospital",
     "name": "College of Nursing (Army Hospital R&R)",
-    "campus": "West",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel",
@@ -2097,7 +2097,7 @@ export const colleges = [
   {
     "id": "holy-family-college-of-nursing",
     "name": "Holy Family College of Nursing",
-    "campus": "South",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel",
@@ -2123,7 +2123,7 @@ export const colleges = [
   {
     "id": "florence-nightingale-college-of-nursing",
     "name": "Florence Nightingale College of Nursing",
-    "campus": "East",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel",
@@ -2149,7 +2149,7 @@ export const colleges = [
   {
     "id": "ahilya-bai-college-of-nursing",
     "name": "Ahilya Bai College of Nursing",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Women",
     "facilities": [
       "Hostel",
@@ -2175,7 +2175,7 @@ export const colleges = [
   {
     "id": "amar-jyoti-institute-of-physiotherapy",
     "name": "Amar Jyoti Institute of Physiotherapy",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Labs",
@@ -2201,7 +2201,7 @@ export const colleges = [
   {
     "id": "pt-ddu-institute-for-physically-handicapped",
     "name": "Pt. Deen Dayal Upadhyaya Institute for the Physically Handicapped",
-    "campus": "Central",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Labs",
@@ -2227,7 +2227,7 @@ export const colleges = [
   {
     "id": "institute-of-human-behaviour-and-allied-sciences",
     "name": "Institute of Human Behaviour & Allied Sciences (IHBAS)",
-    "campus": "East",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Hospital",
@@ -2406,7 +2406,7 @@ export const colleges = [
   {
     "id": "national-institute-of-health-and-family-welfare",
     "name": "National Institute of Health & Family Welfare",
-    "campus": "South",
+    "campus": "Off",
     "type": "Co-ed",
     "facilities": [
       "Library",

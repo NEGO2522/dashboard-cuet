@@ -84,6 +84,7 @@ function DetailModal({ open, onClose, mode, item, indices }) {
     rows = offs.map((o) => ({
       key: o.collegeId,
       name: o.college ? o.college.name : o.collegeName,
+      campus: o.college?.campus,
       women: o.college?.type === 'Women' || o.gender === 'Female',
       cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)),
       seats: CATEGORIES.map((cat) => (cat === 'PwBD' ? null : getSeats(o, cat))),
@@ -111,12 +112,6 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <div className="cf-modal-title">{title}</div>
           <button className="cf-x" onClick={onClose} aria-label="Close">×</button>
         </div>
-        {mode === 'program' && item.eligibility && (
-          <div className="cf-modal-elig">
-            <i>Eligibility</i>
-            <p>{item.eligibility}</p>
-          </div>
-        )}
         <div className="cf-modal-tools">
           <div className="cf-tabs">
             <span className="cf-tabs-label">View</span>
@@ -153,11 +148,18 @@ function DetailModal({ open, onClose, mode, item, indices }) {
                 return (
                   <tr key={r.key}>
                     <td className="cf-td-name">
-                      <span>{r.name}</span>
-                      {r.women && <span className="cf-badge-w">Women</span>}
-                      {r.group && (
-                        <span className="cf-badge-s" style={{ color: groupColor(r.group), background: groupColor(r.group) + '14' }}>
-                          {r.group}
+                      <span className="cf-td-name-text">{r.name}</span>
+                      {(r.women || (r.campus && r.campus !== 'Off') || r.group) && (
+                        <span className="cf-td-badges">
+                          {r.women && <span className="cf-badge-w">Women</span>}
+                          {r.campus && r.campus !== 'Off' && (
+                            <span className="cf-badge-campus">{r.campus} Campus</span>
+                          )}
+                          {r.group && (
+                            <span className="cf-badge-s" style={{ color: groupColor(r.group), background: groupColor(r.group) + '14' }}>
+                              {r.group}
+                            </span>
+                          )}
                         </span>
                       )}
                     </td>
@@ -176,9 +178,6 @@ function DetailModal({ open, onClose, mode, item, indices }) {
               })}
             </tbody>
           </table>
-        </div>
-        <div className="cf-modal-foot">
-          Cutoff = the CUET merit score (out of 1000) at which the last seat was allotted, by category. "-" means that figure wasn't reported in the official CSAS data. Source: CSAS 2025 official seat matrix.
         </div>
       </div>
     </div>

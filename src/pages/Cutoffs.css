@@ -248,7 +248,7 @@
 .cf-modal {
   background: #fff;
   width: 100%;
-  max-width: 720px;
+  max-width: 900px;
   max-height: 92vh;
   border-radius: 18px 18px 0 0;
   display: flex;
@@ -333,12 +333,13 @@
 .cf-scorein:focus { border-color: var(--maccent); }
 
 .cf-tablewrap { overflow: auto; flex: 1; border-top: 1px solid var(--border-color); }
-.cf-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 0.85rem; }
+.cf-table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 0.85rem; }
 
 .cf-table thead th {
   position: sticky;
   top: 0;
-  background: var(--accent-blue-light);
+  z-index: 2;
+  background: #eef2ff;
   color: var(--text-muted);
   font-weight: 700;
   font-size: 0.72rem;
@@ -354,21 +355,27 @@
 .cf-table td { padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--border-color); text-align: right; white-space: nowrap; }
 
 .cf-td-name {
-  text-align: left;
+  text-align: left !important;
   font-weight: 600;
   position: sticky;
   left: 0;
   background: #fff;
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  max-width: 240px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  white-space: normal !important;
 }
 
-.cf-td-name > span:first-child { white-space: normal; }
+.cf-td-name-text { white-space: normal; line-height: 1.35; text-align: left; word-break: break-word; }
+.cf-td-badges { display: flex; flex-wrap: wrap; gap: 0.25rem; }
 
 .cf-badge-w { font-size: 0.62rem; font-weight: 700; color: #b83280; background: #fce7f3; padding: 0.12rem 0.4rem; border-radius: 7px; white-space: nowrap; }
 .cf-badge-s { font-size: 0.62rem; font-weight: 700; padding: 0.12rem 0.4rem; border-radius: 7px; white-space: nowrap; }
+.cf-badge-campus { font-size: 0.62rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 0.12rem 0.4rem; border-radius: 7px; white-space: nowrap; }
 
 .cf-num-cell { font-weight: 600; position: relative; }
 .cf-num-cell.cf-q { outline: 2px solid #1e9e6a; outline-offset: -2px; font-weight: 800; border-radius: 7px; }
