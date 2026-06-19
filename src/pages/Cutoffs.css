@@ -372,19 +372,24 @@
   background: #fff;
   width: 100%;
   max-width: 900px;
-  max-height: 92vh;
-  border-radius: 18px 18px 0 0;
+  height: 100%;
+  max-height: 100vh;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   animation: cf-up 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
-  border-top: none;
 }
 
-@media (min-width: 560px) {
+@media (min-width: 600px) {
   .cf-overlay { align-items: center; padding: 1.5rem; }
-  .cf-modal { border-radius: 18px; border: 1px solid var(--border-color); }
+  .cf-modal {
+    height: auto;
+    max-height: 92vh;
+    border-radius: 18px;
+    border: 1px solid var(--border-color);
+  }
 }
 
 .cf-modal-head {
@@ -544,33 +549,42 @@
   white-space: nowrap;
 }
 
-.cf-table thead th.cf-th-name { text-align: left; }
+.cf-table thead th.cf-th-name {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #eef2ff;
+  box-shadow: 2px 0 6px -2px rgba(0,0,0,0.08);
+}
 .cf-table thead th:not(.cf-th-name) { width: 70px; min-width: unset; max-width: unset; text-align: center; border-left: 1px solid var(--border-color); }
 .cf-table tbody tr { border-bottom: 1px solid var(--border-color); }
 .cf-table tbody tr:last-child { border-bottom: none; }
 .cf-table td { padding: 0.75rem 0; text-align: center; white-space: nowrap; border-bottom: none; border-left: 1px solid var(--border-color); font-size: 0.78rem; vertical-align: middle; width: 70px; min-width: unset; max-width: unset; }
-.cf-table td.cf-td-name { text-align: left !important; width: 180px; min-width: unset; max-width: unset; border-left: none; }
+.cf-table td.cf-td-name { text-align: left !important; width: 300px; min-width: 300px; max-width: unset; border-left: none; }
 
 .cf-td-name {
   font-weight: 600;
   position: sticky;
   left: 0;
+  z-index: 1;
   background: #fff;
   white-space: normal !important;
   vertical-align: middle;
   padding: 0.45rem 0.7rem 0.45rem 0.85rem !important;
+  box-shadow: 2px 0 6px -2px rgba(0,0,0,0.08);
 }
 
 .cf-td-name-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.3rem;
-  line-height: 1.3;
+  gap: 0.25rem;
+  line-height: 1.4;
 }
 
-.cf-td-name-text { font-size: 0.84rem; white-space: normal; word-break: break-word; flex-shrink: 1; }
-.cf-td-badges { display: flex; flex-wrap: wrap; gap: 0.2rem; flex-shrink: 0; }
+.cf-td-name-text { font-size: 0.84rem; white-space: normal; word-break: break-word; }
+.cf-td-badges { display: contents; }
 
 .cf-badge-w { font-size: 0.58rem; font-weight: 700; color: #b83280; background: #fce7f3; padding: 0.1rem 0.35rem; border-radius: 6px; white-space: nowrap; }
 .cf-badge-s { font-size: 0.58rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 6px; white-space: nowrap; }
@@ -623,6 +637,20 @@
 @media (max-width: 768px) {
   .cf-wrap { padding: 1.25rem 1rem 2rem; }
   .cf-controls { flex-direction: column; align-items: stretch; }
+}
+
+/* Mobile modal */
+@media (max-width: 599px) {
+  .cf-modal-head { padding: 0.85rem 1rem 0.65rem; }
+  .cf-modal-title { font-size: 1rem; }
+  .cf-modal-tools { padding: 0.6rem 1rem 0.6rem; gap: 0.45rem; }
+  .cf-table { table-layout: auto; min-width: 520px; }
+  .cf-table thead th { padding: 0.55rem 0.45rem; font-size: 0.62rem; }
+  .cf-table td { padding: 0.65rem 0.45rem; font-size: 0.75rem; }
+  .cf-table td.cf-td-name { padding: 0.65rem 0.6rem 0.65rem 0.75rem !important; width: 160px; min-width: 160px; }
+  .cf-td-name-text { font-size: 0.78rem; }
+  .cf-table thead th:not(.cf-th-name) { width: 56px; min-width: 56px; }
+  .cf-table td:not(.cf-td-name) { width: 56px; min-width: 56px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
