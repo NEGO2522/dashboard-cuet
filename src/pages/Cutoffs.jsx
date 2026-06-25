@@ -143,7 +143,7 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <div className="cf-elig-card">
             <div className="cf-elig-card-head">
               <span className="cf-elig-icon">📋</span>
-              <span className="cf-elig-card-title">Subject Combinations</span>
+              <span className="cf-elig-card-title">Eligibility</span>
             </div>
             <ul className="cf-elig-bullets">
               {eligCombinations.map((combo, i) => (
@@ -159,18 +159,21 @@ function DetailModal({ open, onClose, mode, item, indices }) {
             <button className={'cf-tab ' + (view === 'cutoffs' ? 'on' : '')} onClick={() => setView('cutoffs')}>Cutoffs</button>
           </div>
           {view === 'cutoffs' && (
-            <div className="cf-score-field">
+            <div className="cf-score-wrap">
+              <svg className="cf-score-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
               <input
                 className="cf-scorein"
                 type="number"
                 inputMode="numeric"
-                placeholder="Enter your CUET score (out of 1000)"
+                placeholder="Enter your CUET score (0–1000)"
                 value={score}
                 onChange={(e) => setScore(e.target.value)}
+                onWheel={(e) => e.target.blur()}
                 max={1000}
                 min={0}
               />
-              <span className="cf-score-hint">Rows you qualify for will be highlighted</span>
             </div>
           )}
         </div>
@@ -178,18 +181,20 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <table className="cf-table">
             <thead>
               <tr>
+                <th className="cf-th-sr">#</th>
                 <th className="cf-th-name">{mode === 'program' ? 'College' : 'Program'}</th>
                 {CATEGORIES.map((c) => <th key={c}>{c}</th>)}
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 && (
-                <tr><td colSpan={CATEGORIES.length + 1} style={{ textAlign: 'center', padding: '2rem' }}>No data available.</td></tr>
+                <tr><td colSpan={CATEGORIES.length + 2} style={{ textAlign: 'center', padding: '2rem' }}>No data available.</td></tr>
               )}
-              {rows.map((r) => {
+              {rows.map((r, idx) => {
                 const vals = view === 'cutoffs' ? r.cutoffs : r.seats;
                 return (
                   <tr key={r.key}>
+                    <td className="cf-td-sr">{idx + 1}</td>
                     <td className="cf-td-name">
                       <div className="cf-td-name-inner">
                         <span className="cf-td-name-text">{r.name}</span>

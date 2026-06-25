@@ -89,13 +89,12 @@ function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) 
 function Modal({ open, onClose, payload }) {
   const [view, setView] = useState("cutoffs");
   const [score, setScore] = useState("");
-  const [eligExpanded, setEligExpanded] = useState(false);
   useEffect(() => { function k(e) { if (e.key === "Escape") onClose(); } if (open) document.addEventListener("keydown", k); return () => document.removeEventListener("keydown", k); }, [open, onClose]);
   if (!open || !payload) return null;
   const { mode, item, eligibleIds } = payload;
   const numScore = score === "" ? null : Math.max(0, Math.min(1000, Number(score) || 0));
   let title, accent, rows;
-  const eligibility = mode === "program" ? (item.eligibility || getEligibilityForProgram(item.name)) : null;
+  const eligCombinations = mode === "program" ? (getEligibilityForProgram(item.name) || []) : [];
   if (mode === "program") {
     const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name;
     const myOffs = offerings.filter(o => o.programId === p.id);
@@ -139,16 +138,17 @@ function Modal({ open, onClose, payload }) {
     <div className="cf-overlay" onClick={onClose}>
       <div className="cf-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" style={{ "--maccent": accent }}>
         <div className="cf-modal-head"><div className="cf-modal-title">{title}</div><button className="cf-x" onClick={onClose} aria-label="Close">×</button></div>
-        {eligibility && (
+        {eligCombinations.length > 0 && (
           <div className="cf-elig-card">
             <div className="cf-elig-card-head">
               <span className="cf-elig-icon">📋</span>
-              <span className="cf-elig-card-title">Eligibility</span>
+              <span className="cf-elig-card-title">Subject Combinations</span>
             </div>
-            <p className={`cf-elig-card-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</p>
-            <button className="cf-elig-toggle" onClick={() => setEligExpanded(e => !e)}>
-              {eligExpanded ? 'Show less ▲' : 'Show full eligibility ▼'}
-            </button>
+            <ul className="cf-elig-bullets">
+              {eligCombinations.map((combo, i) => (
+                <li key={i}>{combo}</li>
+              ))}
+            </ul>
           </div>
         )}
 
@@ -158,19 +158,22 @@ function Modal({ open, onClose, payload }) {
             <button className={"cf-tab " + (view === "cutoffs" ? "on" : "")} onClick={() => setView("cutoffs")}>Cutoffs</button>
           </div>
           {view === "cutoffs" && (
-            <div className="cf-score-field">
-              <input className="cf-scorein" type="number" inputMode="numeric" placeholder="Enter your CUET score (out of 1000)" value={score} onChange={(e) => setScore(e.target.value)} max={1000} min={0} />
-              <span className="cf-score-hint">Rows you qualify for will be highlighted</span>
+            <div className="cf-score-wrap">
+              <svg className="cf-score-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input className="cf-scorein" type="number" inputMode="numeric" placeholder="Enter your CUET score (0–1000)" value={score} onChange={(e) => setScore(e.target.value)} onWheel={(e) => e.target.blur()} max={1000} min={0} />
             </div>
           )}
         </div>
         <div className="cf-tablewrap">
           <table className="cf-table">
-            <thead><tr><th className="cf-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
+            <thead><tr><th className="cf-th-sr">#</th><th className="cf-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
             <tbody>
-              {rows.map((r) => {
+              {rows.map((r, idx) => {
                 const vals = view === "cutoffs" ? r.cutoffs : r.seats; return (
                   <tr key={r.key}>
+                    <td className="cf-td-sr">{idx + 1}</td>
                     <td className="cf-td-name">
                       <div className="cf-td-name-inner">
                         <span className="cf-td-name-text">{r.name}</span>
