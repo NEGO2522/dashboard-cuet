@@ -551,7 +551,7 @@ const CSS = `
 .cp-pick:hover{border-color:#94a3b8;background-color:#f8fafc;color:#0f172a;transform:none;box-shadow:none}
 .cp-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:24px}
 .cp-cta{border:0;background:var(--mari);color:#fff;font-family:'Figtree';font-weight:700;font-size:15px;padding:14px 28px;border-radius:13px;cursor:pointer;box-shadow:0 6px 16px rgba(37,99,235,.28);transition:.16s}
-.cp-cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 9px 22px rgba(37,99,235,.34)}
+.cp-cta:hover:not(:disabled){background-color:#1d4ed8;transform:translateY(-2px);box-shadow:0 9px 22px rgba(37,99,235,.34)}
 .cp-cta:disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed;box-shadow:none}
 .cp-reset{border:0;background:none;color:var(--mari);font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
 .cp-reset:hover{background-color:transparent;color:#1d4ed8;box-shadow:none;transform:none}
