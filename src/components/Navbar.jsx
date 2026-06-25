@@ -51,6 +51,14 @@ export function Navbar() {
               </Link>
             );
           })}
+          <a
+            href="https://cuetpro.com/preference-sheet/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-link"
+          >
+            Preference Sheet
+          </a>
         </div>
 
         {/* Mobile Hamburger Icon */}
@@ -79,6 +87,15 @@ export function Navbar() {
             </Link>
           );
         })}
+        <a
+          href="https://cuetpro.com/preference-sheet/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mobile-nav-link"
+          onClick={closeMobileMenu}
+        >
+          Preference Sheet
+        </a>
       </div>
     </nav>
   );
