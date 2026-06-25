@@ -402,7 +402,12 @@
 
 .cf-modal-title { font-weight: 700; font-size: 1.15rem; line-height: 1.25; color: var(--text-color); }
 .cf-x { border: 0; background: var(--accent-blue-light); width: 32px; height: 32px; border-radius: 9px; font-size: 1.25rem; color: var(--text-color); cursor: pointer; flex-shrink: 0; box-shadow: none; padding: 0; }
-.cf-x:hover { transform: none; box-shadow: none; }
+.cf-x:hover {
+  background-color: #dbeafe;
+  color: var(--accent-blue);
+  transform: none;
+  box-shadow: none;
+}
 
 .cf-modal-elig {
   padding: 0 1.25rem 0.9rem;
