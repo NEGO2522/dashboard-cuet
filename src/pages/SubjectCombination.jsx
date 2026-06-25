@@ -186,7 +186,7 @@ function Modal({ open, onClose, payload }) {
         </div>
         <div className="cf-tablewrap">
           <table className="cf-table">
-            <thead><tr><th className="cf-th-sr">#</th><th className="cf-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
+            <thead><tr><th className="cf-th-sr">Sr No</th><th className="cf-th-name">{mode === "program" ? "College" : "Program"}</th>{CATEGORIES.map((c) => <th key={c}>{c}</th>)}</tr></thead>
             <tbody>
               {rows.map((r, idx) => {
                 const vals = view === "cutoffs" ? r.cutoffs : r.seats; return (

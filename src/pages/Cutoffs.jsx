@@ -199,7 +199,7 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <table className="cf-table">
             <thead>
               <tr>
-                <th className="cf-th-sr">#</th>
+                <th className="cf-th-sr">Sr No</th>
                 <th className="cf-th-name">{mode === 'program' ? 'College' : 'Program'}</th>
                 {CATEGORIES.map((c) => <th key={c}>{c}</th>)}
               </tr>
