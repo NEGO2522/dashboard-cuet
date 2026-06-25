@@ -303,6 +303,24 @@ export function Cutoffs() {
     return sum;
   }, [collegeAgg]);
 
+  const totalProgramsCount = useMemo(() => {
+    let count = 0;
+    programs.forEach((p) => {
+      const agg = programAgg.get(p.id);
+      if (agg && agg.count > 0) count++;
+    });
+    return count;
+  }, [programAgg]);
+
+  const totalCollegesCount = useMemo(() => {
+    let count = 0;
+    colleges.forEach((c) => {
+      const agg = collegeAgg.get(c.id);
+      if (agg && agg.count > 0) count++;
+    });
+    return count;
+  }, [collegeAgg]);
+
   const programList = useMemo(() => {
     const q = query.trim().toLowerCase();
     let list = programs
@@ -428,9 +446,9 @@ export function Cutoffs() {
       </section>
 
       <div className="cf-statstrip">
-        <div className="cf-kpi"><b>{programList.length}</b><span>Programs</span></div>
+        <div className="cf-kpi"><b>{totalProgramsCount}</b><span>Programs</span></div>
         <div className="cf-divider" />
-        <div className="cf-kpi"><b>{collegeList.length}</b><span>Colleges</span></div>
+        <div className="cf-kpi"><b>{totalCollegesCount}</b><span>Colleges</span></div>
         <div className="cf-divider" />
         <div className="cf-kpi"><b>{nf(totalSeatsAll)}</b><span>Seats</span></div>
         <div className="cf-divider" />
