@@ -64,7 +64,6 @@ function ListRow({ title, sub, accent, count, countLabel, seats, top, onOpen }) 
 function DetailModal({ open, onClose, mode, item, indices }) {
   const [view, setView] = useState('cutoffs');
   const [score, setScore] = useState('');
-  const [eligExpanded, setEligExpanded] = useState(false);
 
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose(); }
@@ -104,7 +103,7 @@ function DetailModal({ open, onClose, mode, item, indices }) {
     }));
   }
 
-  const eligibility = mode === 'program' ? (item.eligibility || getEligibilityForProgram(item.name)) : null;
+  const eligCombinations = mode === 'program' ? (getEligibilityForProgram(item.name) || []) : [];
 
   rows.sort((a, b) => (b.cutoffs[0] || 0) - (a.cutoffs[0] || 0));
 
@@ -140,16 +139,17 @@ function DetailModal({ open, onClose, mode, item, indices }) {
           <div className="cf-modal-title">{title}</div>
           <button className="cf-x" onClick={onClose} aria-label="Close">×</button>
         </div>
-        {eligibility && (
+        {eligCombinations.length > 0 && (
           <div className="cf-elig-card">
             <div className="cf-elig-card-head">
               <span className="cf-elig-icon">📋</span>
-              <span className="cf-elig-card-title">Eligibility</span>
+              <span className="cf-elig-card-title">Subject Combinations</span>
             </div>
-            <p className={`cf-elig-card-text ${eligExpanded ? 'expanded' : ''}`}>{eligibility}</p>
-            <button className="cf-elig-toggle" onClick={() => setEligExpanded(e => !e)}>
-              {eligExpanded ? 'Show less ▲' : 'Show full eligibility ▼'}
-            </button>
+            <ul className="cf-elig-bullets">
+              {eligCombinations.map((combo, i) => (
+                <li key={i}>{combo}</li>
+              ))}
+            </ul>
           </div>
         )}
         <div className="cf-modal-tools">

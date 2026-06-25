@@ -96,7 +96,7 @@ function looseNorm(s) {
 
 const eligibilityByLooseName = new Map();
 rawEligibility.forEach((r) => {
-  eligibilityByLooseName.set(looseNorm(r.course), r.eligibility.trim());
+  eligibilityByLooseName.set(looseNorm(r.course), r.combinations || []);
 });
 
 export function getEligibilityForProgram(programName) {

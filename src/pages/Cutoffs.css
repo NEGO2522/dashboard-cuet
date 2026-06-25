@@ -446,11 +446,24 @@
 .cf-elig-icon { font-size: 0.85rem; line-height: 1; }
 
 .cf-elig-card-title {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent-blue);
+}
+
+.cf-elig-bullets {
+  margin: 0;
+  padding: 0 0 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.cf-elig-bullets li {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--text-color);
 }
 
 .cf-elig-card-text {
