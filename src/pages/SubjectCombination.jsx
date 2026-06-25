@@ -165,6 +165,24 @@ function Modal({ open, onClose, payload }) {
               <input className="cf-scorein" type="number" inputMode="numeric" placeholder="Enter your CUET score (0–1000)" value={score} onChange={(e) => setScore(e.target.value)} onWheel={(e) => e.target.blur()} max={1000} min={0} />
             </div>
           )}
+          <div className="cf-legend">
+            <div className="cf-legend-item">
+              <span className="cf-legend-dot cf-heat-5"></span>
+              <span>{view === "cutoffs" ? "Easy" : "More"}</span>
+            </div>
+            <div className="cf-legend-item">
+              <span className="cf-legend-dot cf-heat-3"></span>
+              <span>Avg</span>
+            </div>
+            <div className="cf-legend-item">
+              <span className="cf-legend-dot cf-heat-2"></span>
+              <span>Medium</span>
+            </div>
+            <div className="cf-legend-item">
+              <span className="cf-legend-dot cf-heat-1"></span>
+              <span>{view === "cutoffs" ? "Hard" : "Less"}</span>
+            </div>
+          </div>
         </div>
         <div className="cf-tablewrap">
           <table className="cf-table">
