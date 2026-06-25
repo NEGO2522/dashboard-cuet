@@ -334,6 +334,9 @@ export function SubjectCombination() {
       });
 
     list.sort((a, b) => {
+      const pa = a.c.campus === 'North' ? 1 : (a.c.campus === 'South' ? 2 : 3);
+      const pb = b.c.campus === 'North' ? 1 : (b.c.campus === 'South' ? 2 : 3);
+      if (pa !== pb) return pa - pb;
       if (sort === 'az') return a.c.name.localeCompare(b.c.name);
       if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
       if (sort === 'colleges') return b.count - a.count;

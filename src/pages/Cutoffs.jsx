@@ -329,6 +329,9 @@ export function Cutoffs() {
       .map((c) => ({ ...c, ...(collegeAgg.get(c.id) || { count: 0, totalSeats: null, topCutoff: 0 }) }))
       .filter((c) => c.count > 0);
     list.sort((a, b) => {
+      const pa = a.campus === 'North' ? 1 : (a.campus === 'South' ? 2 : 3);
+      const pb = b.campus === 'North' ? 1 : (b.campus === 'South' ? 2 : 3);
+      if (pa !== pb) return pa - pb;
       if (sort === 'az') return a.name.localeCompare(b.name);
       if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
       if (sort === 'colleges') return b.count - a.count;
