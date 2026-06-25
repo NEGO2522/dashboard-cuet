@@ -98,7 +98,7 @@ function Modal({ open, onClose, payload }) {
   if (mode === "program") {
     const p = item; accent = STREAMS[p.stream].color; title = "Colleges offering " + p.name;
     const myOffs = offerings.filter(o => o.programId === p.id);
-    rows = myOffs.map((o) => ({ key: o.collegeId, name: o.college?.short || o.collegeName, women: o.gender === "Women", cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)), seats: CATEGORIES.map((cat) => getSeats(o, cat)) }));
+    rows = myOffs.map((o) => ({ key: o.collegeId, name: o.college?.short || o.collegeName, campus: o.college?.campus, women: o.college?.type === "Women" || o.gender === "Women" || o.gender === "Female", cutoffs: CATEGORIES.map((cat) => getCutoff(o, cat)), seats: CATEGORIES.map((cat) => getSeats(o, cat)) }));
   } else {
     const c = item; accent = "#2563eb"; title = "Your courses at " + c.name;
     const myOffs = offerings.filter(o => o.collegeId === c.id);
@@ -195,8 +195,19 @@ function Modal({ open, onClose, payload }) {
                     <td className="cf-td-name">
                       <div className="cf-td-name-inner">
                         <span className="cf-td-name-text">{r.name}</span>
-                        {r.women && <span className="cf-badge-w">Women</span>}
-                        {r.stream && <span className="cf-badge-s" style={{ color: STREAMS[r.stream].color, background: STREAMS[r.stream].color + "14" }}>{STREAMS[r.stream].label.split(" ")[0]}</span>}
+                        {(r.women || (r.campus && r.campus !== "Off") || r.stream) && (
+                          <span className="cf-td-badges">
+                            {r.women && <span className="cf-badge-w">Women</span>}
+                            {r.campus && r.campus !== "Off" && (
+                              <span className="cf-badge-campus">{r.campus} Campus</span>
+                            )}
+                            {r.stream && (
+                              <span className="cf-badge-s" style={{ color: STREAMS[r.stream].color, background: STREAMS[r.stream].color + "14" }}>
+                                {STREAMS[r.stream].label.split(" ")[0]}
+                              </span>
+                            )}
+                          </span>
+                        )}
                       </div>
                     </td>
                     {vals.map((v, i) => {
