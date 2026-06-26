@@ -20,6 +20,80 @@ import rawEligibility from '../data/course_requirements.json';
 import { programs as ALL_PROGRAMS } from '../data/programs';
 import { getScoreBreakdown } from '../lib/scoreEngine';
 
+// Market ranking order — lower rank = better
+const MARKET_RANK = {
+  "St. Stephen's College": 1,
+  "Shri Ram College of Commerce (SRCC)": 2,
+  "Hindu College": 3,
+  "Lady Shri Ram College (LSR)": 4,
+  "Hansraj College": 5,
+  "Miranda House": 6,
+  "Shaheed Sukhdev College of Business Studies (SSCBS)": 7,
+  "Kirori Mal College (KMC)": 8,
+  "Ramjas College": 9,
+  "Sri Venkateswara College": 10,
+  "Jesus & Mary College (JMC)": 11,
+  "Gargi College": 12,
+  "ARSD College": 13,
+  "Shaheed Bhagat Singh College": 14,
+  "Daulat Ram College": 15,
+  "Indraprastha College for Women (IP)": 16,
+  "College of Vocational Studies (CVS)": 17,
+  "Delhi College of Arts & Commerce (DCAC)": 18,
+  "Kamala Nehru College": 19,
+  "Deen Dayal Upadhyaya College (DDU)": 20,
+  "Maitreyi College": 21,
+  "Sri Guru Tegh Bahadur Khalsa College (SGTB)": 22,
+  "Sri Guru Gobind Singh College of Commerce (SGGSCC)": 23,
+  "Deshbandhu College": 24,
+  "Dyal Singh College": 25,
+  "Acharya Narendra Dev College": 26,
+  "Shivaji College": 27,
+  "Bhaskaracharya College of Applied Sciences": 28,
+  "Aryabhatta College": 29,
+  "Maharaja Agrasen College": 30,
+  "Ram Lal Anand College": 31,
+  "PGDAV College": 32,
+  "Motilal Nehru College": 33,
+  "Sri Aurobindo College": 34,
+  "Ramanujan College": 35,
+  "Keshav Mahavidyalaya": 36,
+  "Shaheed Rajguru College of Applied Sciences for Women": 37,
+  "Shyam Lal College": 38,
+  "Satyawati College": 39,
+  "Zakir Husain Delhi College": 40,
+  "Rajdhani College": 41,
+  "Vivekananda College": 42,
+  "Janki Devi Memorial College (JDMC)": 43,
+  "Kalindi College": 44,
+  "Lakshmibai College": 45,
+  "Shyama Prasad Mukherji College (SPM)": 46,
+  "Institute of Home Economics": 47,
+  "Lady Irwin College": 48,
+  "Mata Sundri College for Women": 49,
+  "Bharati College": 50,
+  "Swami Shraddhanand College": 51,
+  "Dr. Bhim Rao Ambedkar College": 52,
+  "Sri Guru Nanak Dev Khalsa College": 53,
+  "Bhagini Nivedita College": 54,
+  "Aditi Mahavidyalaya": 55,
+};
+
+function getMarketRank(collegeName) {
+  if (!collegeName) return 999;
+  // Exact match pehle try karo
+  if (MARKET_RANK[collegeName] !== undefined) return MARKET_RANK[collegeName];
+  // Partial match — college name ke kisi bhi word se match karo
+  const lower = collegeName.toLowerCase();
+  for (const [key, rank] of Object.entries(MARKET_RANK)) {
+    if (lower.includes(key.toLowerCase().split(' ')[0]) || 
+        key.toLowerCase().includes(lower.split(' ')[0])) {
+      return rank;
+    }
+  }
+  return 999; // unlisted colleges last mein
+}
+
 const PROGRAMS = ALL_PROGRAMS.map(p => ({
   ...p,
   stream: p.subjectGroup || "Humanities"
@@ -146,7 +220,12 @@ function Modal({ open, onClose, payload }) {
             </div>
             <ul className="cf-elig-bullets">
               {eligCombinations.map((combo, i) => (
-                <li key={i}>{combo}</li>
+                <React.Fragment key={i}>
+                  <li>{combo}</li>
+                  {i < eligCombinations.length - 1 && (
+                    <li style={{ listStyle: 'none', textAlign: 'center', margin: '0.1rem 0', fontSize: '0.75rem', fontWeight: 800, color: '#94a3b8' }}>OR</li>
+                  )}
+                </React.Fragment>
               ))}
             </ul>
           </div>
@@ -241,7 +320,7 @@ export function SubjectCombination() {
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState("all");
   const [campus, setCampus] = useState("all");
-  const [sort, setSort] = useState("seats");
+  const [sort, setSort] = useState("market");
 
   const handleTabChange = (newTab) => {
     setTab(newTab);
@@ -334,13 +413,12 @@ export function SubjectCombination() {
       });
 
     list.sort((a, b) => {
-      const pa = a.c.campus === 'North' ? 1 : (a.c.campus === 'South' ? 2 : 3);
-      const pb = b.c.campus === 'North' ? 1 : (b.c.campus === 'South' ? 2 : 3);
-      if (pa !== pb) return pa - pb;
       if (sort === 'az') return a.c.name.localeCompare(b.c.name);
       if (sort === 'cutoff') return b.topCutoff - a.topCutoff;
       if (sort === 'colleges') return b.count - a.count;
-      return (b.totalSeats || 0) - (a.totalSeats || 0);
+      if (sort === 'seats') return (b.totalSeats || 0) - (a.totalSeats || 0);
+      // Default: market ranking
+      return getMarketRank(a.c.name) - getMarketRank(b.c.name);
     });
     return list;
   }, [openColleges, query, campus, sort]);
@@ -444,6 +522,7 @@ export function SubjectCombination() {
               onChange={(e) => setQuery(e.target.value)}
             />
             <select className="cf-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="market">Market Ranking</option>
               <option value="seats">Most seats</option>
               <option value="cutoff">Highest cutoff</option>
               <option value="colleges">{tab === 'eligible' ? 'Most colleges' : 'Most programs'}</option>

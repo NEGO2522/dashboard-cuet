@@ -147,7 +147,12 @@ function DetailModal({ open, onClose, mode, item, indices }) {
             </div>
             <ul className="cf-elig-bullets">
               {eligCombinations.map((combo, i) => (
-                <li key={i}>{combo}</li>
+                <React.Fragment key={i}>
+                  <li>{combo}</li>
+                  {i < eligCombinations.length - 1 && (
+                    <li style={{ listStyle: 'none', textAlign: 'center', margin: '0.1rem 0', fontSize: '0.75rem', fontWeight: 800, color: '#94a3b8' }}>OR</li>
+                  )}
+                </React.Fragment>
               ))}
             </ul>
           </div>

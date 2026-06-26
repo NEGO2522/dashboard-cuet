@@ -221,9 +221,9 @@ export function CollegeExplorer() {
                   </div>
 
                   <div className="ce-card-actions">
-                    <Link to={`/college/${college.id}`} className="ce-btn ce-btn-primary">
+                    <button disabled className="ce-btn ce-btn-primary" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
                       View Details
-                    </Link>
+                    </button>
                     {college.officialWebsite && (
                       <a href={college.officialWebsite} target="_blank" rel="noopener noreferrer" className="ce-btn ce-btn-secondary">
                         Visit Website

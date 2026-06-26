@@ -97,8 +97,8 @@ export function Home() {
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section">
-        <h1>DU Admissions Explorer</h1>
-        <p>A structured guide to Delhi University colleges, courses, and cutoffs.</p>
+        <h1>DU Admissions <span className="highlight-blue">Explorer</span></h1>
+        <p>The definitive guide to Delhi University's academic ecosystem. Access accurate data on colleges, programs, and admissions requirements.</p>
         
         <div className="search-container">
           <div className="search-icon">
@@ -134,11 +134,12 @@ export function Home() {
         </div>
 
         <div className="quick-searches">
-          <span className="quick-search-label">Important Links:</span>
-          <a href="https://admission.uod.ac.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU CSAS Portal</a>
-          <a href="https://cuetug.ntaonline.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">NTA CUET Portal</a>
-          <a href="https://du.ac.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU Official Site</a>
-          <a href="https://admission.uod.ac.in/?PG-Admissions" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU PG Portal</a>
+          <span className="quick-search-label">OFFICIAL RESOURCES:</span>
+          <div className="quick-search-buttons">
+            <a href="https://admission.uod.ac.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU CSAS Portal</a>
+            <a href="https://cuetug.ntaonline.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">NTA CUET Portal</a>
+            <a href="https://du.ac.in/" target="_blank" rel="noopener noreferrer" className="quick-search-pill">DU Official Site</a>
+          </div>
         </div>
       </section>
 
@@ -154,23 +155,23 @@ export function Home() {
         </div>
         <div className="stat-item">
           <span className="stat-value">2025</span>
-          <span className="stat-label">Data</span>
+          <span className="stat-label">Academic Data</span>
         </div>
       </div>
 
       <div className="home-container">
         {/* Main Navigation Grid */}
         <section className="nav-tile-grid">
-          <Link to="/colleges" className="nav-tile tile-colleges">
+          <a href="https://cuetpro.com/preference-sheet/" target="_blank" rel="noopener noreferrer" className="nav-tile tile-preference">
           <div className="nav-tile-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 22 7 12 2"></polygon><polyline points="2 17 2 22 22 22 22 17"></polyline><line x1="6" y1="12" x2="6" y2="17"></line><line x1="10" y1="12" x2="10" y2="17"></line><line x1="14" y1="12" x2="14" y2="17"></line><line x1="18" y1="12" x2="18" y2="17"></line></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
           </div>
           <div className="nav-tile-content">
-            <h3>Explore Colleges</h3>
-            <p>Browse all DU colleges, facilities, and offered courses</p>
+            <h3>Preference Sheet Maker</h3>
+            <p>Create and order your CSAS preference list</p>
           </div>
-        </Link>
-        
+        </a>
+
         <Link to="/cutoffs" className="nav-tile tile-cutoffs">
           <div className="nav-tile-icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
@@ -180,26 +181,6 @@ export function Home() {
             <p>Check official seat matrix and previous year cutoffs</p>
           </div>
         </Link>
-
-        <Link to="/eligibility" className="nav-tile tile-eligibility">
-          <div className="nav-tile-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-          </div>
-          <div className="nav-tile-content">
-            <h3>Eligibility Checker</h3>
-            <p>Find which courses match your CUET subjects</p>
-          </div>
-        </Link>
-
-        <a href="https://cuetpro.com/preference-sheet/" target="_blank" rel="noopener noreferrer" className="nav-tile tile-preference">
-          <div className="nav-tile-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-          </div>
-          <div className="nav-tile-content">
-            <h3>Preference Sheet Maker</h3>
-            <p>Create and order your CSAS preference list</p>
-          </div>
-        </a>
 
         <Link to="/subject-combination" className="nav-tile tile-combinations">
           <div className="nav-tile-icon">
@@ -211,6 +192,25 @@ export function Home() {
           </div>
         </Link>
 
+        <Link to="/colleges" className="nav-tile tile-colleges">
+          <div className="nav-tile-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 22 7 12 2"></polygon><polyline points="2 17 2 22 22 22 22 17"></polyline><line x1="6" y1="12" x2="6" y2="17"></line><line x1="10" y1="12" x2="10" y2="17"></line><line x1="14" y1="12" x2="14" y2="17"></line><line x1="18" y1="12" x2="18" y2="17"></line></svg>
+          </div>
+          <div className="nav-tile-content">
+            <h3>Explore Colleges</h3>
+            <p>Browse all DU colleges, facilities, and offered courses</p>
+          </div>
+        </Link>
+
+        <Link to="/documents" className="nav-tile tile-documents">
+          <div className="nav-tile-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+          </div>
+          <div className="nav-tile-content">
+            <h3>Documents Guide</h3>
+            <p>Know which documents are required for admission</p>
+          </div>
+        </Link>
 
       </section>
 
