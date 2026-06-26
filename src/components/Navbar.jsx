@@ -21,7 +21,6 @@ export function Navbar() {
     { name: 'Colleges', path: '/colleges' },
     { name: 'Cutoffs & Seats', path: '/cutoffs' },
     { name: 'Rankings', path: '/rankings' },
-    { name: 'Documents', path: '/documents' },
     { name: 'Subject Combination', path: '/subject-combination' }
   ];
 
