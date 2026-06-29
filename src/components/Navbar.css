@@ -1,6 +1,6 @@
 .navbar {
   position: sticky;
-  top: 1.5rem;
+  top: 3rem;
   margin: 0 auto;
   max-width: 1300px;
   width: calc(100% - 2rem);
@@ -10,7 +10,7 @@
   -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
   transition: box-shadow 0.2s ease-in-out;
-  border-radius: 9999px;
+  border-radius: 0px;
   border: 1px solid var(--border-color);
   box-sizing: border-box;
 }
