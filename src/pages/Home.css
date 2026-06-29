@@ -36,7 +36,7 @@
 }
 
 .highlight-blue {
-  color: #60a5fa;
+  color: #38D990;
 }
 
 .hero-section p {
@@ -60,7 +60,7 @@
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255,255,255,0.5);
+  color: #64748b;
   display: flex;
   align-items: center;
   pointer-events: none;
@@ -72,21 +72,23 @@
   padding: 1.15rem 1.5rem 1.15rem 3.5rem;
   font-size: 1.05rem;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: white;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   transition: all 0.2s;
 }
 
 .search-input::placeholder {
-  color: rgba(255,255,255,0.4);
+  color: #475569;
+  opacity: 1;
 }
 
 .search-input:focus {
-  background: rgba(15, 23, 42, 0.8);
-  border-color: rgba(255,255,255,0.2);
+  background: #ffffff;
+  border-color: #38D990;
+  box-shadow: 0 0 0 4px rgba(56, 217, 144, 0.2);
   outline: none;
 }
 
@@ -173,8 +175,8 @@
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #38D990;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.85rem;
   font-weight: 600;
   backdrop-filter: blur(8px);
@@ -183,9 +185,10 @@
 }
 
 .quick-search-pill:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(56, 217, 144, 0.1);
+  border-color: #38D990;
   color: white;
+  box-shadow: 0 0 12px rgba(56, 217, 144, 0.25);
 }
 
 /* Stats Bar */
@@ -276,7 +279,7 @@
   flex-shrink: 0;
 }
 
-.tile-colleges .nav-tile-icon { background-color: #eff6ff; color: #2563eb; }
+.tile-colleges .nav-tile-icon { background-color: #e2faf0; color: #38D990; }
 .tile-cutoffs .nav-tile-icon { background-color: #fff1f2; color: #e11d48; }
 .tile-eligibility .nav-tile-icon { background-color: #ecfdf5; color: #059669; }
 .tile-preference .nav-tile-icon { background-color: #fffbeb; color: #d97706; }

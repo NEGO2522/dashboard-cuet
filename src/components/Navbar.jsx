@@ -31,10 +31,9 @@ export function Navbar() {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-blue)', marginRight: '6px' }}><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-          CuetPro
-        </Link>
+        <a href="https://cuetpro.com/" className="navbar-logo" onClick={closeMobileMenu} style={{ display: 'flex', alignItems: 'center' }}>
+          <img src="/logo.png" alt="CuetPro Logo" style={{ height: '52px', width: 'auto', display: 'block' }} />
+        </a>
 
         {/* Desktop Menu */}
         <div className="navbar-links">

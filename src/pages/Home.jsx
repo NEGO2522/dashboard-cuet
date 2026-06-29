@@ -1,62 +1,13 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { colleges } from '../data/colleges';
 import { programs } from '../data/programs';
 import { offerings } from '../data/offerings';
-import { supabase } from '../lib/supabaseClient';
 import './Home.css';
 
 export function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
-
-  // News logic
-  const [newsList, setNewsList] = useState([]);
-  const [activeNewsTab, setActiveNewsTab] = useState("All");
-  const [currentTimeStr, setCurrentTimeStr] = useState('');
-
-  useEffect(() => {
-    setCurrentTimeStr(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }));
-    fetchNews();
-  }, []);
-
-  const fetchNews = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('news_updates')
-        .select('*')
-        .order('created_at', { ascending: false });
-        
-      if (error) throw error;
-      
-      // Transform keys to match existing UI
-      const formatted = data.map(n => ({
-        id: n.id,
-        title: n.title,
-        date: n.created_at,
-        link: n.link,
-        source: n.source,
-        isImportant: n.is_important,
-        category: n.category,
-        description: n.description
-      }));
-      
-      setNewsList(formatted);
-    } catch (err) {
-      console.error('Error fetching news:', err);
-    }
-  };
-
-  const filteredNews = useMemo(() => {
-    if (activeNewsTab === "All") return newsList;
-    if (activeNewsTab === "Admission") return newsList.filter(n => n.category === "Admission");
-    if (activeNewsTab === "Notices") return newsList.filter(n => n.category === "Notice");
-    if (activeNewsTab === "Features") return newsList.filter(n => n.category === "Feature");
-    if (activeNewsTab === "Cutoffs") return newsList.filter(n => n.category === "Cutoffs");
-    return newsList;
-  }, [newsList, activeNewsTab]);
-
-  const hasDUOfficial = newsList.some(n => n.source === "DU Official");
 
   // Search logic
   const suggestions = useMemo(() => {
@@ -211,70 +162,6 @@ export function Home() {
             <p>Know which documents are required for admission</p>
           </div>
         </Link>
-
-      </section>
-
-      {/* News & Updates Section */}
-      <section className="news-section">
-        <div className="news-header-container">
-          <h2 className="news-header-title">News & Updates</h2>
-          <div className="news-live-status">
-            {hasDUOfficial && (
-              <div className="live-indicator">
-                <div className="pulsing-dot"></div>
-                Live
-              </div>
-            )}
-            <div className="sync-time">Last synced: {currentTimeStr}</div>
-          </div>
-        </div>
-
-        <div className="news-tabs">
-          {["All", "Admission", "Cutoffs", "Notices", "Features"].map(tab => (
-            <button
-              key={tab}
-              className={`news-tab ${activeNewsTab === tab ? 'active' : ''}`}
-              onClick={() => setActiveNewsTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        <div className="news-list">
-          {filteredNews.map(news => {
-            const isDU = news.source === "DU Official";
-            return (
-              <a 
-                href={news.link} 
-                target={news.link?.startsWith('http') ? '_blank' : '_self'}
-                rel="noopener noreferrer"
-                key={news.id} 
-                className={`news-card ${isDU ? 'source-du' : 'source-admin'}`}
-              >
-                {news.isImportant && (
-                  <div className="priority-badge">
-                    <div className="priority-dot"></div> Priority
-                  </div>
-                )}
-                
-                <div className="news-content">
-                  <div className="news-meta">
-                    <span className="news-source-badge">{news.source}</span>
-                    <span className="news-date">{new Date(news.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                  </div>
-                  <h4 className="news-card-title">{news.title}</h4>
-                  {news.description && (
-                    <p className="news-card-desc">{news.description}</p>
-                  )}
-                </div>
-              </a>
-            );
-          })}
-          {filteredNews.length === 0 && (
-            <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 0' }}>No updates in this category.</p>
-          )}
-        </div>
 
       </section>
 

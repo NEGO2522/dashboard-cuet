@@ -242,7 +242,7 @@ export function CollegeExplorer() {
           
           {isLoadingMore && (
             <div className="ce-loading-spinner" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '2rem 0', gap: '1rem' }}>
-              <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+              <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #38D990', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
               <span style={{ color: '#64748b', fontWeight: 500 }}>Loading more colleges...</span>
             </div>
           )}
