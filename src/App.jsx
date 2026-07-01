@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { IframeRouteSync } from './components/IframeRouteSync';
 import { 
   Home, 
   CollegeExplorer, 
@@ -18,6 +19,7 @@ function App() {
   return (
     <Router>
       <div className="app-layout">
+        <IframeRouteSync />
         <Navbar />
         <main>
         <Routes>
